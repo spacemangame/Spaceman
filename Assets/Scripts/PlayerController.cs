@@ -8,6 +8,7 @@ public class Boundary{
 
 public class PlayerController : MonoBehaviour {
 	public int speed;
+	public int accelerometerSensitivity;
 	public float tilt;
 	public Boundary boundary;
 
@@ -15,7 +16,13 @@ public class PlayerController : MonoBehaviour {
 	public Transform shotSpawn1;
 	public Transform shotSpawn2;
 	public float fireRate;
+
 	private float nextFire;
+	private Rigidbody rb;
+
+	void Start() {
+		rb = GetComponent<Rigidbody> ();
+	}
 
 	void Update(){
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
@@ -27,18 +34,24 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
-		Rigidbody rb = GetComponent<Rigidbody> ();
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+
+		// update the position based on movement.
+		Vector3 movement;
+		if (SystemInfo.deviceType == DeviceType.Desktop) {
+			movement = new Vector3 (Input.GetAxis ("Horizontal"), 0.0f, Input.GetAxis ("Vertical"));
+		} else {
+			movement = new Vector3 (Input.acceleration.x, 0.0f, Input.acceleration.y) * accelerometerSensitivity;
+		}
 		rb.velocity = movement * speed;
 
+		// make sure player doesn't go out of the boundary.
 		rb.position = new Vector3 (
 			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
 			0.0f,
 			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
 		);
 
+		// rotate the player to show the movement
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
 	}
 }
