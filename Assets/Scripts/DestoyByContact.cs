@@ -15,6 +15,7 @@ public class DestoyByContact : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
+//		Debug.Log ("Inside destroy by contact me: " + gameObject.name + ", other: " + other.name);
 		if(other.CompareTag("Boundary") || other.CompareTag("Enemy"))
 			return;
 		
