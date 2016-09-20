@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -7,24 +8,24 @@ public class GameController : MonoBehaviour {
 	public GameObject[] hazards;
 	public GameObject[] collectibles;
 	public Vector3 spawnValues; 
+
 	public int hazardCount;
 	public float spawnWait;
 	public float startWait;
 	public float colStartWait;
 	public float colSpawnWait;
 	public float waveWait;
-	public GUIText scoreText;
-	public GUIText pointText;
-	private int score;
-	private int points;
-	private int hp;
 
-	public GUIText hpText;
-    public GUIText restartText;
-    public GUIText gameOverText;
+	public Text scoreText;
+	public Text pointText;
+	public Text hpText;
+    public Text restartText;
 
     private bool gameOver;
     private bool restart;
+	private int score;
+	private int points;
+	private int hp;
 
     void Update()
     {
@@ -39,11 +40,13 @@ public class GameController : MonoBehaviour {
 
     void Start(){
 		score = 0;
+		points = 0;
 		hp = 100;
         gameOver = false;
         restart = false;
         restartText.text = "";
         UpdateScore ();
+		UpdatePoints ();
 		UpdateHP ();
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
