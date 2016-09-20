@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -17,12 +18,31 @@ public class GameController : MonoBehaviour {
 	private int score;
 	private int points;
 
-	void Start(){
+    public GUIText restartText;
+    public GUIText gameOverText;
+
+    private bool gameOver;
+    private bool restart;
+
+    void Update()
+    {
+        if (restart)
+        {
+            if (Input.GetButton("Fire1"))
+            {
+                SceneManager.LoadScene("Main Menu");
+            }
+        }
+    }
+
+    void Start(){
 		score = 0;
-		UpdateScore ();
+        gameOver = false;
+        restart = false;
+        restartText.text = "";
+        UpdateScore ();
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
-
 	}
 
 	IEnumerator SpawnWaves(){
@@ -36,7 +56,14 @@ public class GameController : MonoBehaviour {
 				yield return new WaitForSeconds (spawnWait);
 			}
 			yield return new WaitForSeconds (waveWait);
-		}
+
+            if (gameOver)
+            {
+                restartText.text = "Click anywhere to restart";
+                restart = true;
+                break;
+            }
+        }
 	}
 
 	IEnumerator SpawnCollectibles(){
@@ -53,7 +80,14 @@ public class GameController : MonoBehaviour {
 
 
 			yield return new WaitForSeconds (colSpawnWait);
-		}
+
+            if (gameOver)
+            {
+                restartText.text = "Click anywhere to restart";
+                restart = true;
+                break;
+            }
+        }
 	}
 
 
@@ -74,4 +108,10 @@ public class GameController : MonoBehaviour {
 	void UpdatePoints(){
 		pointText.text = "Points: " + points;
 	}
+
+    public void GameOver()
+    {
+        restartText.text = "Game Over!";
+        gameOver = true;
+    }
 }
