@@ -16,33 +16,25 @@ public class DestoyByContact : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-//		Debug.Log ("Inside destroy by contact me: " + gameObject.name + ", other: " + other.name);
-		if(other.CompareTag("Boundary") || other.CompareTag("Enemy"))
+		//        Debug.Log ("Inside destroy by contact me: " + gameObject.name + ", other: " + other.name);
+		if(other.CompareTag("Boundary"))
 			return;
-		
-		if(explosion != null)
-			Instantiate (explosion, transform.position, transform.rotation);
 
-        if (other.tag == "Player") {
-			if (gameController.getHP () <= 0) {
+		if (other.tag == "Player") {
+			if (gameController.getHP () == 10) {
 				gameController.AddScore (scoreValue);
 				Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
+				gameController.DecreaseHP (hpValue);
 				gameController.GameOver ();
 				Destroy (other.gameObject);
 				return;
 			} else {
 				gameController.DecreaseHP (hpValue);
-				if (gameController.getHP () == 0) {
-					Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
-					gameController.GameOver ();
-					Destroy (other.gameObject);
-					return;
-				}
 				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (gameObject);
 			}
-        }
-			
+		}
+
 		if (other.tag == "bolt") {
 			Instantiate (explosion, transform.position, transform.rotation);
 			gameController.AddScore (scoreValue);
