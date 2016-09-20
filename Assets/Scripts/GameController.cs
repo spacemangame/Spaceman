@@ -17,7 +17,9 @@ public class GameController : MonoBehaviour {
 	public GUIText pointText;
 	private int score;
 	private int points;
+	private int hp;
 
+	public GUIText hpText;
     public GUIText restartText;
     public GUIText gameOverText;
 
@@ -37,10 +39,12 @@ public class GameController : MonoBehaviour {
 
     void Start(){
 		score = 0;
+		hp = 100;
         gameOver = false;
         restart = false;
         restartText.text = "";
         UpdateScore ();
+		UpdateHP ();
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
 	}
@@ -107,6 +111,19 @@ public class GameController : MonoBehaviour {
 
 	void UpdatePoints(){
 		pointText.text = "Points: " + points;
+	}
+
+	public int getHP() {
+		return hp;
+	}
+
+	public void DecreaseHP(int hpToSubtract){
+		hp -= hpToSubtract;
+		UpdateHP ();
+	}
+
+	void UpdateHP(){
+		hpText.text = "HP: " + hp;
 	}
 
     public void GameOver()
