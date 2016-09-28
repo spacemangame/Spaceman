@@ -9,6 +9,6 @@ public class ButtonManager : MonoBehaviour {
     public void NewGameBtn(string mainGameScreen) {
         SceneManager.LoadScene(mainGameScreen);
 
-		playerController.CalibrateAccelerometer (); // calibrate the accelerometer
+		//playerController.CalibrateAccelerometer (); // calibrate the accelerometer
     }
 }

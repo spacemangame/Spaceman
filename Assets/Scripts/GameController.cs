@@ -39,8 +39,11 @@ public class GameController : MonoBehaviour {
     }
 
     void Start(){
-		score = 0;
-		points = 0;
+        //score = 0;
+        SaveGameState.Load();
+        score = SaveGameState.savedGameState.gameScore;
+        //points = 0;
+        points = SaveGameState.savedGameState.gamePoints;
 		hp = 100;
         gameOver = false;
         restart = false;
@@ -66,6 +69,8 @@ public class GameController : MonoBehaviour {
 
             if (gameOver)
             {
+                GameState currGameState = new GameState(score, points);
+                SaveGameState.Save(currGameState);
                 restartText.text = "Click anywhere to restart";
                 restart = true;
                 break;
@@ -90,6 +95,8 @@ public class GameController : MonoBehaviour {
 
             if (gameOver)
             {
+                GameState currGameState = new GameState(score, points);
+                SaveGameState.Save(currGameState);
                 restartText.text = "Click anywhere to restart";
                 restart = true;
                 break;
