@@ -6,12 +6,12 @@ public class DestoyByContact : MonoBehaviour {
 	public GameObject playerExplosion;
 	public int scoreValue;
 	public int hpValue;
-	private GameController gameController;
+	private MissionController missionController;
 
 	void Start(){
-		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+        GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
 		if (gameControllerObject != null) {
-			gameController = gameControllerObject.GetComponent<GameController> ();
+            missionController = gameControllerObject.GetComponent<MissionController>();
 		}
 	}
 
@@ -21,15 +21,15 @@ public class DestoyByContact : MonoBehaviour {
 			return;
 
 		if (other.tag == "Player") {
-			if (gameController.getHP () == 10) {
-				gameController.AddScore (scoreValue);
+			if (missionController.getHP () == 10) {
+				missionController.AddScore (scoreValue);
 				Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
-				gameController.DecreaseHP (hpValue);
-				gameController.GameOver ();
+				missionController.DecreaseHP (hpValue);
+				missionController.GameOver ();
 				Destroy (other.gameObject);
 				return;
 			} else {
-				gameController.DecreaseHP (hpValue);
+				missionController.DecreaseHP (hpValue);
 				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (gameObject);
 			}
@@ -37,7 +37,7 @@ public class DestoyByContact : MonoBehaviour {
 
 		if (other.tag == "bolt") {
 			Instantiate (explosion, transform.position, transform.rotation);
-			gameController.AddScore (scoreValue);
+			missionController.AddScore (scoreValue);
 			Destroy (other.gameObject);
 			Destroy (gameObject);
 		}

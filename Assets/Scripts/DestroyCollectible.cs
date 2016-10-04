@@ -3,13 +3,13 @@ using System.Collections;
 
 public class DestroyCollectible : MonoBehaviour {
 
-	private GameController gameController;
+	private MissionController missionController;
 	public int pointValue;
 
 	void Start(){
-		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+		GameObject gameControllerObject = GameObject.FindWithTag ("MissionController");
 		if (gameControllerObject != null) {
-			gameController = gameControllerObject.GetComponent<GameController> ();
+            missionController = gameControllerObject.GetComponent<MissionController>();
 		}
 	}
 
@@ -17,7 +17,7 @@ public class DestroyCollectible : MonoBehaviour {
 		Debug.Log ("Inside destroy collectible me: " + gameObject.name + ", other: " + other.name);
 		if(other.CompareTag("Boundary") || other.CompareTag("Enemy") || other.CompareTag("bolt"))
 			return;
-		gameController.AddPoints (pointValue);
+        missionController.AddPoints(pointValue);
 		Destroy(gameObject);
 	}
 }
