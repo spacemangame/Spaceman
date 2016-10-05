@@ -44,9 +44,9 @@ public class PlaneMover : MonoBehaviour {
 
 		float terrainHeightWhereWeAre = Terrain.activeTerrain.SampleHeight (transform.position);
 
-//		if (transform.position.y < terrainHeightWhereWeAre) {
-//			transform.position = new Vector3 (transform.position.x, terrainHeightWhereWeAre , transform.position.z);
-//		}
+		if (transform.position.y < terrainHeightWhereWeAre) {
+			transform.position = new Vector3 (transform.position.x, terrainHeightWhereWeAre , transform.position.z);
+		}
 	}
 
 //	void FixedUpdate(){
