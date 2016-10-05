@@ -17,17 +17,16 @@ public class UserProfile {
     public static void Save()
 	{
 		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create(Application.persistentDataPath + "/savedProfile.gd");
+		FileStream file = File.Create(Application.persistentDataPath + "/userProfile.gd");
 		bf.Serialize(file,  GameController.Instance.profile);
 		file.Close();
 	}
 
 	public static void Load()
 	{
-		//if (File.Exists (Application.persistentDataPath + "/savedProfile.gd")) {
-		if(false) {
+		if (File.Exists (Application.persistentDataPath + "/userProfile.gd")) {
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.persistentDataPath + "/savedProfile.gd", FileMode.Open);
+			FileStream file = File.Open (Application.persistentDataPath + "/userProfile.gd", FileMode.Open);
 			GameController.Instance.profile = (UserProfile)bf.Deserialize (file);
 			file.Close ();
 		} else {

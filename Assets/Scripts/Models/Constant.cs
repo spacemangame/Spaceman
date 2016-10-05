@@ -1,5 +1,6 @@
 ﻿using System;
 
+[System.Serializable]
 public static class Constant {
 	public const int maxClues = 28;
 	public const int defaultVelocity= 1;

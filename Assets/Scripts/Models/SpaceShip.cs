@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-
+[System.Serializable]
 public class Spaceship {
 	public int id { get; set; }
 	public int price {set; get;}
