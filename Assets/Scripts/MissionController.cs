@@ -25,7 +25,7 @@ public class MissionController : MonoBehaviour {
     private bool restart;
 	private int score;
 	private int points;
-	public int hp;
+	public long hp;
 
     void Update()
     {
@@ -44,7 +44,7 @@ public class MissionController : MonoBehaviour {
         score = SaveGameState.savedGameState.gameScore;
         //points = 0;
         points = SaveGameState.savedGameState.gamePoints;
-		hp = GameController.Instance.HP;
+		hp = GameController.Instance.profile.spaceship.hp;
         gameOver = false;
         restart = false;
         restartText.text = "";
@@ -123,7 +123,7 @@ public class MissionController : MonoBehaviour {
 		pointText.text = "Points: " + points;
 	}
 
-	public int getHP() {
+	public long getHP() {
 		return hp;
 	}
 

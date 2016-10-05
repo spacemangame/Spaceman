@@ -1,11 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEngine;
 
 [System.Serializable]
 public class UserProfile {
-	public int id;
 	public Spaceship spaceship {set; get;}
 	public long coins {set; get;}
 	public long medals {set; get;}
 	public int clues {set; get;}
 	public List<Gun> guns = new List<Gun>();
+
+    public static void Save()
+	{
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "/savedProfile.gd");
+		bf.Serialize(file,  GameController.Instance.profile);
+		file.Close();
+	}
+
+	public static void Load()
+	{
+		//if (File.Exists (Application.persistentDataPath + "/savedProfile.gd")) {
+		if(false) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/savedProfile.gd", FileMode.Open);
+			GameController.Instance.profile = (UserProfile)bf.Deserialize (file);
+			file.Close ();
+		} else {
+			GameController.Instance.profile = DataGenerator.PopulateUserProfile ();
+			UserProfile.Save ();
+		}
+	}
 }

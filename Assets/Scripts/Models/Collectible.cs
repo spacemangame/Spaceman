@@ -1,27 +1,27 @@
 ﻿[System.Serializable]
-public class Collectable {
+public class Collectible {
 	public int id;
 
 	public long value { set; get; }
-	public Collectable(int id, long value) {
+	public Collectible(int id, long value) {
 		this.id = id;
 		this.value = value;
 	}
 }
 
-public class Coin: Collectable {
+public class Coin: Collectible {
 	public Coin(int id, long value) : base(id, value){}
 }
 
-public class Pizza: Collectable {
+public class Pizza: Collectible {
 	public Pizza(int id, long value) : base(id, value){}
 }
 
 
-public class Kid: Collectable {
+public class Kid: Collectible {
 	public Kid(int id, long value) : base(id, value){}
 }
 
-public class Drug: Collectable {
+public class Drug: Collectible {
 	public Drug(int id, long value) : base(id, value){}
 }
