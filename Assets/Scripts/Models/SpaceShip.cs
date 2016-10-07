@@ -9,6 +9,7 @@ public class Spaceship {
 	public Gun primaryGun {set; get;}
 	public string name { get; set; }
 	public string description {get;set;}
+	public int velocity { get; set;}
 
 	public Spaceship (int id, int price, long hp, int minMedals, Gun primaryGun, string name = "", string description = "") {
 		this.id = id;

@@ -47,7 +47,10 @@ public static class DataGenerator
 		return userProfile;
 	}
 
-	public  static void GenerateMissions() {
+	public static List<Mission> GenerateMissions() {
+
+
+
 		throw new NotImplementedException ();
 	}
 
