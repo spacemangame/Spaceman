@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour {
 			Mathf.Clamp(rb.position.y, boundary.yMin, boundary.yMax),
 			0.0f
 		);
-		Debug.Log (rb.position);
 
 		// rotate the player to show the movement
 		rb.rotation = Quaternion.Euler (rb.velocity.y * -tilt, 0.0f, rb.velocity.x * -tilt);

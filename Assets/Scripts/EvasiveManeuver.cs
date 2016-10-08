@@ -32,13 +32,14 @@ public class EvasiveManeuver : MonoBehaviour {
 
 
 	void FixedUpdate () {
-		float newMeneuver = Mathf.MoveTowards (rb.velocity.x, targetManeuver, Time.deltaTime * smoothing);
-		rb.velocity = new Vector3 (newMeneuver, 0.0f, currentSpeed);
+		float newMeneuverX = Mathf.MoveTowards (rb.velocity.x, targetManeuver, Time.deltaTime * smoothing);
+		float newMeneuverY = Mathf.MoveTowards (rb.velocity.y, targetManeuver, Time.deltaTime * smoothing);
+		rb.velocity = new Vector3 (newMeneuverX, newMeneuverY, currentSpeed);
 		rb.position = new Vector3 (
 			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
-			0.0f,
-			Mathf.Clamp(rb.position.z, boundary.yMin, boundary.yMax)
+			Mathf.Clamp(rb.position.y, boundary.yMin, boundary.yMax),
+			rb.position.z
 		);
-		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
+		rb.rotation = Quaternion.Euler (rb.velocity.y * tilt, 0.0f, rb.velocity.x * -tilt);
 	}
 }
