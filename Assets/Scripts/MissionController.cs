@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MissionController : MonoBehaviour {
 
 	public GameObject[] hazards { get; set; }
-	public GameObject[] collectibles;
+	public GameObject[] collectibles { get; set; }
 	public Vector3 spawnValues; 
 
 	public int hazardCount;
@@ -27,6 +27,8 @@ public class MissionController : MonoBehaviour {
 	private int points;
 	public long hp;
 
+	public Mission mission { get; set; }
+
     void Update()
     {
         if (restart)
@@ -42,26 +44,32 @@ public class MissionController : MonoBehaviour {
         //score = 0;
         SaveGameState.Load();
         score = SaveGameState.savedGameState.gameScore;
-        //points = 0;
+        
+		//points = 0;
         points = SaveGameState.savedGameState.gamePoints;
-		hp = GameController.Instance.profile.spaceship.hp;
+		hp = GameController.Instance.mission.currentHp;
         gameOver = false;
         restart = false;
         restartText.text = "";
+
         UpdateScore();
 		UpdatePoints();
 		UpdateHP();
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
 
+		mission = GameController.Instance.mission;
 
+		hazards = new GameObject[mission.obstacles.Count];
+		for (int i = 0; i < mission.obstacles.Count; i++) {
+			hazards[i] = (GameObject) Resources.Load(mission.obstacles[i].prefab, typeof(GameObject));
+		}
 
-		hazards = new GameObject[4];
-	
-		hazards[0] = (GameObject) Resources.Load("Asteroid", typeof(GameObject));
-		hazards[1] = (GameObject) Resources.Load("Asteroid2", typeof(GameObject));
-		hazards[2] = (GameObject) Resources.Load("Asteroid3", typeof(GameObject));
-		hazards[3] = (GameObject) Resources.Load("Enemy Ship", typeof(GameObject));
+		collectibles = new GameObject[mission.collectibles.Count];
+		for (int i = 0; i < mission.collectibles.Count; i++) {
+			collectibles[i] = (GameObject) Resources.Load(mission.collectibles[i].prefab, typeof(GameObject));
+		}
+
 	}
 
 	IEnumerator SpawnWaves(){
@@ -94,8 +102,9 @@ public class MissionController : MonoBehaviour {
 			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
 			Vector3 spawnPosition;
 			Quaternion spawnRotation = Quaternion.identity;
+			float x = Random.Range (-spawnValues.x, spawnValues.x);
 			for (int i = 0; i < Random.Range(2,8); i++) {
-				spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range(0, spawnValues.y)-0.5f, spawnValues.z + (i*2.0f));
+				spawnPosition = new Vector3 (x, spawnValues.y, spawnValues.z + (i*2.0f));
 				Instantiate (collectible, spawnPosition, spawnRotation);
 			}
 
