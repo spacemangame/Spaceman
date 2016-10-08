@@ -1,7 +1,7 @@
 ﻿[System.Serializable]
 public class Collectible {
 	public int id;
-
+	public string prefab { set; get; }
 	public long value { set; get; }
 	public Collectible(int id, long value) {
 		this.id = id;

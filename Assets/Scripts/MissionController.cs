@@ -54,10 +54,10 @@ public class MissionController : MonoBehaviour {
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
 
+
+
 		hazards = new GameObject[4];
 	
-		GameObject hazar = (GameObject) Resources.Load("Asteroid", typeof(GameObject));
-
 		hazards[0] = (GameObject) Resources.Load("Asteroid", typeof(GameObject));
 		hazards[1] = (GameObject) Resources.Load("Asteroid2", typeof(GameObject));
 		hazards[2] = (GameObject) Resources.Load("Asteroid3", typeof(GameObject));

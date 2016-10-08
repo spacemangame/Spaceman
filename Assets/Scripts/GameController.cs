@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour {
 		mission = GameController.Instance.missions.ElementAt (missionType - 1);
 
 		GameController.Instance.mission = mission;
+
 		SceneManager.LoadScene("Main");
 	}
 

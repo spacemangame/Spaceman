@@ -3,9 +3,9 @@ public class Wave {
 	public int obstacleCount {set; get;}
 	public int collectibleCount { set; get; }
 	public int itemCount {set; get;}
-	public int spawnWait { set; get; }
+	public double spawnWait { set; get; }
 
-	Wave(int obstacleCount, int collectibleCount, int itemCount, int spawnWait) {
+	public Wave(int obstacleCount, int collectibleCount, int itemCount, double spawnWait) {
 		this.obstacleCount = obstacleCount;
 		this.collectibleCount = collectibleCount;
 		this.itemCount = itemCount;

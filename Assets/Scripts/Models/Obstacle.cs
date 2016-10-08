@@ -6,6 +6,7 @@ public class Obstacle {
 	public int hp {set; get;}
 	public int currentHp {set; get;}
 	public int velocity {set; get;}
+	public string prefab { set; get; }
 
 	//percentage: for example if obstacleCount in wave is 10 and waveRatio of Enemy is 10 then we spwan just 1 enemy in each wave 
 	public int waveRatio { set; get; }
@@ -25,7 +26,7 @@ public class Asteroid : Obstacle {
 public class Enemy : Obstacle {
 	public long gunHp {set; get;}
 
-	public Enemy(int id, int hp, int velocity, int gunHp) : base(id, hp, velocity) {
+	public Enemy(int id, int hp, int gunHp, int velocity = Constant.defaultVelocity) : base(id, hp, velocity) {
 		this.gunHp = gunHp;
 	}
 

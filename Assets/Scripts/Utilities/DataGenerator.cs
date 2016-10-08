@@ -27,10 +27,10 @@ public static class DataGenerator
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-
+		spaceships.Add(new Spaceship(0, 1000, 200, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1)));
 		spaceships.Add(new Spaceship(1, 2000, 400, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(2, 5000, 800, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(3, 10000, 1500, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1)));
+		spaceships.Add(new Spaceship(2, 4000, 800, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1)));
+		spaceships.Add(new Spaceship(3, 8000, 1600, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1)));
 
 	}
 
@@ -42,16 +42,13 @@ public static class DataGenerator
 
 	public static UserProfile PopulateUserProfile() {
 		UserProfile userProfile = new UserProfile ();
-		userProfile.spaceship = new Spaceship (0, 0, 200, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1));
+		userProfile.spaceship = GameController.Instance.shop.spaceships[0];
 		userProfile.medals = 0;
 		// TODO: Add spaceship gun to mission whenyou start it
 		return userProfile;
 	}
 
-	public static List<Mission> GenerateMissions() {
-
-		List<Mission> missions = new List<Mission> ();
-
+	private static Mission CreateKidDeliveryMission() {
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
@@ -59,24 +56,107 @@ public static class DataGenerator
 		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
 
 		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
-		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * 2;
+		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * Constant.hpFactor;
 		int enemyGunHP = levelSpaceship.primaryGun.hitPont;
-
 
 
 		var kidDeliveryMission = new Mission ();
 		kidDeliveryMission.activeGuns.Add (profile.spaceship.primaryGun);
 		kidDeliveryMission.currentHp = profile.spaceship.hp;
 		kidDeliveryMission.id = 1;
-		kidDeliveryMission.obstacles.Add (new Asteroid (1, obstacleHP));
-		kidDeliveryMission.obstacles.Add (new Alien (2, enemyHP));
 
-		kidDeliveryMission.collectibles.Add (new Coin (1, 1));
-		//kidDeliveryMission.wave = new Wave ();
-		//kidDeliveryMission.wave.itemCount = 0;
-		//kidDeliveryMission.wave.obstacleCount = 15;
 
-		missions.Add (kidDeliveryMission);
+		Asteroid obs1 = new Asteroid (1, obstacleHP);
+		obs1.prefab = "Asteroid";
+		kidDeliveryMission.obstacles.Add (obs1);
+
+		Asteroid obs2 = new Asteroid (2, obstacleHP);
+		obs2.prefab = "Asteroid2";
+		kidDeliveryMission.obstacles.Add (obs2);
+
+		Asteroid obs3 = new Asteroid (3, obstacleHP);
+		obs3.prefab = "Asteroid2";
+		kidDeliveryMission.obstacles.Add (obs3);
+
+		Alien alien = new Alien (4, enemyHP);
+		alien.prefab = "Enemy Ship";
+		kidDeliveryMission.obstacles.Add (alien);
+
+		Coin coinSphere = new Coin (1, 1);
+		coinSphere.prefab = "ColSphere";
+		kidDeliveryMission.collectibles.Add (coinSphere);
+
+		Coin coinCube = new Coin (2, 1);
+		coinCube.prefab = "Collectible";
+		kidDeliveryMission.collectibles.Add (coinCube);
+
+		kidDeliveryMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
+		kidDeliveryMission.waveCount = Constant.waveCount;
+		kidDeliveryMission.waveWait = Constant.waveWait;
+		kidDeliveryMission.stabilitliy = 0;
+		kidDeliveryMission.targetItemCount = Constant.targetItemCount;
+		kidDeliveryMission.pickedItemCount = Constant.targetItemCount;
+		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+
+		kidDeliveryMission.currentCoins = collectibleValue * kidDeliveryMission.targetItemCount;
+		kidDeliveryMission.item = new Kid (1, collectibleValue);
+
+		return kidDeliveryMission;
+	}
+
+	private static Mission CreateKidPickupMission() {
+		UserProfile profile = GameController.Instance.profile;
+
+		int medals = (profile.medals == 0) ? 1 : profile.medals;
+		int level = (int)Math.Floor ((Double) (medals / Constant.levelMedals));
+		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
+
+		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
+		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * 2;
+		int enemyGunHP = levelSpaceship.primaryGun.hitPont;
+
+
+		var kidpickupMission = new Mission ();
+		kidpickupMission.activeGuns.Add (profile.spaceship.primaryGun);
+		kidpickupMission.currentHp = profile.spaceship.hp;
+		kidpickupMission.id = Constant.hpFactor;
+
+		Asteroid obs1 = new Asteroid (1, obstacleHP);
+		obs1.prefab = "Asteroid";
+		kidpickupMission.obstacles.Add (obs1);
+
+		Asteroid obs2 = new Asteroid (2, obstacleHP);
+		obs2.prefab = "Asteroid2";
+		kidpickupMission.obstacles.Add (obs2);
+
+		Asteroid obs3 = new Asteroid (3, obstacleHP);
+		obs3.prefab = "Asteroid2";
+		kidpickupMission.obstacles.Add (obs3);
+
+		Enemy enemy= new Enemy(5, enemyHP, levelSpaceship.primaryGun.hitPont);
+		enemy.prefab = "Enemy Ship";
+		kidpickupMission.obstacles.Add (enemy);
+
+		kidpickupMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
+		kidpickupMission.waveCount = Constant.waveCount;
+		kidpickupMission.waveWait = Constant.waveWait;
+		kidpickupMission.stabilitliy = 0;
+		kidpickupMission.targetItemCount = Constant.targetItemCount;
+		kidpickupMission.pickedItemCount = 0;
+		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+
+		kidpickupMission.currentCoins = 0;
+		kidpickupMission.item = new Kid (1, collectibleValue);
+
+		return kidpickupMission;
+	}
+
+	public static List<Mission> GenerateMissions() {
+
+		List<Mission> missions = new List<Mission> ();
+
+		missions.Add (CreateKidDeliveryMission());
+		missions.Add (CreateKidPickupMission ());
 
 		return missions;
 	}
