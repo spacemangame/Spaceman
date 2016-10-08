@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MissionController : MonoBehaviour {
 
-	public GameObject[] hazards;
+	public GameObject[] hazards { get; set; }
 	public GameObject[] collectibles;
 	public Vector3 spawnValues; 
 
@@ -53,10 +53,20 @@ public class MissionController : MonoBehaviour {
 		UpdateHP();
 		StartCoroutine (SpawnWaves ());
 		StartCoroutine (SpawnCollectibles ());
+
+		hazards = new GameObject[4];
+	
+		GameObject hazar = (GameObject) Resources.Load("Asteroid", typeof(GameObject));
+
+		hazards[0] = (GameObject) Resources.Load("Asteroid", typeof(GameObject));
+		hazards[1] = (GameObject) Resources.Load("Asteroid2", typeof(GameObject));
+		hazards[2] = (GameObject) Resources.Load("Asteroid3", typeof(GameObject));
+		hazards[3] = (GameObject) Resources.Load("Enemy Ship", typeof(GameObject));
 	}
 
 	IEnumerator SpawnWaves(){
 		yield return new WaitForSeconds (startWait);
+
 		while(true){
 			for(int i=0; i < hazardCount; i++){
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];

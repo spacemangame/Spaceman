@@ -9,8 +9,8 @@ using UnityEngine;
 [System.Serializable]
 public class UserProfile {
 	public Spaceship spaceship {set; get;}
-	public long coins {set; get;}
-	public long medals {set; get;}
+	public int coins {set; get;}
+	public int medals {set; get;}
 	public int clues {set; get;}
 	public List<Gun> guns = new List<Gun>();
 

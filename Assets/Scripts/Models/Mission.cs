@@ -8,7 +8,7 @@ public class Mission {
 
 	public Wave wave;
 	public int waveCount;
-	public int wveWait;
+	public int waveWait;
 	public int stabilitliy; //TODO 
 	public int currentHp;
 	public int currentCoins;

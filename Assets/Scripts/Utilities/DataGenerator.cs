@@ -43,15 +43,42 @@ public static class DataGenerator
 	public static UserProfile PopulateUserProfile() {
 		UserProfile userProfile = new UserProfile ();
 		userProfile.spaceship = new Spaceship (0, 0, 200, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1));
+		userProfile.medals = 0;
 		// TODO: Add spaceship gun to mission whenyou start it
 		return userProfile;
 	}
 
 	public static List<Mission> GenerateMissions() {
 
+		List<Mission> missions = new List<Mission> ();
+
+		UserProfile profile = GameController.Instance.profile;
+
+		int medals = (profile.medals == 0) ? 1 : profile.medals;
+		int level = (int)Math.Floor ((Double) (medals / 9));
+		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
+
+		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
+		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * 2;
+		int enemyGunHP = levelSpaceship.primaryGun.hitPont;
 
 
-		throw new NotImplementedException ();
+
+		var kidDeliveryMission = new Mission ();
+		kidDeliveryMission.activeGuns.Add (profile.spaceship.primaryGun);
+		kidDeliveryMission.currentHp = profile.spaceship.hp;
+		kidDeliveryMission.id = 1;
+		kidDeliveryMission.obstacles.Add (new Asteroid (1, obstacleHP));
+		kidDeliveryMission.obstacles.Add (new Alien (2, enemyHP));
+
+		kidDeliveryMission.collectibles.Add (new Coin (1, 1));
+		//kidDeliveryMission.wave = new Wave ();
+		//kidDeliveryMission.wave.itemCount = 0;
+		//kidDeliveryMission.wave.obstacleCount = 15;
+
+		missions.Add (kidDeliveryMission);
+
+		return missions;
 	}
 
 }

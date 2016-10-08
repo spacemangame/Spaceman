@@ -7,6 +7,7 @@ public static class Constant {
 	public const int coinValue = 1;
 	public const int maxAmmo = 100;
 	public const int defaultSpawnWait = 1;
+	public const int missionMaxMedal = 3;
 }
 
 
