@@ -3,7 +3,7 @@ using System.Collections;
 
 [System.Serializable]
 public class Boundary{
-	public float xMin, xMax, zMin, zMax;
+	public float xMin, xMax, yMin, yMax;
 }
 
 public class PlayerController : MonoBehaviour {
@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start() {
 		rb = GetComponent<Rigidbody> ();
+		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 	}
 
 	void Update(){
@@ -42,10 +43,10 @@ public class PlayerController : MonoBehaviour {
 		Vector3 movement;
 		if (SystemInfo.deviceType == DeviceType.Desktop) {
 			// desktop
-			movement = new Vector3 (Input.GetAxis ("Horizontal"), 0.0f, Input.GetAxis ("Vertical"));
+			movement = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0.0f);
 		} else {
 			// accelerometer
-			movement = new Vector3 (Input.acceleration.x, 0.0f, Input.acceleration.y) * accelerometerSensitivity;
+			movement = new Vector3 (Input.acceleration.x, -Input.acceleration.y ,0.0f) * accelerometerSensitivity;
 		}
 
 		// joystick
@@ -58,12 +59,13 @@ public class PlayerController : MonoBehaviour {
 		// make sure player doesn't go out of the boundary.
 		rb.position = new Vector3 (
 			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
-			0.0f,
-			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
+			Mathf.Clamp(rb.position.y, boundary.yMin, boundary.yMax),
+			0.0f
 		);
+		Debug.Log (rb.position);
 
 		// rotate the player to show the movement
-		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
+		rb.rotation = Quaternion.Euler (rb.velocity.y * -tilt, 0.0f, rb.velocity.x * -tilt);
 	}
 
 	// calibrates the Input.acceleration

@@ -26,7 +26,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 			float x = (bgImg.rectTransform.pivot.x == 1) ? pos.x * 2 + 1 : pos.x * 2 - 1;
 			float y = (bgImg.rectTransform.pivot.y == 1) ? pos.y * 2 + 1 : pos.y * 2 - 1;
 
-			InputDirection = new Vector3 (x, 0.0f, y);
+			InputDirection = new Vector3 (x, y, 0.0f);
 
 			InputDirection = (InputDirection.magnitude > 1 ? InputDirection.normalized : InputDirection);
 
