@@ -16,7 +16,6 @@ public class DestoyByContact : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		//        Debug.Log ("Inside destroy by contact me: " + gameObject.name + ", other: " + other.name);
 		if(other.CompareTag("Boundary"))
 			return;
 
@@ -33,6 +32,9 @@ public class DestoyByContact : MonoBehaviour {
 				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (gameObject);
 			}
+
+			//change the color of player
+			ChangeColor (other.gameObject, (float)missionController.getHP(), (float)GameController.Instance.profile.spaceship.hp);
 		}
 
 		if (other.tag == "bolt") {
@@ -41,5 +43,10 @@ public class DestoyByContact : MonoBehaviour {
 			Destroy (other.gameObject);
 			Destroy (gameObject);
 		}
+	}
+
+	private void ChangeColor(GameObject gm, float currentHp, float maxHp) {
+		float newColor = currentHp / maxHp;
+		gm.GetComponentInChildren<Renderer> ().material.color = new Color(newColor + (float)100/255, newColor, newColor);
 	}
 }
