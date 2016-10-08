@@ -94,9 +94,8 @@ public class MissionController : MonoBehaviour {
 			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
 			Vector3 spawnPosition;
 			Quaternion spawnRotation = Quaternion.identity;
-			float x = Random.Range (-spawnValues.x, spawnValues.x);
 			for (int i = 0; i < Random.Range(2,8); i++) {
-				spawnPosition = new Vector3 (x, spawnValues.y, spawnValues.z + (i*2.0f));
+				spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range(0, spawnValues.y)-0.5f, spawnValues.z + (i*2.0f));
 				Instantiate (collectible, spawnPosition, spawnRotation);
 			}
 
