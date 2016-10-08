@@ -62,12 +62,16 @@ public class MissionController : MonoBehaviour {
 
 		hazards = new GameObject[mission.obstacles.Count];
 		for (int i = 0; i < mission.obstacles.Count; i++) {
+			Obstacle hazard = mission.obstacles [i];
 			hazards[i] = (GameObject) Resources.Load(mission.obstacles[i].prefab, typeof(GameObject));
+			Helper.addGameObjectObstacle (hazards [i], hazard);
 		}
 
 		collectibles = new GameObject[mission.collectibles.Count];
 		for (int i = 0; i < mission.collectibles.Count; i++) {
-			collectibles[i] = (GameObject) Resources.Load(mission.collectibles[i].prefab, typeof(GameObject));
+			Collectible collectible = mission.collectibles [i];
+			collectibles[i] = (GameObject) Resources.Load(collectible.prefab, typeof(GameObject));
+			Helper.addGameObjectCollectible (collectibles [i], collectible);
 		}
 
 	}
@@ -80,7 +84,12 @@ public class MissionController : MonoBehaviour {
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
 				Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
-				Instantiate (hazard, spawnPosition, spawnRotation);
+
+
+				GameObjectObstacle gc = (GameObjectObstacle) hazard.GetComponent<GameObjectObstacle> ();
+				GameObject obstacleClone = (GameObject) Instantiate (hazard, spawnPosition, spawnRotation);
+				Helper.addGameObjectObstacle(obstacleClone, gc.obstacle);
+
 				yield return new WaitForSeconds (spawnWait);
 			}
 			yield return new WaitForSeconds (waveWait);
@@ -105,7 +114,10 @@ public class MissionController : MonoBehaviour {
 			float x = Random.Range (-spawnValues.x, spawnValues.x);
 			for (int i = 0; i < Random.Range(2,8); i++) {
 				spawnPosition = new Vector3 (x, spawnValues.y, spawnValues.z + (i*2.0f));
-				Instantiate (collectible, spawnPosition, spawnRotation);
+
+				GameObjectCollectible gc = (GameObjectCollectible) collectible.GetComponent<GameObjectCollectible> ();
+				GameObject collectibleClone = (GameObject) Instantiate (collectible, spawnPosition, spawnRotation);
+				Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
 			}
 
 

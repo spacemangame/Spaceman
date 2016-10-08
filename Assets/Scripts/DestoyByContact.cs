@@ -21,18 +21,25 @@ public class DestoyByContact : MonoBehaviour {
 			return;
 
 		if (other.tag == "Player") {
-			if (missionController.getHP () == 10) {
+
+			if (gameObject.tag == "enemybolt") {
+				hpValue = GameController.Instance.mission.enemyGunHP;
+			} else {
+				Obstacle obstacle = Helper.getObstacleFromGameObject (gameObject);
+
+				hpValue = obstacle.currentHp;
+			}
+			missionController.DecreaseHP (hpValue);
+			Instantiate (explosion, transform.position, transform.rotation);
+			Destroy (gameObject);
+
+			if (missionController.getHP () <= 0) {
 				missionController.AddScore (scoreValue);
 				Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
-				missionController.DecreaseHP (hpValue);
 				missionController.GameOver ();
 				Destroy (other.gameObject);
 				return;
-			} else {
-				missionController.DecreaseHP (hpValue);
-				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (gameObject);
-			}
+			} 
 		}
 
 		if (other.tag == "bolt") {
@@ -41,5 +48,6 @@ public class DestoyByContact : MonoBehaviour {
 			Destroy (other.gameObject);
 			Destroy (gameObject);
 		}
+
 	}
 }

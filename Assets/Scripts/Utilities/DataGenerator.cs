@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class DataGenerator
 {
@@ -34,6 +35,7 @@ public static class DataGenerator
 
 	}
 
+
 	// Utility functions used to generate class objects
 	public static void GenerateObstacle(string obstacleType) {
 		throw new NotImplementedException ();
@@ -52,11 +54,11 @@ public static class DataGenerator
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
-		int level = (int)Math.Floor ((Double) (medals / 9));
+		int level = (int)Math.Floor (medals / 9.0f);
 		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
 
-		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
-		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * Constant.hpFactor;
+		int obstacleHP = (int) Math.Ceiling(( (double) medals / Constant.missionMaxMedal));
+		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
 		int enemyGunHP = levelSpaceship.primaryGun.hitPont;
 
 
@@ -87,7 +89,7 @@ public static class DataGenerator
 		kidDeliveryMission.collectibles.Add (coinSphere);
 
 		Coin coinCube = new Coin (2, 1);
-		coinCube.prefab = "Collectible";
+		coinCube.prefab = "Collectibles";
 		kidDeliveryMission.collectibles.Add (coinCube);
 
 		kidDeliveryMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
@@ -136,6 +138,7 @@ public static class DataGenerator
 		Enemy enemy= new Enemy(5, enemyHP, levelSpaceship.primaryGun.hitPont);
 		enemy.prefab = "Enemy Ship";
 		kidpickupMission.obstacles.Add (enemy);
+		kidpickupMission.enemyGunHP = levelSpaceship.primaryGun.hitPont;
 
 		kidpickupMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
 		kidpickupMission.waveCount = Constant.waveCount;

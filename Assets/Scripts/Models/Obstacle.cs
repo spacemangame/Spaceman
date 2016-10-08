@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class Obstacle {
 	public int id {set; get;}	
 	public int hp {set; get;}
