@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
 	public VirtualJoystick joystick;
 	public FireButton fireButton;
 
+	public bool useAccelerometer {set; get;}
+
 	private float nextFire;
 	private Rigidbody rb;
 	private Quaternion calibrationQuaternion;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 	void Start() {
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
+		useAccelerometer = true;
 	}
 
 	void Update(){
@@ -40,11 +43,11 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate(){
 
 		// update the position based on movement.
-		Vector3 movement;
+		Vector3 movement = Vector3.zero;
 		if (SystemInfo.deviceType == DeviceType.Desktop) {
 			// desktop
 			movement = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0.0f);
-		} else {
+		} else if (useAccelerometer) {
 			// accelerometer
 			movement = new Vector3 (Input.acceleration.x, -Input.acceleration.y ,0.0f) * accelerometerSensitivity;
 		}
@@ -52,6 +55,10 @@ public class PlayerController : MonoBehaviour {
 		// joystick
 		if (joystick.InputDirection != Vector3.zero) {
 			movement = joystick.InputDirection;
+		}
+
+		if (movement == Vector3.zero) {
+			return; // no input;
 		}
 
 		rb.velocity = movement * speed;

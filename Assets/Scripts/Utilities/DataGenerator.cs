@@ -117,7 +117,7 @@ public static class DataGenerator
 		var kidpickupMission = new Mission ();
 		kidpickupMission.activeGuns.Add (profile.spaceship.primaryGun);
 		kidpickupMission.currentHp = profile.spaceship.hp;
-		kidpickupMission.id = Constant.hpFactor;
+		kidpickupMission.id = 2;
 
 		Asteroid obs1 = new Asteroid (1, obstacleHP);
 		obs1.prefab = "Asteroid";
