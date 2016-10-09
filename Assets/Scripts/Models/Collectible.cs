@@ -8,6 +8,12 @@ public class Collectible {
 		this.id = id;
 		this.value = value;
 	}
+
+	public Collectible Clone()
+	{
+		return (Collectible) this.MemberwiseClone();
+	}
+
 }
 
 public class Coin: Collectible {

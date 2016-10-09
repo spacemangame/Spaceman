@@ -15,6 +15,11 @@ public class Obstacle {
 		this.currentHp = hp;
 		this.velocity = velocity;
 	}
+
+	public Obstacle Clone()
+	{
+		return (Obstacle) this.MemberwiseClone();
+	}
 }
 
 public class Asteroid : Obstacle {
