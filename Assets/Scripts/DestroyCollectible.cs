@@ -4,7 +4,6 @@ using System.Collections;
 public class DestroyCollectible : MonoBehaviour {
 
 	private MissionController missionController;
-	public int pointValue;
 
 	void Start(){
 		GameObject gameControllerObject = GameObject.FindWithTag ("MissionController");
@@ -14,10 +13,11 @@ public class DestroyCollectible : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		
-		if (!other.CompareTag("Player")) {
+		if(other.CompareTag("Boundary") || other.CompareTag("Enemy") || other.CompareTag("bolt"))
 			return;
-		}
+//		if (!other.CompareTag("Player")) {
+//			return;
+//		}
 
 		Collectible collectible = Helper.getCollectibleFromGameObject (gameObject);
 		missionController.AddPoints(collectible.value);
