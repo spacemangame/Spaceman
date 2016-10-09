@@ -104,6 +104,9 @@ public static class DataGenerator
 		kidDeliveryMission.currentCoins = collectibleValue * kidDeliveryMission.targetItemCount;
 		kidDeliveryMission.item = new Kid (1, collectibleValue);
 
+		//TODO:remove this, its just for testing gameover menu in main scene
+		kidDeliveryMission.currentHp = 30;
+	
 		return kidDeliveryMission;
 	}
 

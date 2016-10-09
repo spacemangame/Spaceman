@@ -22,6 +22,8 @@ public class MissionController : MonoBehaviour {
     public Text restartText;
 	public Text itemText;
 
+	public GameObject gameoverMenu;
+
     private bool gameOver;
     private bool restart;
 
@@ -81,6 +83,14 @@ public class MissionController : MonoBehaviour {
 		StopCoroutine (gameStatusRoutine);
 	}
 
+	public void onGameOver() {
+		gameoverMenu.SetActive (true);
+	}
+
+	public void onMissionComplete() {
+
+	}
+
 	IEnumerator CheckGameStatus() {
 		yield return new WaitForSeconds ((float) (startWait + mission.waveWait + mission.wave.spawnWait));
 
@@ -90,6 +100,7 @@ public class MissionController : MonoBehaviour {
 				restartText.text = "Click anywhere to restart";
 				restart = true;
 				EndSpawningRoutines ();
+				onGameOver ();
 				break;
 			} else {
 
@@ -101,6 +112,7 @@ public class MissionController : MonoBehaviour {
 					restartText.text = "You have completed mission successfully. Click anywhere to go back to main screen";
 					restart = true;
 					EndSpawningRoutines ();
+					onMissionComplete ();
 					break;
 				} 
 
@@ -141,7 +153,7 @@ public class MissionController : MonoBehaviour {
 			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
 			Vector3 spawnPosition;
 			Quaternion spawnRotation = Quaternion.identity;
-			float x = Random.Range (-spawnValues.x, spawnValues.x);
+
 			for (int i = 0; i < Random.Range (2, 8); i++) {
 				spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 
