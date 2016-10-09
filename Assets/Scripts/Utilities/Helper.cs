@@ -5,12 +5,12 @@ public static class Helper
 {
 	public static void  addGameObjectCollectible(GameObject gamebject, Collectible collectible) {
 		GameObjectCollectible gc = (GameObjectCollectible) gamebject.GetComponent<GameObjectCollectible> ();
-		gc.collectible = collectible;
+		gc.collectible =  collectible.Clone();
 	}
 
 	public static void  addGameObjectObstacle(GameObject gamebject, Obstacle obstacle) {
 		GameObjectObstacle gc = (GameObjectObstacle) gamebject.GetComponent<GameObjectObstacle> ();
-		gc.obstacle = obstacle;
+		gc.obstacle = obstacle.Clone();
 	}
 
 	public static Collectible getCollectibleFromGameObject(GameObject gameObject) {

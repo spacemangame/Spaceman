@@ -57,8 +57,11 @@ public static class DataGenerator
 		int level = (int)Math.Floor (medals / 9.0f);
 		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
 
-		int obstacleHP = (int) Math.Ceiling(( (double) medals / Constant.missionMaxMedal));
+		int obstacleHP = (int)Math.Ceiling (((double)medals / Constant.missionMaxMedal));
+		obstacleHP	+= 3;
+
 		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
+		enemyHP += 5;
 
 		var kidDeliveryMission = new Mission ();
 		kidDeliveryMission.activeGuns.Add (profile.spaceship.primaryGun);
