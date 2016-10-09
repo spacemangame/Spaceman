@@ -57,10 +57,9 @@ public static class DataGenerator
 		int level = (int)Math.Floor (medals / 9.0f);
 		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
 
-		int obstacleHP = (int) Math.Ceiling(( (double) medals / Constant.missionMaxMedal));
+		int obstacleHP = 5;
+//			(int) Math.Ceiling(( (double) medals / Constant.missionMaxMedal));
 		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
-		int enemyGunHP = levelSpaceship.primaryGun.hitPoint;
-
 
 		var kidDeliveryMission = new Mission ();
 		kidDeliveryMission.activeGuns.Add (profile.spaceship.primaryGun);
@@ -81,7 +80,7 @@ public static class DataGenerator
 		kidDeliveryMission.obstacles.Add (obs3);
 
 		Alien alien = new Alien (4, enemyHP);
-		alien.prefab = "Enemy Ship";
+		alien.prefab = "Alien";
 		kidDeliveryMission.obstacles.Add (alien);
 
 		Coin coinSphere = new Coin (1, 1);
@@ -115,8 +114,6 @@ public static class DataGenerator
 
 		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
 		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * 2;
-		int enemyGunHP = levelSpaceship.primaryGun.hitPoint;
-
 
 		var kidpickupMission = new Mission ();
 		kidpickupMission.activeGuns.Add (profile.spaceship.primaryGun);

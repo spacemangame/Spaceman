@@ -30,7 +30,7 @@ public class DestoyByContact : MonoBehaviour {
 		if (other.tag == "Player") {
 			int hpValue;
 			if (gameObject.tag == "enemybolt") { // 1.1
-				hpValue = missionController.enemyGunHP;
+				hpValue = GameController.Instance.mission.enemyGunHP;
 			} else {
 				Obstacle obstacle = Helper.getObstacleFromGameObject (gameObject);
 				hpValue = obstacle.currentHp; // 1.2 & 1.3

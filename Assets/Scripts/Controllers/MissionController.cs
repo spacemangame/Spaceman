@@ -170,4 +170,8 @@ public class MissionController : MonoBehaviour {
         restartText.text = "Game Over!";
         gameOver = true;
     }
+
+	public int getEnemyGunHP() {
+		return mission.enemyGunHP;
+	}
 }
