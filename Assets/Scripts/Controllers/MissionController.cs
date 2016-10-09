@@ -27,6 +27,10 @@ public class MissionController : MonoBehaviour {
 
 	public Mission mission { get; set; }
 
+	Coroutine obstacleRoutine { get; set;}
+	Coroutine collectibleRoutine { get; set;}
+	Coroutine gameStatusRoutine {get; set;}
+
     void Update()
     {
         if (restart)
@@ -47,9 +51,10 @@ public class MissionController : MonoBehaviour {
 		UpdatePoints();
 		UpdateHP();
 		UpdateItem ();
-		StartCoroutine (SpawnWaves ());
-		StartCoroutine (SpawnCollectibles ());
-	
+
+		obstacleRoutine = StartCoroutine (SpawnObstacles());
+		collectibleRoutine = StartCoroutine (SpawnCollectibles());
+		gameStatusRoutine = StartCoroutine (CheckGameStatus ());
 
 		hazards = new GameObject[mission.obstacles.Count];
 		for (int i = 0; i < mission.obstacles.Count; i++) {
@@ -70,10 +75,46 @@ public class MissionController : MonoBehaviour {
 
 	}
 
-	IEnumerator SpawnWaves(){
+	public void EndSpawningRoutines() {
+		StopCoroutine (obstacleRoutine);
+		StopCoroutine (collectibleRoutine);
+		StopCoroutine (gameStatusRoutine);
+	}
+
+	IEnumerator CheckGameStatus() {
+		yield return new WaitForSeconds ((float) (startWait + mission.waveWait + mission.wave.spawnWait));
+
+		while (true) {
+
+			if (gameOver) {
+				restartText.text = "Click anywhere to restart";
+				restart = true;
+				EndSpawningRoutines ();
+				break;
+			} else {
+
+				GameObject[] enemyGameObjects = GameObject.FindGameObjectsWithTag ("Enemy");
+				GameObject[] enemyboltGameObjects = GameObject.FindGameObjectsWithTag ("enemybolt");
+				GameObject[] asteroidGameObjects = GameObject.FindGameObjectsWithTag ("asteroid");
+
+				if (enemyGameObjects.Length + enemyboltGameObjects.Length + asteroidGameObjects.Length == 0) {
+					restartText.text = "You have completed mission successfully. Click anywhere to go back to main screen";
+					restart = true;
+					EndSpawningRoutines ();
+					break;
+				} 
+
+				yield return new WaitForSeconds (1);
+
+			}
+		}
+	}
+
+	IEnumerator SpawnObstacles(){
+
 		yield return new WaitForSeconds (startWait);
 
-		while(true){
+		for(int count = mission.waveCount; count> 0;count--) {
 			for(int i=0; i < hazardCount; i++){
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
 				Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
@@ -84,43 +125,32 @@ public class MissionController : MonoBehaviour {
 				GameObject obstacleClone = (GameObject) Instantiate (hazard, spawnPosition, spawnRotation);
 				Helper.addGameObjectObstacle(obstacleClone, gc.obstacle);
 
-				yield return new WaitForSeconds (spawnWait);
+				yield return new WaitForSeconds ((float) mission.wave.spawnWait);
 			}
-			yield return new WaitForSeconds (waveWait);
 
-            if (gameOver)
-            {
-                restartText.text = "Click anywhere to restart";
-                restart = true;
-                break;
-            }
-        }
+			yield return new WaitForSeconds (mission.waveWait);
+		}
+
 	}
 
-	IEnumerator SpawnCollectibles(){
+	IEnumerator SpawnCollectibles() {
 		yield return new WaitForSeconds (colStartWait);
-		while (true) {
+
+		for(int count = mission.waveCount; count> 0;count--) {
+			
 			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
 			Vector3 spawnPosition;
 			Quaternion spawnRotation = Quaternion.identity;
 			float x = Random.Range (-spawnValues.x, spawnValues.x);
-			for (int i = 0; i < Random.Range(2,8); i++) {
-				spawnPosition = new Vector3 (x, spawnValues.y, spawnValues.z + (i*2.0f));
+			for (int i = 0; i < Random.Range (2, 8); i++) {
+				spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 
-				GameObjectCollectible gc = (GameObjectCollectible) collectible.GetComponent<GameObjectCollectible> ();
-				GameObject collectibleClone = (GameObject) Instantiate (collectible, spawnPosition, spawnRotation);
+				GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
+				GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
 				Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
 			}
 
-
 			yield return new WaitForSeconds (colSpawnWait);
-
-            if (gameOver)
-            {
-                restartText.text = "Click anywhere to restart";
-                restart = true;
-                break;
-            }
         }
 	}
 		
