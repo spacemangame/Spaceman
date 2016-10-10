@@ -10,46 +10,35 @@ public class MissionController : MonoBehaviour {
 	public Gun activeGun { get; set;}
 	public Vector3 spawnValues; 
 
-	public int hazardCount;
-	public float spawnWait;
 	public float startWait;
-	public float colStartWait;
-	public float colSpawnWait;
-	public float waveWait;
 
 	public Text pointText;
 	public Text hpText;
-    public Text restartText;
 	public Text itemText;
+	public Image settings;
+	public Image joystick;
+	public Image fireButton;
 
 	public GameObject gameoverMenu;
+	public GameObject gamesuccessMenu;
+
+	public Text coinText;
+	public Text medalText;
+	public Text itemCountText;
 
     private bool gameOver;
-    private bool restart;
-
+    
 	public Mission mission { get; set; }
 
 	Coroutine obstacleRoutine { get; set;}
 	Coroutine collectibleRoutine { get; set;}
 	Coroutine gameStatusRoutine {get; set;}
 
-    void Update()
-    {
-        if (restart)
-        {
-            if (Input.GetButton("Fire1"))
-            {
-                SceneManager.LoadScene("Main Menu");
-            }
-        }
-    }
 
     void Start(){
 		mission = GameController.Instance.mission;
         gameOver = false;
-        restart = false;
-        restartText.text = "";
-
+        
 		UpdatePoints();
 		UpdateHP();
 		UpdateItem ();
@@ -84,11 +73,38 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void onGameOver() {
+		hideAllControls ();
 		gameoverMenu.SetActive (true);
 	}
 
+	public void hideAllControls() {
+		hpText.gameObject.SetActive (false);
+		pointText.gameObject.SetActive (false);
+		itemText.gameObject.SetActive (false);
+		joystick.gameObject.SetActive (false);
+		settings.gameObject.SetActive (false);
+		fireButton.gameObject.SetActive (false);
+	}
+
+
 	public void onMissionComplete() {
 
+		hideAllControls ();
+		gamesuccessMenu.SetActive (true);
+
+		int medalsEarned = ((int) ((double)mission.pickedItemCount) / mission.targetItemCount) * mission.maxMedalEarned;
+		medalText.text = "Medal(s) Earned : " + medalsEarned;
+
+		string itemName = mission.item.GetType ().Name;
+		string itemPickedText = mission.pickedItemCount + "/" + mission.targetItemCount + " (" + mission.item.value + " per" + itemName + ")";
+		itemCountText.text = itemName + "'s collected : " + itemPickedText;
+
+		int itemCoins = mission.pickedItemCount * mission.item.value;
+		string coinsEarned =  itemCoins + (((mission.currentCoins - itemCoins) == 0) ? "": (" + " + (mission.currentCoins - itemCoins) + " = " + mission.currentCoins));
+		coinText.text = "Coins Earned : " + coinsEarned;
+
+		GameController.Instance.profile.medals += medalsEarned;
+		GameController.Instance.profile.coins += mission.currentCoins;
 	}
 
 	IEnumerator CheckGameStatus() {
@@ -97,10 +113,9 @@ public class MissionController : MonoBehaviour {
 		while (true) {
 
 			if (gameOver) {
-				restartText.text = "Click anywhere to restart";
-				restart = true;
 				EndSpawningRoutines ();
-				onGameOver ();
+				//onGameOver ();
+				onMissionComplete ();
 				break;
 			} else {
 
@@ -109,8 +124,6 @@ public class MissionController : MonoBehaviour {
 				GameObject[] asteroidGameObjects = GameObject.FindGameObjectsWithTag ("asteroid");
 
 				if (enemyGameObjects.Length + enemyboltGameObjects.Length + asteroidGameObjects.Length == 0) {
-					restartText.text = "You have completed mission successfully. Click anywhere to go back to main screen";
-					restart = true;
 					EndSpawningRoutines ();
 					onMissionComplete ();
 					break;
@@ -127,11 +140,12 @@ public class MissionController : MonoBehaviour {
 		yield return new WaitForSeconds (startWait);
 
 		for(int count = mission.waveCount; count> 0;count--) {
-			for(int i=0; i < hazardCount; i++){
+
+			for (int i=0; i < mission.wave.obstacleCount; i++) {
+				
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
 				Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
-
 
 				GameObjectObstacle gc = (GameObjectObstacle) hazard.GetComponent<GameObjectObstacle> ();
 				GameObject obstacleClone = (GameObject) Instantiate (hazard, spawnPosition, spawnRotation);
@@ -146,7 +160,7 @@ public class MissionController : MonoBehaviour {
 	}
 
 	IEnumerator SpawnCollectibles() {
-		yield return new WaitForSeconds (colStartWait);
+		yield return new WaitForSeconds (startWait);
 
 		for(int count = mission.waveCount; count> 0;count--) {
 			
@@ -154,7 +168,7 @@ public class MissionController : MonoBehaviour {
 			Vector3 spawnPosition;
 			Quaternion spawnRotation = Quaternion.identity;
 
-			for (int i = 0; i < Random.Range (2, 8); i++) {
+			for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
 				spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 
 				GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
@@ -162,7 +176,7 @@ public class MissionController : MonoBehaviour {
 				Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
 			}
 
-			yield return new WaitForSeconds (colSpawnWait);
+			yield return new WaitForSeconds (mission.waveWait);
         }
 	}
 		
@@ -209,7 +223,6 @@ public class MissionController : MonoBehaviour {
 
     public void GameOver()
     {
-        restartText.text = "Game Over!";
         gameOver = true;
     }
 
