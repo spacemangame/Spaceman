@@ -114,8 +114,7 @@ public class MissionController : MonoBehaviour {
 
 			if (gameOver) {
 				EndSpawningRoutines ();
-				//onGameOver ();
-				onMissionComplete ();
+				onGameOver ();
 				break;
 			} else {
 
