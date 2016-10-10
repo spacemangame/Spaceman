@@ -26,7 +26,9 @@ public class Pizza: Collectible {
 
 
 public class Kid: Collectible {
-	public Kid(int id, int value) : base(id, value){}
+	public Kid(int id, int value) : base(id, value){
+		this.prefab = "Kid";
+	}
 }
 
 public class Drug: Collectible {
