@@ -7,6 +7,8 @@ public class MissionController : MonoBehaviour {
 
 	public GameObject[] hazards { get; set; }
 	public GameObject[] collectibles { get; set; }
+	public GameObject item { get;set;}
+
 	public Gun activeGun { get; set;}
 	public Vector3 spawnValues; 
 
@@ -60,6 +62,9 @@ public class MissionController : MonoBehaviour {
 			collectibles[i] = (GameObject) Resources.Load(collectible.prefab, typeof(GameObject));
 			Helper.addGameObjectCollectible (collectibles [i], collectible);
 		}
+
+		item = (GameObject) Resources.Load(mission.item.prefab, typeof(GameObject)); 
+		Helper.addGameObjectCollectible (item, mission.item);
 
 		// TODO should be an array
 		activeGun = GameController.Instance.profile.spaceship.primaryGun;
@@ -162,17 +167,33 @@ public class MissionController : MonoBehaviour {
 		yield return new WaitForSeconds (startWait);
 
 		for(int count = mission.waveCount; count> 0;count--) {
-			
-			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
-			Vector3 spawnPosition;
+
 			Quaternion spawnRotation = Quaternion.identity;
 
-			for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
-				spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
+			if (collectibles.Length > 0) {
 
-				GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
-				GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
-				Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
+				for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
+				
+					GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
+					Vector3 spawnPosition;
+
+
+					spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
+
+					GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
+					GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
+					Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
+				}
+			}
+
+			if (mission.type == Constant.Pickup) {
+				for (int i = 0; i < mission.wave.itemCount; i++) {
+					Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
+
+					GameObjectCollectible gc = (GameObjectCollectible) item.GetComponent<GameObjectCollectible> ();
+					GameObject itemClone = (GameObject)Instantiate (item, spawnPosition, spawnRotation);
+					Helper.addGameObjectCollectible (itemClone, gc.collectible);
+				}
 			}
 
 			yield return new WaitForSeconds (mission.waveWait);

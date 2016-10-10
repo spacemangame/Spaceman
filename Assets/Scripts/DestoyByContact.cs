@@ -45,7 +45,7 @@ public class DestoyByContact : MonoBehaviour {
 			missionController.DecreaseHP (hpValue);
 			ChangeColor (other.gameObject, (float)missionController.getHP(), (float)GameController.Instance.profile.spaceship.hp);
 
-			if (missionController.getHP () <= 0 || missionController.getItemCount() <= 0) {
+			if (missionController.getHP () <= 0 || (missionController.mission.type == Constant.Transport && missionController.getItemCount() <= 0)) {
 				Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
 				missionController.GameOver ();
 				Destroy (other.gameObject);

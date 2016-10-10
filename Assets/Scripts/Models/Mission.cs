@@ -5,7 +5,7 @@ public class Mission {
 	public int id;
 
 	public int maxMedalEarned;
-
+	public string type;
 	public Wave wave;
 	public int waveCount;
 	public int waveWait;

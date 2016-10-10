@@ -93,7 +93,7 @@ public static class DataGenerator
 		coinCube.prefab = "Collectibles";
 		kidDeliveryMission.collectibles.Add (coinCube);
 
-		kidDeliveryMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
+		kidDeliveryMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  Constant.waveItemCount, Constant.spawnWait);
 		kidDeliveryMission.waveCount = Constant.waveCount;
 		kidDeliveryMission.waveWait = Constant.waveWait;
 		kidDeliveryMission.stabilitliy = 0;
@@ -103,6 +103,8 @@ public static class DataGenerator
 
 		kidDeliveryMission.currentCoins = collectibleValue * kidDeliveryMission.targetItemCount;
 		kidDeliveryMission.item = new Kid (1, collectibleValue);
+
+		kidDeliveryMission.type = Constant.Transport;
 
 		//TODO:remove this, its just for testing gameover menu in main scene
 		//kidDeliveryMission.currentHp = 3;
@@ -142,7 +144,7 @@ public static class DataGenerator
 		kidpickupMission.obstacles.Add (enemy);
 		kidpickupMission.enemyGunHP = levelSpaceship.primaryGun.hitPoint;
 
-		kidpickupMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, 0, Constant.spawnWait);
+		kidpickupMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, Constant.waveItemCount, Constant.spawnWait);
 		kidpickupMission.waveCount = Constant.waveCount;
 		kidpickupMission.waveWait = Constant.waveWait;
 		kidpickupMission.stabilitliy = 0;
@@ -152,6 +154,9 @@ public static class DataGenerator
 
 		kidpickupMission.currentCoins = 0;
 		kidpickupMission.item = new Kid (1, collectibleValue);
+		kidpickupMission.item.prefab = "Kid";
+
+		kidpickupMission.type = Constant.Pickup;
 
 		return kidpickupMission;
 	}
