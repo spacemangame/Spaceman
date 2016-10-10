@@ -13,14 +13,16 @@ public class DestroyCollectible : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if(other.CompareTag("Boundary") || other.CompareTag("Enemy") || other.CompareTag("bolt"))
+		if(!other.CompareTag("Player"))
 			return;
-//		if (!other.CompareTag("Player")) {
-//			return;
-//		}
 
 		Collectible collectible = Helper.getCollectibleFromGameObject (gameObject);
 		missionController.AddPoints(collectible.value);
+
+		// if the collectible is item, addItem
+		if (missionController.mission.item.GetType ().Name == collectible.GetType ().Name) {
+			missionController.AddItem ();
+		}
 
 		Destroy(gameObject);
 	}
