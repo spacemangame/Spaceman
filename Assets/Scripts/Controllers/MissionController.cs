@@ -75,7 +75,17 @@ public class MissionController : MonoBehaviour {
 
 	public void onGameOver() {
 		hideAllControls ();
+		string reason;
+		if (mission.currentHp == 0) {
+			reason = "Your Spaceship is WRECKED!!";
+		} else {
+			reason = "You Lost All the " + mission.item.GetType().Name + "s.";
+		}
+
 		gameoverMenu.SetActive (true);
+		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
+		gameOverReason.text = reason;
+
 	}
 
 	public void hideAllControls() {
@@ -218,8 +228,13 @@ public class MissionController : MonoBehaviour {
 	public void DecreaseItem() {
 		mission.pickedItemCount--;
 		UpdateItem ();
-		showMessage ("You Lost Another " + mission.item.GetType ().Name + "! :(");
+		showMessage ("-1 " + mission.item.GetType ().Name + "! :(");
 		DecreasePoints (mission.item.value);
+	}
+	public void AddItem() {
+		mission.pickedItemCount++;
+		UpdateItem ();
+		showMessage ("+1 " + mission.item.GetType ().Name + "! :D");
 	}
 
     public void GameOver()
