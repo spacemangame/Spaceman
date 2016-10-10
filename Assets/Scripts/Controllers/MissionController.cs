@@ -25,6 +25,7 @@ public class MissionController : MonoBehaviour {
 	public Text coinText;
 	public Text medalText;
 	public Text itemCountText;
+	public Text splashText;
 
     private bool gameOver;
     
@@ -217,6 +218,7 @@ public class MissionController : MonoBehaviour {
 	public void DecreaseItem() {
 		mission.pickedItemCount--;
 		UpdateItem ();
+		showMessage ("You Lost Another " + mission.item.GetType ().Name + "! :(");
 		DecreasePoints (mission.item.value);
 	}
 
@@ -227,5 +229,9 @@ public class MissionController : MonoBehaviour {
 
 	public int getEnemyGunHP() {
 		return mission.enemyGunHP;
+	}
+
+	private void showMessage(string message) {
+		StartCoroutine(Message.show(splashText, message));
 	}
 }
