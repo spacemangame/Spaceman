@@ -17,8 +17,22 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	private float boost = 1.0f;
 	private CountDownTimer cTimer;
 
+	public Mission mission;
+
+	// Call this function when game is completed successfully
+	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
+		
+	}
+
+	// Call this function when game is over, 
+	public void OnGameOver() {
+		
+	}
 
 	void Start () {
+
+		mission = GameController.Instance.mission;
+
 		rb = GetComponent<Rigidbody> ();
 		GameObject g = GameObject.Find ("TimerText");
 		cTimer = g.GetComponent<CountDownTimer> ();
