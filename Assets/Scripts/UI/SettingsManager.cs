@@ -8,6 +8,7 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 
 	public GameObject pauseMenu;
 	public PlayerController playerController;
+	public CheckPointPlayerMove checkpointMove;
 
 	void Start(){
 		Time.timeScale = 1;
@@ -29,7 +30,10 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void Calibrate() {
-		playerController.CalibrateAccelerometer ();
+		if (playerController != null)
+			playerController.CalibrateAccelerometer ();
+		else
+			checkpointMove.CalibrateAccelerometer ();
 	}
 
 	private void HidePauseMenu() {

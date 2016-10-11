@@ -13,6 +13,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public VirtualJoystick joystick;
 	public BoostButton boostButton;
 
+	private Quaternion calibrationQuaternion;
+
 	private Rigidbody rb;
 	private float boost = 1.0f;
 	private CountDownTimer cTimer;
@@ -30,10 +32,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	void Start () {
-
 		mission = GameController.Instance.mission;
 
 		rb = GetComponent<Rigidbody> ();
+		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
+
 		GameObject g = GameObject.Find ("TimerText");
 		cTimer = g.GetComponent<CountDownTimer> ();
 	}
@@ -82,6 +85,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		rb.velocity = movement;
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
+	}
+
+	// calibrates the Input.acceleration
+	public void CalibrateAccelerometer () {
+		Vector3 accelerationSnapshot = Input.acceleration;
+		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
+		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
 	}
 
 
