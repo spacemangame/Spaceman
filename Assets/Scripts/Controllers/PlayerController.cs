@@ -25,22 +25,27 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
 	private Quaternion calibrationQuaternion;
 
+	private bool useInput;
+
 	private Mission mission { get; set; }
 	Coroutine destabilise { get; set; }
 
 	void Start() {
+		useInput = true;
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 		useAccelerometer = true;
 		mission = GameController.Instance.mission;
-		//destabilise = StartCoroutine(DestabilisePlayer ());
+		destabilise = StartCoroutine(DestabilisePlayer ());
 	}
 
 	void OnDestroy() {
-		//StopCoroutine (destabilise);
+		StopCoroutine (destabilise);
 	}
 
 	void Update(){
+		checkBoundary ();
+
 		if (fireButton.canFire && Time.time > nextFire) {
 			nextFire = Time.time + fireRate;
 			Instantiate (shot, shotSpawn1.position, shotSpawn1.rotation);
@@ -51,19 +56,31 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator DestabilisePlayer() {
 
-		if (mission.type == Constant.Transport && mission.stabilitliy > 1) {
+		if (mission.type == Constant.Transport && mission.stabilitliy > 0) {
 
-			yield return new WaitForSeconds (10);
+			yield return new WaitForSeconds (5);
 
 			while (true) {
-			
-				yield return new WaitForSeconds (1);
-
+				
+				if (Random.value <= mission.stabilitliy) {
+					useInput = false;
+					rb.AddForce (new Vector3 (
+						Random.Range (-Constant.instabilityFactor, Constant.instabilityFactor), 
+						Random.Range (-Constant.instabilityFactor, Constant.instabilityFactor),
+						0),
+						ForceMode.VelocityChange);
+					checkBoundary ();
+				}
+				yield return new WaitForSecondsRealtime (0.2f);
+				useInput = true;
 			}
 		}
 	}
 
 	void FixedUpdate(){
+		if (!useInput) {
+			return;
+		}
 
 		// update the position based on movement.
 		Vector3 movement = Vector3.zero;
@@ -86,15 +103,19 @@ public class PlayerController : MonoBehaviour {
 
 		rb.velocity = movement * speed;
 
+		checkBoundary ();
+
+		// rotate the player to show the movement
+		rb.rotation = Quaternion.Euler (rb.velocity.y * -tilt, 0.0f, rb.velocity.x * -tilt);
+	}
+
+	private void checkBoundary() {
 		// make sure player doesn't go out of the boundary.
 		rb.position = new Vector3 (
 			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
 			Mathf.Clamp(rb.position.y, boundary.yMin, boundary.yMax),
 			0.0f
 		);
-
-		// rotate the player to show the movement
-		rb.rotation = Quaternion.Euler (rb.velocity.y * -tilt, 0.0f, rb.velocity.x * -tilt);
 	}
 
 	// calibrates the Input.acceleration

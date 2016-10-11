@@ -96,7 +96,7 @@ public static class DataGenerator
 		kidDeliveryMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  Constant.waveItemCount, Constant.spawnWait);
 		kidDeliveryMission.waveCount = Constant.waveCount;
 		kidDeliveryMission.waveWait = Constant.waveWait;
-		kidDeliveryMission.stabilitliy = 0;
+		kidDeliveryMission.stabilitliy = 0.5f;
 		kidDeliveryMission.targetItemCount = Constant.targetItemCount;
 		kidDeliveryMission.pickedItemCount = Constant.targetItemCount;
 		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
@@ -116,11 +116,11 @@ public static class DataGenerator
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
-		int level = (int)Math.Floor ((Double) (medals / Constant.levelMedals));
+		int level = (int)Math.Floor ((double)medals / Constant.levelMedals);
 		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
 
-		int obstacleHP = (int) Math.Round((Double) (medals / Constant.missionMaxMedal));
-		int enemyHP = ((int) Math.Round((Double) (medals / Constant.missionMaxMedal))) * 2;
+		int obstacleHP = (int)Math.Ceiling (((double)medals / Constant.missionMaxMedal));
+		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
 
 		var kidpickupMission = new Mission ();
 		kidpickupMission.activeGuns.Add (profile.spaceship.primaryGun);
@@ -147,7 +147,7 @@ public static class DataGenerator
 		kidpickupMission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount, Constant.waveItemCount, Constant.spawnWait);
 		kidpickupMission.waveCount = Constant.waveCount;
 		kidpickupMission.waveWait = Constant.waveWait;
-		kidpickupMission.stabilitliy = 0;
+		kidpickupMission.stabilitliy = 0.5f;
 		kidpickupMission.targetItemCount = Constant.targetItemCount;
 		kidpickupMission.pickedItemCount = 0;
 		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;

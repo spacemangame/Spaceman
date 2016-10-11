@@ -9,7 +9,7 @@ public class Mission {
 	public Wave wave;
 	public int waveCount;
 	public int waveWait;
-	public int stabilitliy; //TODO 
+	public float stabilitliy; //TODO 
 	public int currentHp;
 	public int currentCoins;
 	public int enemyGunHP { get; set; }

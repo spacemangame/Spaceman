@@ -20,6 +20,7 @@ public static class Constant {
 	public const string Pickup = "Pickup";
 	public const string Transport = "Transport";
 	public const int waveItemCount = Constant.targetItemCount/ Constant.waveCount;
+	public const float instabilityFactor = 4.0f;
 }
 
 

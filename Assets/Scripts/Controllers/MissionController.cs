@@ -82,9 +82,9 @@ public class MissionController : MonoBehaviour {
 		hideAllControls ();
 		string reason;
 		if (mission.currentHp == 0) {
-			reason = "Your Spaceship is WRECKED!!";
+			reason = Strings.wrecked;
 		} else {
-			reason = "You Lost All the " + mission.item.GetType().Name + "s.";
+			reason = System.String.Format(Strings.outOfItem, mission.item.GetType().Name);
 		}
 
 		gameoverMenu.SetActive (true);
@@ -222,7 +222,7 @@ public class MissionController : MonoBehaviour {
 	}
 
 	void UpdatePoints(){
-		pointText.text = "Points: " + mission.currentCoins;
+		pointText.text = System.String.Format(Strings.poinIndicator, mission.currentCoins);
 	}
 
 	public long getHP() {
@@ -235,7 +235,7 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void UpdateHP(){
-		hpText.text = "HP: " + mission.currentHp;
+		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
 	}
 
 	public int getItemCount() {
@@ -243,19 +243,19 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void UpdateItem() {
-		itemText.text = mission.item.GetType ().Name + "s: " + mission.pickedItemCount + "/" + mission.targetItemCount;
+		itemText.text = System.String.Format(Strings.itemIndicator, mission.item.GetType ().Name , mission.pickedItemCount, mission.targetItemCount);
 	}
 
 	public void DecreaseItem() {
 		mission.pickedItemCount--;
 		UpdateItem ();
-		showMessage ("-1 " + mission.item.GetType ().Name + "! :(");
+		showMessage (System.String.Format(Strings.lostItem, mission.item.GetType ().Name, mission.item.value));
 		DecreasePoints (mission.item.value);
 	}
 	public void AddItem() {
 		mission.pickedItemCount++;
 		UpdateItem ();
-		showMessage ("+1 " + mission.item.GetType ().Name + "! :D");
+		showMessage (System.String.Format(Strings.addItem, mission.item.GetType ().Name, mission.item.value));
 	}
 
     public void GameOver()
