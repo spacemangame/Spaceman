@@ -42,7 +42,19 @@ public class GameController : MonoBehaviour {
 		SceneManager.LoadScene(screen);
 	}
 
-	public void RestartMission() {
+    public void ShowProfileScreen(string screen)
+    {
+        //GameController.Instance.missions = DataGenerator.GenerateMissions();
+        SceneManager.LoadScene(screen);
+    }
+
+    public void ReturnToScreen(string screen)
+    {
+        //GameController.Instance.missions = DataGenerator.GenerateMissions();
+        SceneManager.LoadScene(screen);
+    }
+
+    public void RestartMission() {
 		GameController.Instance.missions = DataGenerator.GenerateMissions();
 
 		int missionIndex = GameController.Instance.mission.id - 1;
