@@ -63,7 +63,7 @@ public static class DataGenerator
 		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
 		//enemyHP += 5;
 
-		var kidDeliveryMission = new Mission ();
+		var kidDeliveryMission = new KidDeliveryMission ();
 		kidDeliveryMission.activeGuns.Add (profile.spaceship.primaryGun);
 		kidDeliveryMission.currentHp = profile.spaceship.hp;
 		kidDeliveryMission.id = 1;
@@ -103,8 +103,6 @@ public static class DataGenerator
 
 		kidDeliveryMission.currentCoins = collectibleValue * kidDeliveryMission.targetItemCount;
 		kidDeliveryMission.item = new Kid (1, collectibleValue);
-
-		kidDeliveryMission.type = Constant.Transport;
 
 		//TODO:remove this, its just for testing gameover menu in main scene
 		//kidDeliveryMission.currentHp = 3;
@@ -154,11 +152,47 @@ public static class DataGenerator
 
 		kidpickupMission.currentCoins = 0;
 		kidpickupMission.item = new Kid (1, collectibleValue);
-		kidpickupMission.item.prefab = "Kid";
 
 		kidpickupMission.type = Constant.Pickup;
 
 		return kidpickupMission;
+	}
+
+	private static Mission CreateDrugMission() {
+		UserProfile profile = GameController.Instance.profile;
+
+		int medals = (profile.medals == 0) ? 1 : profile.medals;
+		int level = (int)Math.Floor (medals / 9.0f);
+		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
+
+		int obstacleHP = (int)Math.Ceiling (((double)medals / Constant.missionMaxMedal));
+		//obstacleHP	+= 3;
+
+		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
+		//enemyHP += 5;
+
+		var drugMision = new DrugPickupMission ();
+		drugMision.activeGuns.Add (profile.spaceship.primaryGun);
+		drugMision.currentHp = profile.spaceship.hp;
+		drugMision.id = 3;
+
+		Coin coinSphere = new Coin (1, 1);
+		coinSphere.prefab = "ColSphere";
+		drugMision.collectibles.Add (coinSphere);
+
+		drugMision.stabilitliy = 0;
+
+		drugMision.targetItemCount = Constant.targetItemCount;
+
+		// TODO: Remove this when you think drugs have been added
+		drugMision.pickedItemCount = Constant.targetItemCount;
+
+		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+
+		drugMision.currentCoins = 0;
+		drugMision.item = new Drug (4, collectibleValue);
+
+		return drugMision;
 	}
 
 	public static List<Mission> GenerateMissions() {
@@ -167,6 +201,7 @@ public static class DataGenerator
 
 		missions.Add (CreateKidDeliveryMission());
 		missions.Add (CreateKidPickupMission ());
+		missions.Add (CreateDrugMission ());
 
 		return missions;
 	}
