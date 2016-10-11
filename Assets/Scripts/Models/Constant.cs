@@ -13,7 +13,7 @@ public static class Constant {
 	public const double spawnWait = 0.5;
 	public const int waveCount = 10;
 	public const int waveWait = 4;
-	public const int targetItemCount = 2;
+	public const int targetItemCount = 20;
 	public const int obstacleCount = 15;
 	public const int collectibleCount=10;
 	public const int hpFactor = 2;

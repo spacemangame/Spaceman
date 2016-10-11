@@ -25,10 +25,19 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
 	private Quaternion calibrationQuaternion;
 
+	private Mission mission { get; set; }
+	Coroutine destabilise { get; set; }
+
 	void Start() {
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 		useAccelerometer = true;
+		mission = GameController.Instance.mission;
+		//destabilise = StartCoroutine(DestabilisePlayer ());
+	}
+
+	void OnDestroy() {
+		StopCoroutine (destabilise);
 	}
 
 	void Update(){
@@ -37,6 +46,20 @@ public class PlayerController : MonoBehaviour {
 			Instantiate (shot, shotSpawn1.position, shotSpawn1.rotation);
 			Instantiate (shot, shotSpawn2.position, shotSpawn2.rotation);
 			GetComponent<AudioSource> ().Play ();
+		}
+	}
+
+	IEnumerator DestabilisePlayer() {
+
+		if (mission.type == Constant.Transport && mission.stabilitliy > 1) {
+
+			yield return new WaitForSeconds (10);
+
+			while (true) {
+			
+				yield return new WaitForSeconds (1);
+
+			}
 		}
 	}
 
