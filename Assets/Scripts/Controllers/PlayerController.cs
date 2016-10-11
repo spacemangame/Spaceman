@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		StopCoroutine (destabilise);
+		//StopCoroutine (destabilise);
 	}
 
 	void Update(){
