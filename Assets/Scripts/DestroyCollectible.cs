@@ -3,21 +3,27 @@ using System.Collections;
 
 public class DestroyCollectible : MonoBehaviour {
 
-	private GameController gameController;
-	public int pointValue;
+	private MissionController missionController;
 
 	void Start(){
-		GameObject gameControllerObject = GameObject.FindWithTag ("GameController");
+		GameObject gameControllerObject = GameObject.FindWithTag ("MissionController");
 		if (gameControllerObject != null) {
-			gameController = gameControllerObject.GetComponent<GameController> ();
+            missionController = gameControllerObject.GetComponent<MissionController>();
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		Debug.Log ("Inside destroy collectible me: " + gameObject.name + ", other: " + other.name);
-		if(other.CompareTag("Boundary") || other.CompareTag("Enemy") || other.CompareTag("bolt"))
+		if(!other.CompareTag("Player"))
 			return;
-		gameController.AddPoints (pointValue);
+
+		Collectible collectible = Helper.getCollectibleFromGameObject (gameObject);
+		missionController.AddPoints(collectible.value);
+
+		// if the collectible is item, addItem
+		if (missionController.mission.item.GetType ().Name == collectible.GetType ().Name) {
+			missionController.AddItem ();
+		}
+
 		Destroy(gameObject);
 	}
 }
