@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CheckPointPlayerMove : MonoBehaviour {
 
@@ -19,16 +21,61 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	private float boost = 1.0f;
 	private CountDownTimer cTimer;
 
+	public Image settings;
+	public Text timerText;
+
+	public GameObject gameoverMenu;
+	public GameObject gamesuccessMenu;
+
+
+	public Text coinText;
+	public Text medalText;
+	public Text itemCountText;
+
+
 	public Mission mission;
 
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
-		
+
+		gamesuccessMenu.SetActive (true);
+
+		int medalsEarned = ((int) ((double) itemsCollected) / mission.targetItemCount) * mission.maxMedalEarned;
+		medalText.text = "Medal(s) Earned : " + medalsEarned;
+
+		string itemName = mission.item.GetType ().Name;
+		string itemPickedText = itemsCollected + "/" + mission.targetItemCount + " (" + mission.item.value + " per" + itemName + ")";
+		itemCountText.text = itemName + "'s collected : " + itemPickedText;
+
+		int itemCoins = itemsCollected * mission.item.value;
+		int coinsEarned = (itemsCollected * mission.item.value) + coinsCollected;
+		string coinsEarnedStr =  itemCoins + (((coinsCollected - itemCoins) == 0) ? "": (" + " + (coinsCollected - itemCoins) + " = " + coinsEarned));
+		coinText.text = "Coins Earned : " + coinsEarnedStr;
+
+		GameController.Instance.profile.medals += medalsEarned;
+		GameController.Instance.profile.coins += coinsEarned;
+
 	}
 
 	// Call this function when game is over, 
 	public void OnGameOver() {
-		
+		string reason;
+		if (mission.currentHp == 0) {
+			reason = Strings.wrecked;
+		} else {
+			reason = System.String.Format(Strings.outOfItem, mission.item.GetType().Name);
+		}
+
+		gameoverMenu.SetActive (true);
+		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
+		gameOverReason.text = reason;
+	}
+
+	private void HideAllControls() {
+		joystick.gameObject.SetActive (false);
+		settings.gameObject.SetActive (false);
+		timerText.gameObject.SetActive (false);
+		boostButton.gameObject.SetActive (false);
 	}
 
 	void Start () {
@@ -43,6 +90,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	//function that gets called when player object collides with terrain  
 	void OnCollisionEnter(Collision col){
 		destroyOnTimer ();
+		OnGameOver ();
 	}
 
 	//function that gets called on checkpoint touchdown
