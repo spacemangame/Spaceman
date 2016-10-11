@@ -8,11 +8,11 @@ public class PlaneMover : MonoBehaviour {
 //	public float planelift = 1.965f;
 //	public float rollrate = 0.5f;
 //	public float elevatorRate = 2;
-	private Rigidbody rb;
+//	private Rigidbody rb;
 
 	void Start () {
 		Debug.Log ("Attaching script planerMover to: "+ gameObject.name);
-		rb = GetComponent<Rigidbody> ();
+//		rb = GetComponent<Rigidbody> ();
 	}
 	
 

@@ -17,7 +17,7 @@ public class DestroyCollectible : MonoBehaviour {
 		Debug.Log ("Inside destroy collectible me: " + gameObject.name + ", other: " + other.name);
 		if(other.CompareTag("Boundary") || other.CompareTag("Enemy") || other.CompareTag("bolt"))
 			return;
-//		gameController.AddPoints (pointValue);
+		gameController.AddPoints (pointValue);
 		Destroy(gameObject);
 	}
 }
