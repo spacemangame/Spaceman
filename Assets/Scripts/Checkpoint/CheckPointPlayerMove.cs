@@ -129,7 +129,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		Camera.main.transform.position = moveCamTo;
 		Camera.main.transform.LookAt (transform.position + transform.forward * 10.0f);
 
-		Vector3 movement;
+		Vector3 movement = new Vector3(0,0,0);
 		boost = 1.0f;
 		if (Input.GetButton ("Jump") || boostButton.boost) {
 			boost = 2.0f;
@@ -140,9 +140,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		} else {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
-			} else {
+			} else if(GameController.Instance.profile.isAccelerometerEnabled){
 				movement = new Vector3 ( Input.acceleration.x * maneuverability, Input.acceleration.z * maneuverability, speed * boost);
-//				movement = new Vector3 (Input.acceleration.x, 0.0f, Input.acceleration.y) * accelerometerSensitivity;
 			}
 		}
 

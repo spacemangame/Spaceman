@@ -26,7 +26,8 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 		}
 
 		if (!profile.isAccelerometerEnabled) {
-			playerController.useAccelerometer = false;
+			if (playerController != null)
+				playerController.useAccelerometer = false;
 			Accelerometer.isOn = false;
 		}
 	}
@@ -74,10 +75,14 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	public void ToggleAccelerometer(bool value) {
 
 		if (value) {
-			playerController.useAccelerometer = true;
+			if (playerController != null) 
+				playerController.useAccelerometer = true;
+
 			profile.isAccelerometerEnabled = true;
 		} else {
-			playerController.useAccelerometer = true;
+			if (playerController != null) 
+				playerController.useAccelerometer = true;
+
 			profile.isAccelerometerEnabled = false;
 		}
 

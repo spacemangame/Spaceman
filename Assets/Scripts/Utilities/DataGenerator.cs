@@ -189,10 +189,10 @@ public static class DataGenerator
 
 		drugMision.stabilitliy = 0;
 
-		drugMision.targetItemCount = Constant.targetItemCount;
+		drugMision.targetItemCount = 15;
 
 		// TODO: Remove this when you think drugs have been added
-		drugMision.pickedItemCount = Constant.targetItemCount;
+		drugMision.pickedItemCount = 0;
 
 		drugMision.maxMedalEarned = Constant.maxMedalPerMission;
 		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
