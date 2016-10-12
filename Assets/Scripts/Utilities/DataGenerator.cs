@@ -28,11 +28,10 @@ public static class DataGenerator
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 1000, 200, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1)));
-		spaceships.Add(new Spaceship(1, 2000, 400, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(2, 4000, 800, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(3, 8000, 1600, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1)));
-
+		spaceships.Add(new Spaceship(0, 300, 50, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1)));
+		spaceships.Add(new Spaceship(1, 600, 100, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1)));
+		spaceships.Add(new Spaceship(2, 1200, 200, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1)));
+		spaceships.Add(new Spaceship(3, 2400, 400, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1)));
 	}
 
 
@@ -103,7 +102,10 @@ public static class DataGenerator
 		kidDeliveryMission.stabilitliy = 0.5f;
 		kidDeliveryMission.targetItemCount = Constant.targetItemCount;
 		kidDeliveryMission.pickedItemCount = Constant.targetItemCount;
-		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+
+		kidDeliveryMission.maxMedalEarned = Constant.maxMedalPerMission;
+
+		int collectibleValue = ((int)((levelSpaceship.price * Constant.hpFactor) / kidDeliveryMission.maxMedalEarned) - 2 ) / Constant.targetItemCount;
 
 		kidDeliveryMission.currentCoins = collectibleValue * kidDeliveryMission.targetItemCount;
 		kidDeliveryMission.item = new Kid (1, collectibleValue);
@@ -152,7 +154,8 @@ public static class DataGenerator
 		kidpickupMission.stabilitliy = 0.5f;
 		kidpickupMission.targetItemCount = Constant.targetItemCount;
 		kidpickupMission.pickedItemCount = 0;
-		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+		kidpickupMission.maxMedalEarned = Constant.missionMaxMedal;
+		int collectibleValue = ((int)((levelSpaceship.price * Constant.hpFactor) / kidpickupMission.maxMedalEarned) - 1 ) / Constant.targetItemCount;
 
 		kidpickupMission.currentCoins = 0;
 		kidpickupMission.item = new Kid (1, collectibleValue);
@@ -191,6 +194,7 @@ public static class DataGenerator
 		// TODO: Remove this when you think drugs have been added
 		drugMision.pickedItemCount = Constant.targetItemCount;
 
+		drugMision.maxMedalEarned = Constant.maxMedalPerMission;
 		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
 
 		drugMision.currentCoins = 0;
