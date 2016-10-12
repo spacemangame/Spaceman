@@ -46,6 +46,10 @@ public static class DataGenerator
 		UserProfile userProfile = new UserProfile ();
 		userProfile.spaceship = GameController.Instance.shop.spaceships[0];
 		userProfile.medals = 0;
+
+		userProfile.isSoundEnabled = true;
+		userProfile.isAccelerometerEnabled = true;
+
 		// TODO: Add spaceship gun to mission whenyou start it
 		return userProfile;
 	}
@@ -120,7 +124,7 @@ public static class DataGenerator
 		int obstacleHP = (int)Math.Ceiling (((double)medals / Constant.missionMaxMedal));
 		int enemyHP = ((int) Math.Ceiling((Double) medals / Constant.missionMaxMedal)) * Constant.hpFactor;
 
-		var kidpickupMission = new Mission ();
+		var kidpickupMission = new KidPickUpMission ();
 		kidpickupMission.activeGuns.Add (profile.spaceship.primaryGun);
 		kidpickupMission.currentHp = profile.spaceship.hp;
 		kidpickupMission.id = 2;
