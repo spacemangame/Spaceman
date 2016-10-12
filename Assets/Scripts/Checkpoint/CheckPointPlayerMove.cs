@@ -23,6 +23,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public Image settings;
 	public Text timerText;
+	public Text itemCountText;
 
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
@@ -30,14 +31,18 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public Text coinText;
 	public Text medalText;
-	public Text itemCountText;
+	public Text drugCountText;
 
 
-	public Mission mission;
+	public Mission mission {get; set;}
 	private int noOfCheckpoints, totalCheckpoints, itemsCollected, coinsCollected;
 
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
+
+
+		HideAllControls ();
+
 		cTimer.stopTimer = true;
 		gamesuccessMenu.SetActive (true);
 
@@ -61,13 +66,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	// Call this function when game is over, 
 	public void OnGameOver() {
-		string reason;
-		if (mission.currentHp == 0) {
-			reason = Strings.wrecked;
-		} else {
-			reason = System.String.Format(Strings.outOfItem, mission.item.GetType().Name);
-		}
 
+		HideAllControls ();
+		string reason = Strings.wrecked;
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
@@ -78,6 +79,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		settings.gameObject.SetActive (false);
 		timerText.gameObject.SetActive (false);
 		boostButton.gameObject.SetActive (false);
+		drugCountText.gameObject.SetActive (false);
 	}
 
 	void Start () {
@@ -92,7 +94,18 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		noOfCheckpoints = 0;
 		totalCheckpoints = 10;
 		itemsCollected = 0;
+
+		UpdateDrugCount (false);
 	}
+
+	public void UpdateDrugCount(bool playSound) {
+		if (playSound) {
+			AudioSource[] audios = GetComponents<AudioSource> ();
+			audios [1].Play ();
+		}
+		drugCountText.text = "Drugs : " + itemsCollected + "/" + mission.targetItemCount;
+	}
+
 	//function that gets called when player object collides with terrain  
 	void OnCollisionEnter(Collision col){
 		destroyOnTimer ();
@@ -103,13 +116,16 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.name == "mc_trigger")
 			OnGameComplete (noOfCheckpoints, totalCheckpoints, itemsCollected, 0);
-		else if (other.gameObject.tag == "drug")
+		else if (other.gameObject.tag == "drug") {
 			itemsCollected++;
-		else{
+			UpdateDrugCount(true);
+			Destroy (other.gameObject);
+		} else {
 			noOfCheckpoints++;
 			cTimer.updateTimer (checkpointReward);
-			AudioSource audio = GetComponent<AudioSource>();
-			audio.Play();
+
+			AudioSource[] audios = GetComponents<AudioSource>();
+			audios[0].Play();
 		}
 		Debug.Log ("Items collected" + itemsCollected);
 	}
