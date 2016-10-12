@@ -140,8 +140,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		} else {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
-			} else if(GameController.Instance.profile.isAccelerometerEnabled){
-				movement = new Vector3 ( Input.acceleration.x * maneuverability, Input.acceleration.z * maneuverability, speed * boost);
+			} else{
+				
+//				movement = new Vector3 ( Input.acceleration.x * maneuverability, Input.acceleration.z * maneuverability, speed * boost);
 			}
 		}
 
