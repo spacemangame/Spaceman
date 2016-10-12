@@ -34,10 +34,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 
 	public Mission mission;
+	private int noOfCheckpoints, totalCheckpoints, itemsCollected, coinsCollected;
 
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
-
+		cTimer.stopTimer = true;
 		gamesuccessMenu.SetActive (true);
 
 		int medalsEarned = ((int) ((double) itemsCollected) / mission.targetItemCount) * mission.maxMedalEarned;
@@ -86,6 +87,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		GameObject g = GameObject.Find ("TimerText");
 		cTimer = g.GetComponent<CountDownTimer> ();
+
+		noOfCheckpoints = 0;
+		totalCheckpoints = 10;
+		itemsCollected = 0;
 	}
 	//function that gets called when player object collides with terrain  
 	void OnCollisionEnter(Collision col){
@@ -95,9 +100,17 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	//function that gets called on checkpoint touchdown
 	void OnTriggerEnter(Collider other){
-		cTimer.updateTimer (checkpointReward);
-		AudioSource audio = GetComponent<AudioSource>();
-		audio.Play();
+		if (other.gameObject.name == "mc_trigger")
+			OnGameComplete (noOfCheckpoints, totalCheckpoints, itemsCollected, 0);
+		else if (other.gameObject.tag == "drug")
+			itemsCollected++;
+		else{
+			noOfCheckpoints++;
+			cTimer.updateTimer (checkpointReward);
+			AudioSource audio = GetComponent<AudioSource>();
+			audio.Play();
+		}
+		Debug.Log ("Items collected" + itemsCollected);
 	}
 		
 	public void destroyOnTimer(){
@@ -105,6 +118,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		if(explosion != null)
 			Instantiate (explosion, transform.position, transform.rotation);
 		cTimer.stopTimer = true;
+		OnGameOver ();
 	}
 
 	void FixedUpdate(){
@@ -121,7 +135,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		}
 
 		if (joystick.InputDirection != Vector3.zero) {
-			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.z * maneuverability, speed * boost);
+			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
 		} else {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
