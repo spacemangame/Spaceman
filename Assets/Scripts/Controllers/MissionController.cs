@@ -34,11 +34,11 @@ public class MissionController : MonoBehaviour {
 	public Mission mission { get; set; }
 
 	Coroutine obstacleRoutine { get; set;}
-	Coroutine collectibleRoutine { get; set;}
 	Coroutine gameStatusRoutine {get; set;}
 
+	public int currentWave { get; set; }
 
-    void Start(){
+    void Start() {
 		mission = GameController.Instance.mission;
         gameOver = false;
         
@@ -46,8 +46,10 @@ public class MissionController : MonoBehaviour {
 		UpdateHP();
 		UpdateItem ();
 
+
+		currentWave = mission.waveCount;
+
 		obstacleRoutine = StartCoroutine (SpawnObstacles());
-		collectibleRoutine = StartCoroutine (SpawnCollectibles());
 		gameStatusRoutine = StartCoroutine (CheckGameStatus ());
 
 		hazards = new GameObject[mission.obstacles.Count];
@@ -74,7 +76,6 @@ public class MissionController : MonoBehaviour {
 
 	public void EndSpawningRoutines() {
 		StopCoroutine (obstacleRoutine);
-		StopCoroutine (collectibleRoutine);
 		StopCoroutine (gameStatusRoutine);
 	}
 
@@ -129,16 +130,17 @@ public class MissionController : MonoBehaviour {
 		while (true) {
 
 			if (gameOver) {
+				Time.timeScale = 0;
 				EndSpawningRoutines ();
 				onGameOver ();
 				break;
 			} else {
 
 				GameObject[] enemyGameObjects = GameObject.FindGameObjectsWithTag ("Enemy");
-				GameObject[] enemyboltGameObjects = GameObject.FindGameObjectsWithTag ("enemybolt");
 				GameObject[] asteroidGameObjects = GameObject.FindGameObjectsWithTag ("asteroid");
 
-				if (enemyGameObjects.Length + enemyboltGameObjects.Length + asteroidGameObjects.Length == 0) {
+				if (enemyGameObjects.Length + asteroidGameObjects.Length == 0) {
+					Time.timeScale = 0;
 					EndSpawningRoutines ();
 					onMissionComplete ();
 					break;
@@ -155,6 +157,12 @@ public class MissionController : MonoBehaviour {
 		yield return new WaitForSeconds (startWait);
 
 		for(int count = mission.waveCount; count> 0;count--) {
+
+			currentWave--;
+
+			StartCoroutine (SpawnItems ());
+
+			StartCoroutine (SpawnCollectibles ());
 
 			for (int i=0; i < mission.wave.obstacleCount; i++) {
 				
@@ -175,40 +183,43 @@ public class MissionController : MonoBehaviour {
 	}
 
 	IEnumerator SpawnCollectibles() {
-		yield return new WaitForSeconds (startWait);
 
-		for(int count = mission.waveCount; count> 0;count--) {
+		Quaternion spawnRotation = Quaternion.identity;
 
+		for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
+	
+			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
+			Vector3 spawnPosition;
+
+
+			spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
+
+			GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
+			GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
+			Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
+
+			yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.collectibleCount);
+		}
+
+
+	}
+
+	IEnumerator SpawnItems() {
+		if (mission.type == Constant.Pickup) {
+			
 			Quaternion spawnRotation = Quaternion.identity;
 
-			if (collectibles.Length > 0) {
+			for (int i = 0; i < mission.wave.itemCount; i++) {
+				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
 
-				for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
-				
-					GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
-					Vector3 spawnPosition;
+				GameObjectCollectible gc = (GameObjectCollectible)item.GetComponent<GameObjectCollectible> ();
+				GameObject itemClone = (GameObject)Instantiate (item, spawnPosition, spawnRotation);
+				Helper.addGameObjectCollectible (itemClone, gc.collectible);
 
-
-					spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
-
-					GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
-					GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
-					Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
-				}
+				yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.itemCount);
 			}
+		}
 
-			if (mission.type == Constant.Pickup) {
-				for (int i = 0; i < mission.wave.itemCount; i++) {
-					Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
-
-					GameObjectCollectible gc = (GameObjectCollectible) item.GetComponent<GameObjectCollectible> ();
-					GameObject itemClone = (GameObject)Instantiate (item, spawnPosition, spawnRotation);
-					Helper.addGameObjectCollectible (itemClone, gc.collectible);
-				}
-			}
-
-			yield return new WaitForSeconds (mission.waveWait);
-        }
 	}
 		
 	public void DecreasePoints(int val) {

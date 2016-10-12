@@ -50,12 +50,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		int itemCoins = itemsCollected * mission.item.value;
 		int coinsEarned = (itemsCollected * mission.item.value) + coinsCollected;
-		string coinsEarnedStr =  itemCoins + (((coinsCollected - itemCoins) == 0) ? "": (" + " + (coinsCollected - itemCoins) + " = " + coinsEarned));
+		string coinsEarnedStr =  itemCoins + (((itemCoins - coinsCollected) == 0) ? "": (" + " + (coinsEarned - coinsCollected) + " = " + coinsEarned));
 		coinText.text = "Coins Earned : " + coinsEarnedStr;
 
 		GameController.Instance.profile.medals += medalsEarned;
 		GameController.Instance.profile.coins += coinsEarned;
 
+		UserProfile.Save();
 	}
 
 	// Call this function when game is over, 
