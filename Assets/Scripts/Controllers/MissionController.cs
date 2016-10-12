@@ -129,16 +129,17 @@ public class MissionController : MonoBehaviour {
 		while (true) {
 
 			if (gameOver) {
+				Time.timeScale = 0;
 				EndSpawningRoutines ();
 				onGameOver ();
 				break;
 			} else {
 
 				GameObject[] enemyGameObjects = GameObject.FindGameObjectsWithTag ("Enemy");
-				GameObject[] enemyboltGameObjects = GameObject.FindGameObjectsWithTag ("enemybolt");
 				GameObject[] asteroidGameObjects = GameObject.FindGameObjectsWithTag ("asteroid");
 
-				if (enemyGameObjects.Length + enemyboltGameObjects.Length + asteroidGameObjects.Length == 0) {
+				if (enemyGameObjects.Length + asteroidGameObjects.Length == 0) {
+					Time.timeScale = 0;
 					EndSpawningRoutines ();
 					onMissionComplete ();
 					break;
