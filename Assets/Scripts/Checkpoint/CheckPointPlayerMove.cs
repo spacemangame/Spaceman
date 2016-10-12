@@ -55,6 +55,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameController.Instance.profile.medals += medalsEarned;
 		GameController.Instance.profile.coins += coinsEarned;
 
+		UserProfile.Save();
 	}
 
 	// Call this function when game is over, 

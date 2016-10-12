@@ -10,9 +10,25 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	public PlayerController playerController;
 	public CheckPointPlayerMove checkpointMove;
 
-	void Start(){
+	public Toggle Accelerometer;
+	public Toggle Sound;
+
+	public UserProfile profile { get; set; }
+
+	void Start() {
 		Time.timeScale = 1;
 		pauseMenu.SetActive (false);
+		profile = GameController.Instance.profile;
+
+		if (!profile.isSoundEnabled) {
+			AudioListener.volume = 0;
+			Sound.isOn = false;
+		}
+
+		if (!profile.isAccelerometerEnabled) {
+			playerController.useAccelerometer = false;
+			Accelerometer.isOn = false;
+		}
 	}
 
 	public void OnPointerDown(PointerEventData ped) {
@@ -45,11 +61,27 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void ToggleSound(bool value) {
-		AudioListener.volume = value ? 1 : 0;
+		if (value) {
+			AudioListener.volume = 1;
+			profile.isSoundEnabled = true;
+		} else {
+			AudioListener.volume = 0;
+			profile.isSoundEnabled = false;
+		}
+		UserProfile.Save ();
 	}
 
 	public void ToggleAccelerometer(bool value) {
-		playerController.useAccelerometer = value;
+
+		if (value) {
+			playerController.useAccelerometer = true;
+			profile.isAccelerometerEnabled = true;
+		} else {
+			playerController.useAccelerometer = true;
+			profile.isAccelerometerEnabled = false;
+		}
+
+		UserProfile.Save ();
 	}
 
 

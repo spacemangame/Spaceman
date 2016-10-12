@@ -14,6 +14,9 @@ public class UserProfile {
 	public int clues {set; get;}
 	public List<Gun> guns = new List<Gun>();
 
+	public bool isSoundEnabled { set; get; }
+	public bool isAccelerometerEnabled { get; set;}
+
     public static void Save()
 	{
 		BinaryFormatter bf = new BinaryFormatter();
