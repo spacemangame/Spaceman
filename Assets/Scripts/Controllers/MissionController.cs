@@ -109,7 +109,7 @@ public class MissionController : MonoBehaviour {
 		hideAllControls ();
 		gamesuccessMenu.SetActive (true);
 
-		int medalsEarned = ((int) ((double)mission.pickedItemCount) / mission.targetItemCount) * mission.maxMedalEarned;
+		int medalsEarned = (int)System.Math.Ceiling ( (((double)mission.pickedItemCount) / mission.targetItemCount) * mission.maxMedalEarned);
 		medalText.text = "Medal(s) Earned : " + medalsEarned;
 
 		string itemName = mission.item.GetType ().Name;
