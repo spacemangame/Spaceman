@@ -10,6 +10,8 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	public PlayerController playerController;
 	public CheckPointPlayerMove checkpointMove;
 
+	public MissionController missionController;
+
 	public Toggle Accelerometer;
 	public Toggle Sound;
 
@@ -26,9 +28,21 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 		}
 
 		if (!profile.isAccelerometerEnabled) {
-			if (playerController != null)
+			
+			if (playerController != null) {
 				playerController.useAccelerometer = false;
+				playerController.joystick.gameObject.SetActive (true);
+			} else {
+				checkpointMove.joystick.gameObject.SetActive (true);
+			}
 			Accelerometer.isOn = false;
+		} else {
+			if (playerController != null) {
+				playerController.joystick.gameObject.SetActive (false);
+			} else {
+				checkpointMove.joystick.gameObject.SetActive (false);
+			}
+			Accelerometer.isOn = true;
 		}
 	}
 
@@ -55,14 +69,28 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 
 	private void HidePauseMenu() {
 		pauseMenu.SetActive (false);
+
+		if (missionController != null) {
+			missionController.showAllControls ();
+		} else {
+			checkpointMove.ShowAllControls ();
+		}
+
 	}
 
 	private void showPauseMenu() {
+
+		if (missionController != null) {
+			missionController.hideAllControls ();
+		} else {
+			checkpointMove.HideAllControls ();
+		}
+
 		pauseMenu.SetActive (true);
 	}
 
 	public void ToggleSound(bool value) {
-		if (value) {
+		if (Sound.isOn) {
 			AudioListener.volume = 1;
 			profile.isSoundEnabled = true;
 		} else {
@@ -74,14 +102,24 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 
 	public void ToggleAccelerometer(bool value) {
 
-		if (value) {
-			if (playerController != null) 
+		if (Accelerometer.isOn) {
+			
+			if (playerController != null) {
 				playerController.useAccelerometer = true;
+				playerController.joystick.gameObject.SetActive (false);
+			} else {
+				checkpointMove.joystick.gameObject.SetActive (false);
+			}
 
 			profile.isAccelerometerEnabled = true;
 		} else {
-			if (playerController != null) 
-				playerController.useAccelerometer = true;
+			
+			if (playerController != null) {
+				playerController.useAccelerometer = false;
+				playerController.joystick.gameObject.SetActive (true);
+			} else {
+				checkpointMove.joystick.gameObject.SetActive (true);
+			}
 
 			profile.isAccelerometerEnabled = false;
 		}

@@ -44,13 +44,11 @@ public class GameController : MonoBehaviour {
 
     public void ShowProfileScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 
     public void ReturnToScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 
@@ -68,7 +66,7 @@ public class GameController : MonoBehaviour {
 		if (mission.missionName.StartsWith ("drug", StringComparison.InvariantCultureIgnoreCase)) {
 			SceneManager.LoadScene ("Drug");
 		} else {
-			SceneManager.LoadScene ("My Main");
+			SceneManager.LoadScene ("Main");
 		}	
 	}
 
