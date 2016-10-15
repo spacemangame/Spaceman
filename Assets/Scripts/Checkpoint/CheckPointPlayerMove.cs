@@ -74,12 +74,20 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		gameOverReason.text = reason;
 	}
 
-	private void HideAllControls() {
+	public void HideAllControls() {
 		joystick.gameObject.SetActive (false);
 		settings.gameObject.SetActive (false);
 		timerText.gameObject.SetActive (false);
 		boostButton.gameObject.SetActive (false);
 		drugCountText.gameObject.SetActive (false);
+	}
+
+	public void ShowAllControls() {
+		joystick.gameObject.SetActive (true);
+		settings.gameObject.SetActive (true);
+		timerText.gameObject.SetActive (true);
+		boostButton.gameObject.SetActive (true);
+		drugCountText.gameObject.SetActive (true);
 	}
 
 	void Start () {
@@ -123,7 +131,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		} else {
 			noOfCheckpoints++;
 			cTimer.updateTimer (checkpointReward);
-
+			Destroy (other.gameObject);
 			AudioSource[] audios = GetComponents<AudioSource>();
 			audios[0].Play();
 		}
@@ -132,7 +140,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		
 	public void destroyOnTimer(){
 		Destroy (gameObject);
-		if(explosion != null)
+		if (explosion != null)
 			Instantiate (explosion, transform.position, transform.rotation);
 		cTimer.stopTimer = true;
 		OnGameOver ();

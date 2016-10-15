@@ -103,6 +103,14 @@ public class MissionController : MonoBehaviour {
 		fireButton.gameObject.SetActive (false);
 	}
 
+	public void showAllControls() {
+		hpText.gameObject.SetActive (true);
+		pointText.gameObject.SetActive (true);
+		itemText.gameObject.SetActive (true);
+		joystick.gameObject.SetActive (true);
+		settings.gameObject.SetActive (true);
+		fireButton.gameObject.SetActive (true);
+	}
 
 	public void onMissionComplete() {
 
