@@ -19,19 +19,19 @@ public static class DataGenerator
 
 	private static void GenerateGuns(List<Gun> guns) {
 
-		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 1000));
-		guns.Add (new Gun (2, "Assault Rifle HP 8", 8, 400, 4, 10, 20)); 
-		guns.Add (new Gun (3, "Assault Rifle HP 16", 16, 750, 6, 20, 20));
-		guns.Add (new Gun (4, "Assault Rifle HP 20", 20, 1200, 8,  30, 20));
-		guns.Add (new Gun (5, "Assault Rifle HP 30", 30, 2000, 10, 40, 20));
+		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 1000, texture:"Gun2"));
+		guns.Add (new Gun (2, "Assault Rifle HP 8", 8, 400, 4, 10, 20, texture:"Gun2")); 
+		guns.Add (new Gun (3, "Assault Rifle HP 16", 16, 750, 6, 20, 20, texture:"Gun2"));
+		guns.Add (new Gun (4, "Assault Rifle HP 20", 20, 1200, 8,  30, 20, texture:"Gun2"));
+		guns.Add (new Gun (5, "Assault Rifle HP 30", 30, 2000, 10, 40, 20, texture:"Gun2"));
 
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 300, 50, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1)));
-		spaceships.Add(new Spaceship(1, 600, 100, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(2, 1200, 200, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1)));
-		spaceships.Add(new Spaceship(3, 2400, 400, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1)));
+		spaceships.Add(new Spaceship(0, 300, 50, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(1, 600, 100, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(2, 1200, 200, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(3, 2400, 400, 30, new Gun(300, "Primary Gun", 10, -1, -1, 10, -1, -1, "Gun1")));
 	}
 
 

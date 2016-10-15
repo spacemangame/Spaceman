@@ -72,6 +72,10 @@ public class MissionController : MonoBehaviour {
 		// TODO should be an array
 		activeGun = GameController.Instance.profile.spaceship.primaryGun;
 
+		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
+		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
+		fireBtnSprite.sprite = image;
+
 	}
 
 	public void EndSpawningRoutines() {
