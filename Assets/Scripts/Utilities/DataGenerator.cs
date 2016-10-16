@@ -19,7 +19,7 @@ public static class DataGenerator
 
 	private static void GenerateGuns(List<Gun> guns) {
 
-		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 1000, texture:"Gun2"));
+		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 2, texture:"Gun2"));
 		guns.Add (new Gun (2, "Assault Rifle HP 8", 8, 400, 4, 10, 20, texture:"Gun2")); 
 		guns.Add (new Gun (3, "Assault Rifle HP 16", 16, 750, 6, 20, 20, texture:"Gun2"));
 		guns.Add (new Gun (4, "Assault Rifle HP 20", 20, 1200, 8,  30, 20, texture:"Gun2"));

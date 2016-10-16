@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour {
 
 	private bool useInput;
 
-	private Mission mission { get; set; }
+	private MissionController missionController;
+	private Mission mission;
 	Coroutine destabilise { get; set; }
 
 	void Start() {
@@ -35,7 +36,14 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 		useAccelerometer = true;
+
 		mission = GameController.Instance.mission;
+
+		GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
+		if (gameControllerObject != null) {
+			missionController = gameControllerObject.GetComponent<MissionController>();
+		}
+
 		destabilise = StartCoroutine(DestabilisePlayer ());
 	}
 
@@ -45,8 +53,11 @@ public class PlayerController : MonoBehaviour {
 
 	void Update(){
 		checkBoundary ();
+	}
 
-		if (fireButton.canFire && Time.time > nextFire) {
+	void LateUpdate() {
+		if (missionController.HasBullet() && fireButton.canFire && Time.time > nextFire) {
+			missionController.DecreaseBullet ();
 			nextFire = Time.time + fireRate;
 			Instantiate (shot, shotSpawn1.position, shotSpawn1.rotation);
 			Instantiate (shot, shotSpawn2.position, shotSpawn2.rotation);
@@ -62,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 
 			while (true) {
 				
-				if (Random.value <= mission.stabilitliy) {
+				if (Random.value <= missionController.mission.stabilitliy) {
 					useInput = false;
 					rb.AddForce (new Vector3 (
 						Random.Range (-Constant.instabilityFactor, Constant.instabilityFactor), 

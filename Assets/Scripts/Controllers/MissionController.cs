@@ -30,6 +30,7 @@ public class MissionController : MonoBehaviour {
 	public Text splashText;
 
     private bool gameOver;
+	private int activeGunIndex;
     
 	public Mission mission { get; set; }
 
@@ -69,13 +70,10 @@ public class MissionController : MonoBehaviour {
 		item = (GameObject) Resources.Load(mission.item.prefab, typeof(GameObject)); 
 		Helper.addGameObjectCollectible (item, mission.item);
 
-		// TODO should be an array
 		activeGun = GameController.Instance.profile.spaceship.primaryGun;
+		activeGunIndex = 0;
 
-		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
-		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
-		fireBtnSprite.sprite = image;
-
+		UpdateActiveGunImage ();
 	}
 
 	public void EndSpawningRoutines() {
@@ -292,5 +290,50 @@ public class MissionController : MonoBehaviour {
 
 	private void showMessage(string message) {
 		StartCoroutine(Message.show(splashText, message));
+	}
+
+	public bool HasBullet() {
+		return activeGun.currentAmmo != 0;
+	}
+
+	public void DecreaseBullet() {
+		if (activeGun.currentAmmo > 0) {
+			activeGun.currentAmmo--;
+			UpdateBulletCount ();
+		}
+
+		// change to primaryGun
+		if (activeGun.currentAmmo == 0) {
+			showMessage ("No Ammo! Changing to Primary Gun.");
+			activeGunIndex = 0;
+			activeGun = mission.activeGuns [0];
+			UpdateActiveGunImage ();
+		}
+	}
+
+	public void ChangeActiveGun(int indexChange) {
+		int newIndex = (indexChange + activeGunIndex) % mission.activeGuns.Count;
+		while (newIndex < 0) {
+			newIndex += mission.activeGuns.Count;
+		}
+
+		if (newIndex != activeGunIndex && mission.activeGuns[newIndex].currentAmmo != 0) {			
+			activeGunIndex = newIndex;
+			activeGun = mission.activeGuns [activeGunIndex];
+			UpdateActiveGunImage ();
+		}
+	}
+
+	private void UpdateActiveGunImage() {
+		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
+		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
+		fireBtnSprite.sprite = image;
+		UpdateBulletCount ();
+
+	}
+
+	private void UpdateBulletCount() {
+		Text fireBtnBulletCount = fireButton.GetComponentInChildren<Text> ();
+		fireBtnBulletCount.text = activeGun.currentAmmo >= 0 ? activeGun.currentAmmo.ToString() : "∞";
 	}
 }
