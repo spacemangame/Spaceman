@@ -44,13 +44,11 @@ public class GameController : MonoBehaviour {
 
     public void ShowProfileScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 
     public void ReturnToScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 
@@ -61,22 +59,19 @@ public class GameController : MonoBehaviour {
 		mission = GameController.Instance.missions.ElementAt (missionIndex);
 		GameController.Instance.mission = mission;
 
-		_StartMission ();
+		StartMission ();
 	}
 
-	private void _StartMission() {
+	public String GetMissionScene() {
 		if (mission.missionName.StartsWith ("drug", StringComparison.InvariantCultureIgnoreCase)) {
-			SceneManager.LoadScene ("Drug");
+			return "Drug";
 		} else {
-			SceneManager.LoadScene ("Main");
+			return "Main";
 		}	
 	}
 
-	public void StartMission(int missionType) {
-		mission = GameController.Instance.missions.ElementAt (missionType - 1);
-		GameController.Instance.mission = mission;
-		_StartMission ();
+	public void StartMission() {
+		SceneManager.LoadScene (GetMissionScene ());
 	}
 		
-
 }

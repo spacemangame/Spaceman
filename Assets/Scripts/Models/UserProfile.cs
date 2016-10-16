@@ -14,6 +14,8 @@ public class UserProfile {
 	public int clues {set; get;}
 	public List<Gun> guns = new List<Gun>();
 
+	public Gun secondaryGun { get; set; }
+
 	public bool isSoundEnabled { set; get; }
 	public bool isAccelerometerEnabled { get; set;}
 
