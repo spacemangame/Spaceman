@@ -32,42 +32,42 @@ public class Mission {
 
 public class PizzaPickUpMission: Mission {
 	public PizzaPickUpMission() {
-		this.missionName = "PizzaPickup";
+		this.missionName = "Pickup Pizza's";
 		this.type = Constant.Pickup;
 	}
 }
 
 public class PizzaDeliveryMission: Mission {
 	public PizzaDeliveryMission() {
-		this.missionName = "PizzaDelivery";
+		this.missionName = "Delivery Pizza's";
 		this.type = Constant.Transport;
 	}
 }
 
 public class KidPickUpMission: Mission {
 	public KidPickUpMission() {
-		this.missionName = "KidPickup";
+		this.missionName = "Pickup Kids";
 		this.type = Constant.Pickup;
 	}
 }
 
 public class KidDeliveryMission: Mission {
 	public KidDeliveryMission() {
-		this.missionName = "KidDelivery";
+		this.missionName = "Transport Kids";
 		this.type = Constant.Transport;
 	}
 }
 
 public class DrugDeliveryMission: Mission {
 	public DrugDeliveryMission() {
-		this.missionName = "DrugDelivery";
+		this.missionName = "Drug Delivery";
 		this.type = Constant.Transport;
 	}
 }
 
 public class DrugPickupMission: Mission {
 	public DrugPickupMission() {
-		this.missionName = "DrugPickup";
+		this.missionName = "Drug Pickup";
 		this.type = Constant.Pickup;
 	}
 }
