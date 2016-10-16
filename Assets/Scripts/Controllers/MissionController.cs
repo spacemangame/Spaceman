@@ -176,7 +176,7 @@ public class MissionController : MonoBehaviour {
 
 			for (int i=0; i < mission.wave.obstacleCount; i++) {
 				
-				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
+				GameObject hazard = hazards [Random.Range (0, hazards.Length-1)];
 				Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
 
@@ -198,7 +198,7 @@ public class MissionController : MonoBehaviour {
 
 		for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
 	
-			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
+			GameObject collectible = collectibles [Random.Range (0, collectibles.Length-1)];
 			Vector3 spawnPosition;
 
 
