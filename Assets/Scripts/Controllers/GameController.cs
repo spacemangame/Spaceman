@@ -62,16 +62,8 @@ public class GameController : MonoBehaviour {
 		StartMission ();
 	}
 
-	public String GetMissionScene() {
-		if (mission.missionName.StartsWith ("drug", StringComparison.InvariantCultureIgnoreCase)) {
-			return "Drug";
-		} else {
-			return "Main";
-		}	
-	}
-
 	public void StartMission() {
-		SceneManager.LoadScene (GetMissionScene ());
+		SceneManager.LoadScene (mission.scene);
 	}
 
 }

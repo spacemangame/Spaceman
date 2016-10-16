@@ -22,9 +22,11 @@ public class Mission {
 	public Collectible item; // the item that needs to be delivered/picked up
 	public int targetItemCount;
 	public int pickedItemCount; // number of medals: (pickedItemCount / targetItemCount) * maxMedalEarned
+	public string scene;
 
 	public Mission() {
 		this.enemyGunHP = 0;
+		this.scene = Constant.defaultScene;
 	}
 }
 

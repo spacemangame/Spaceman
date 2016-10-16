@@ -66,7 +66,7 @@ public class MissionPanelController : MonoBehaviour {
 		GameController.Instance.mission = mission;
 
 		// If scene is not drug mission then show modal to select guns
-		if (GameController.Instance.GetMissionScene () != "Drug") {
+		if (mission.scene != "Drug") {
 			ShowGunSelection ();
 		} else {
 			GameController.Instance.StartMission ();

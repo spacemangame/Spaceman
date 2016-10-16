@@ -180,6 +180,7 @@ public static class DataGenerator
 		//enemyHP += 5;
 
 		var drugMision = new DrugPickupMission ();
+		drugMision.scene = "Drug";
 		drugMision.activeGuns.Add (profile.spaceship.primaryGun);
 		drugMision.currentHp = profile.spaceship.hp;
 		drugMision.id = 3;
