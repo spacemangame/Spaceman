@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start() {
-		
+
 		if (!GameController.Instance.isFirstRun) {
 			GameController.Instance.isFirstRun = true;
 			DataGenerator.GenerateShop ();
@@ -42,39 +42,36 @@ public class GameController : MonoBehaviour {
 		SceneManager.LoadScene(screen);
 	}
 
-    public void ShowProfileScreen(string screen)
-    {
-        SceneManager.LoadScene(screen);
-    }
+	public void ShowProfileScreen(string screen)
+	{
+		SceneManager.LoadScene(screen);
+	}
 
-    public void ReturnToScreen(string screen)
-    {
-        SceneManager.LoadScene(screen);
-    }
+	public void ReturnToScreen(string screen)
+	{
+		SceneManager.LoadScene(screen);
+	}
 
-    public void RestartMission() {
+	public void RestartMission() {
 		GameController.Instance.missions = DataGenerator.GenerateMissions();
 		int missionIndex = GameController.Instance.mission.id - 1;
 
 		mission = GameController.Instance.missions.ElementAt (missionIndex);
 		GameController.Instance.mission = mission;
 
-		_StartMission ();
+		StartMission ();
 	}
 
-	private void _StartMission() {
+	public String GetMissionScene() {
 		if (mission.missionName.StartsWith ("drug", StringComparison.InvariantCultureIgnoreCase)) {
-			SceneManager.LoadScene ("Drug");
+			return "Drug";
 		} else {
-			SceneManager.LoadScene ("My Main");
+			return "Main";
 		}	
 	}
 
-	public void StartMission(int missionType) {
-		mission = GameController.Instance.missions.ElementAt (missionType - 1);
-		GameController.Instance.mission = mission;
-		_StartMission ();
+	public void StartMission() {
+		SceneManager.LoadScene (GetMissionScene ());
 	}
-		
 
 }
