@@ -10,8 +10,9 @@ public class Gun {
 	public int price {set; get;}
 	public int ammoPrice {set; get;}
 	public int minMedal {set; get;}
+	public string texture { set; get; }
 
-	public Gun (int id, string name, int hitPoint, int price, int ammoPrice, int minMedal,  int ammo, int maxAmmo = Constant.maxAmmo) {
+	public Gun (int id, string name, int hitPoint, int price, int ammoPrice, int minMedal,  int ammo, int maxAmmo = Constant.maxAmmo, string texture = Constant.gunTexture) {
 		this.id = id;
 		this.name = name;
 		this.hitPoint = hitPoint;
@@ -21,5 +22,6 @@ public class Gun {
 		this.ammo = ammo;
 		this.currentAmmo = ammo;
 		this.maxAmmo = maxAmmo;
+		this.texture = texture;
 	}
 }

@@ -21,6 +21,8 @@ public static class Constant {
 	public const string Transport = "Transport";
 	public const int waveItemCount = Constant.targetItemCount/ Constant.waveCount;
 	public const float instabilityFactor = 2.0f;
+	public const string gunTexture = "Gun1";
+	public const string spaceshipTexture = "Spaceship1";
 }
 
 
