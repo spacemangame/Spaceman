@@ -44,13 +44,11 @@ public class GameController : MonoBehaviour {
 
     public void ShowProfileScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 
     public void ReturnToScreen(string screen)
     {
-        //GameController.Instance.missions = DataGenerator.GenerateMissions();
         SceneManager.LoadScene(screen);
     }
 

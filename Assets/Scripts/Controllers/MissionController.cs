@@ -72,6 +72,10 @@ public class MissionController : MonoBehaviour {
 		// TODO should be an array
 		activeGun = GameController.Instance.profile.spaceship.primaryGun;
 
+		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
+		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
+		fireBtnSprite.sprite = image;
+
 	}
 
 	public void EndSpawningRoutines() {
@@ -103,6 +107,14 @@ public class MissionController : MonoBehaviour {
 		fireButton.gameObject.SetActive (false);
 	}
 
+	public void showAllControls() {
+		hpText.gameObject.SetActive (true);
+		pointText.gameObject.SetActive (true);
+		itemText.gameObject.SetActive (true);
+		joystick.gameObject.SetActive (true);
+		settings.gameObject.SetActive (true);
+		fireButton.gameObject.SetActive (true);
+	}
 
 	public void onMissionComplete() {
 
