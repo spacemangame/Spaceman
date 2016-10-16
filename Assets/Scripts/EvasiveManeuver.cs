@@ -13,10 +13,24 @@ public class EvasiveManeuver : MonoBehaviour {
 	private Rigidbody rb;
 	private float currentSpeed;
 	public Boundary boundary;
+	private Obstacle obstacle;
+	private bool moveTowardPlayer;
+
+	private GameObject player;
 
 	void Start () {
-		StartCoroutine (Evade ());
+		player =  GameObject.FindGameObjectWithTag("Player");
+
 		rb = GetComponent<Rigidbody> ();
+
+		obstacle = GetComponent<GameObjectObstacle> ().obstacle;
+		if (obstacle != null && obstacle.isAI) {
+			moveTowardPlayer = true;
+		} else {
+			moveTowardPlayer = false;
+			StartCoroutine (Evade ());
+		}
+			
 		currentSpeed = rb.velocity.z;
 	}
 
@@ -32,9 +46,15 @@ public class EvasiveManeuver : MonoBehaviour {
 
 
 	void FixedUpdate () {
-		float newMeneuverX = Mathf.MoveTowards (rb.velocity.x, targetManeuver, Time.deltaTime * smoothing);
-		float newMeneuverY = Mathf.MoveTowards (rb.velocity.y, targetManeuver, Time.deltaTime * smoothing);
-		rb.velocity = new Vector3 (newMeneuverX, newMeneuverY, currentSpeed);
+		if (moveTowardPlayer && player != null) {
+			rb.position = Vector3.MoveTowards(rb.position, player.transform.position, obstacle.velocity * Time.deltaTime);
+			Debug.Log (rb.velocity);
+		} else {
+			float newMeneuverX = Mathf.MoveTowards (rb.velocity.x, targetManeuver, Time.deltaTime * smoothing);
+			float newMeneuverY = Mathf.MoveTowards (rb.velocity.y, targetManeuver, Time.deltaTime * smoothing);
+			rb.velocity = new Vector3 (newMeneuverX, newMeneuverY, currentSpeed);
+		}
+
 		rb.position = new Vector3 (
 			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
 			Mathf.Clamp(rb.position.y, boundary.yMin, boundary.yMax),

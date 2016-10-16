@@ -85,6 +85,7 @@ public static class DataGenerator
 		kidDeliveryMission.obstacles.Add (obs3);
 
 		Alien alien = new Alien (4, enemyHP);
+		alien.isAI = true;
 		alien.prefab = "Alien";
 		kidDeliveryMission.obstacles.Add (alien);
 
