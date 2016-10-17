@@ -19,6 +19,7 @@ public class GunSelectController: MonoBehaviour
 	public Color SelectedColor;
 
 	public Gun SelectedGun { get; set; }
+
 	void Start() {
 
 		//TODO: Uncomment this when gun upgrade is implemented
@@ -42,7 +43,9 @@ public class GunSelectController: MonoBehaviour
 
 			GunGameObjects.Add (gunItem);
 
-			//controller.Image.sprite = gun.image;
+			Sprite image = Resources.Load<Sprite> ("Images/" + gun.texture);
+			controller.Image.sprite = image;
+
 			controller.gun = gun;
 			controller.gunSelectController = this;
 

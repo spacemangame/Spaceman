@@ -85,6 +85,7 @@ public static class DataGenerator
 		kidDeliveryMission.obstacles.Add (obs3);
 
 		Alien alien = new Alien (4, enemyHP);
+		alien.isAI = true;
 		alien.prefab = "Alien";
 		kidDeliveryMission.obstacles.Add (alien);
 
@@ -179,6 +180,7 @@ public static class DataGenerator
 		//enemyHP += 5;
 
 		var drugMision = new DrugPickupMission ();
+		drugMision.scene = "Drug";
 		drugMision.activeGuns.Add (profile.spaceship.primaryGun);
 		drugMision.currentHp = profile.spaceship.hp;
 		drugMision.id = 3;

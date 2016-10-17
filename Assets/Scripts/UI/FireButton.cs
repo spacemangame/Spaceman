@@ -3,25 +3,14 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public enum SwipeDirection {
-	None = 0,
-	Left = 1,
-	Right = 2,
-	Up = 4,
-	Down = 8,
-	LeftDown = 9,
-	LeftUp = 5,
-	RightDown = 10,
-	RightUp = 6
-}
-
-
 public class FireButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IDragHandler {
 
 	private bool touched;
 	private int pointerID;
 
+	public float swipeThreshold;
 	public bool canFire { set; get;}
+
 
 	private MissionController missionController;
 
@@ -53,7 +42,9 @@ public class FireButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler,
 		if (ped.pointerId == pointerID) {
 			touched = false;
 
-			if (direction.x != 0.0f) {
+			if (Mathf.Abs(direction.x) > swipeThreshold ) {
+				Debug.Log ("direction is : ");
+				Debug.Log (direction.x);
 				canFire = false;
 				if(direction.x > 0.0f){
 					missionController.ChangeActiveGun (1);
@@ -70,8 +61,7 @@ public class FireButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler,
 	public void OnDrag (PointerEventData ped) {
 		if (ped.pointerId == pointerID) {
 			Vector2 currentPosition = ped.position;
-			Vector2 directionRaw = currentPosition - origin;
-			direction = directionRaw.normalized;
+			direction = currentPosition - origin;
 		}
 	}
 

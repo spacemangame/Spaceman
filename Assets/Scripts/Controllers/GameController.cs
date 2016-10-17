@@ -54,24 +54,16 @@ public class GameController : MonoBehaviour {
 
 	public void RestartMission() {
 		GameController.Instance.missions = DataGenerator.GenerateMissions();
-		int missionIndex = GameController.Instance.mission.id - 1;
 
-		mission = GameController.Instance.missions.ElementAt (missionIndex);
+		mission = GameController.Instance.missions.Find(x => x.id == GameController.Instance.mission.id);
+
 		GameController.Instance.mission = mission;
 
 		StartMission ();
 	}
 
-	public String GetMissionScene() {
-		if (mission.missionName.StartsWith ("drug", StringComparison.InvariantCultureIgnoreCase)) {
-			return "Drug";
-		} else {
-			return "Main";
-		}	
-	}
-
 	public void StartMission() {
-		SceneManager.LoadScene (GetMissionScene ());
+		SceneManager.LoadScene (mission.scene);
 	}
 
 }
