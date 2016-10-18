@@ -8,12 +8,13 @@ public class SpaceshipUpgradeController : MonoBehaviour {
     public Text gunHP;
     public Text minMedals;
 	public Text price;
+	public Image SpaceshipImage;
+
 	public Button upgradeButton;
 	private Spaceship nextUpgradeSpaceship;
 
 	void Start() {
 		Spaceship currentSpaceship = GameController.Instance.profile.spaceship;
-		Debug.Log (currentSpaceship.id);
 		int spaceshipCount = GameController.Instance.shop.spaceships.Count;
 		for (int i = 0; i < spaceshipCount; i++) {
 			nextUpgradeSpaceship = GameController.Instance.shop.spaceships [i];
@@ -34,6 +35,11 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		gunHP.text = nextUpgradeSpaceship.primaryGun.hitPoint.ToString();
 		minMedals.text = nextUpgradeSpaceship.minMedals.ToString();
 		price.text = nextUpgradeSpaceship.price.ToString();
+
+
+		Sprite image = Resources.Load<Sprite> ("Images/" + nextUpgradeSpaceship.texture);
+		SpaceshipImage.sprite = image;
+
 		if ((GameController.Instance.profile.coins < nextUpgradeSpaceship.price) || GameController.Instance.profile.medals < nextUpgradeSpaceship.minMedals) {
 			//upgradeButton.GetComponent<Button> ().interactable = false;
 			upgradeButton.gameObject.SetActive(false);
