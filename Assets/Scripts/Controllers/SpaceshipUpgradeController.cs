@@ -13,7 +13,6 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 
 	void Start() {
 		Spaceship currentSpaceship = GameController.Instance.profile.spaceship;
-		Debug.Log (currentSpaceship.id);
 		int spaceshipCount = GameController.Instance.shop.spaceships.Count;
 		for (int i = 0; i < spaceshipCount; i++) {
 			nextUpgradeSpaceship = GameController.Instance.shop.spaceships [i];

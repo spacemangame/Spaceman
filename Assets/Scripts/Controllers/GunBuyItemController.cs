@@ -9,6 +9,7 @@ public class GunBuyItemController: MonoBehaviour
 	public Text HPText;
 	public Text AmmoText;
 	public Text Name;
+	public Text Price;
 	public Button Buy;
 
 	public Gun gun { get; set; }
@@ -19,8 +20,16 @@ public class GunBuyItemController: MonoBehaviour
 		Name.text = gun.name;
 		HPText.text = "Hit Point : " + gun.hitPoint;
 		AmmoText.text = "Ammo : " + gun.ammo;
+		Price.text = "Price : " + gun.price;
 
 		Button buyBtn = GetComponent<Button> ();
+		if ((GameController.Instance.profile.coins < gun.price) || GameController.Instance.profile.medals < gun.minMedal) {
+			buyBtn.gameObject.SetActive (false);
+		}
+		buyBtn.onClick.AddListener(() => OnBuySelect());
 	}
-		
+
+	public void OnBuySelect() {
+		gunBuyController.Buy (gun);
+	}
 }
