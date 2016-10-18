@@ -25,7 +25,7 @@ public class GunBuyController: MonoBehaviour
 
 		GameObject gunPrefabItem = (GameObject) Resources.Load("GunBuyListItem", typeof(GameObject));
 
-		foreach(Gun gun in GunsToBuy){
+		foreach(Gun gun in GunsToBuy) {
 			
 			Debug.Log ("Inside foreach");
 			GameObject gunItem = Instantiate(gunPrefabItem) as GameObject;

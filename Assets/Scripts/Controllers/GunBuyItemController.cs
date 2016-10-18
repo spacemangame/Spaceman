@@ -20,10 +20,11 @@ public class GunBuyItemController: MonoBehaviour
 		Name.text = gun.name;
 		HPText.text = "Hit Point : " + gun.hitPoint;
 		AmmoText.text = "Ammo : " + gun.ammo;
-		Price.text = "Price : " + gun.price;
+		Price.text = "Buy " + gun.price;
 
 		if ((GameController.Instance.profile.coins < gun.price) || GameController.Instance.profile.medals < gun.minMedal) {
-			Buy.gameObject.SetActive (false);
+			Buy.enabled = false;
+			//Buy.gameObject.SetActive (false);
 		} else {
 			Buy.onClick.AddListener (() => OnBuySelect ());
 		}
