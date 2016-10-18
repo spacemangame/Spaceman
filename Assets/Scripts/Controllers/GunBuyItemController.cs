@@ -22,11 +22,11 @@ public class GunBuyItemController: MonoBehaviour
 		AmmoText.text = "Ammo : " + gun.ammo;
 		Price.text = "Price : " + gun.price;
 
-		Button buyBtn = GetComponent<Button> ();
 		if ((GameController.Instance.profile.coins < gun.price) || GameController.Instance.profile.medals < gun.minMedal) {
-			buyBtn.gameObject.SetActive (false);
+			Buy.gameObject.SetActive (false);
+		} else {
+			Buy.onClick.AddListener (() => OnBuySelect ());
 		}
-		buyBtn.onClick.AddListener(() => OnBuySelect());
 	}
 
 	public void OnBuySelect() {
