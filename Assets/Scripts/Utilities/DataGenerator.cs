@@ -200,7 +200,7 @@ public static class DataGenerator
 	}
 
 	private static Mission GetBonusMission() {
-		var kidpickupMission = new KidPickUpMission ();
+		var kidpickupMission = new BonusMission ();
 		kidpickupMission.id = 20;
 
 		SetMissionParameters (kidpickupMission);

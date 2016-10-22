@@ -74,7 +74,7 @@ public class DrugPickupMission: Mission {
 
 public class BonusMission : Mission {
 	public BonusMission() {
-		this.missionName = "Collect as Many Coins as you can";
+		this.missionName = "Bonus Mission";
 		this.type = Constant.Bonus;
 	}
 }

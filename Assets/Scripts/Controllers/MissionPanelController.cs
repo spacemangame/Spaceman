@@ -18,10 +18,11 @@ public class MissionPanelController : MonoBehaviour {
 
 	public void ShowGunSelection() {
 
+		/*
 		if (GameController.Instance.profile.guns.Count == 0) {
 			GameController.Instance.StartMission ();
 			return;
-		} 
+		} */
 
 		missionSelect.SetActive (false);
 		gunSelect.SetActive (true);
