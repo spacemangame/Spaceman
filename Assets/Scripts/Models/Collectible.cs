@@ -32,5 +32,7 @@ public class Kid: Collectible {
 }
 
 public class Drug: Collectible {
-	public Drug(int id, int value) : base(id, value){}
+	public Drug(int id, int value) : base(id, value){
+		this.prefab = "Kid";
+	}
 }

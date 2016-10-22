@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// shoot secondary
-		if (mc.HasBullet(false) && secondaryFireButton.canFire && Time.time > nextFireSecondary) {
+		if (mission.secondaryGun != null && mc.HasBullet(false) && secondaryFireButton.canFire && Time.time > nextFireSecondary) {
 			nextFireSecondary = Time.time + mc.secondaryGun.reloadTime;
 			shootBullet (false);
 			mc.DecreaseBullet (false);

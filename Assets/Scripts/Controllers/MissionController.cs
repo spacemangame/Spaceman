@@ -73,11 +73,15 @@ public class MissionController : MonoBehaviour {
 
 		primaryGun = GameController.Instance.profile.spaceship.primaryGun;
 		primaryGun.currentAmmo = primaryGun.ammo;
-		secondaryGun = mission.secondaryGun;
-		secondaryGun.currentAmmo = secondaryGun.ammo;
-
 		UpdateActiveGunImages (true);
-		UpdateActiveGunImages (false);
+
+		if (mission.secondaryGun != null) {
+			secondaryGun = mission.secondaryGun;
+			secondaryGun.currentAmmo = secondaryGun.ammo;
+			UpdateActiveGunImages (false);
+		} else {
+			fireButtonSecondary.gameObject.SetActive(false);
+		}	
 	}
 
 	public void EndSpawningRoutines() {

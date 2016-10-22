@@ -22,9 +22,8 @@ public class GunBuyItemController: MonoBehaviour
 		AmmoText.text = "Ammo : " + gun.ammo;
 		Price.text = "Buy " + gun.price;
 
-		if ((GameController.Instance.profile.coins < gun.price) || GameController.Instance.profile.medals < gun.minMedal) {
-			Buy.enabled = false;
-			//Buy.gameObject.SetActive (false);
+		if ((GameController.Instance.profile.coins < gun.price)) {
+			Buy.interactable = false;
 		} else {
 			Buy.onClick.AddListener (() => OnBuySelect ());
 		}

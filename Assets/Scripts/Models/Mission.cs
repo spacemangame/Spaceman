@@ -40,7 +40,7 @@ public class PizzaPickUpMission: Mission {
 
 public class PizzaDeliveryMission: Mission {
 	public PizzaDeliveryMission() {
-		this.missionName = "Delivery Pizza's";
+		this.missionName = "Deliver Pizza's";
 		this.type = Constant.Transport;
 	}
 }
@@ -70,5 +70,12 @@ public class DrugPickupMission: Mission {
 	public DrugPickupMission() {
 		this.missionName = "Drug Pickup";
 		this.type = Constant.Pickup;
+	}
+}
+
+public class BonusMission : Mission {
+	public BonusMission() {
+		this.missionName = "Collect as Many Coins as you can";
+		this.type = Constant.Bonus;
 	}
 }
