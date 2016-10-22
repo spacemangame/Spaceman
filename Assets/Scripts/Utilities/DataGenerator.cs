@@ -27,10 +27,10 @@ public static class DataGenerator
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 300, 50, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(1, 500, 100, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(2, 1000, 200, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(3, 2000, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, "Gun1")));
 	}
 
 
@@ -125,7 +125,7 @@ public static class DataGenerator
 				mission.item = new Pizza (2, collectibleValue);
 			}
 
-			mission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  mission.waveCount/mission.targetItemCount, Constant.spawnWait);
+			mission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  mission.targetItemCount / mission.waveCount, Constant.spawnWait);
 			mission.currentCoins = collectibleValue * mission.targetItemCount;
 
 
@@ -150,7 +150,7 @@ public static class DataGenerator
 				mission.item = new Pizza (2, collectibleValue);
 			}
 
-			mission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  mission.waveCount/mission.targetItemCount, Constant.spawnWait);
+			mission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  mission.targetItemCount / mission.waveCount, Constant.spawnWait);
 
 		} else if (mission.type == Constant.Bonus) {
 
@@ -162,7 +162,7 @@ public static class DataGenerator
 			mission.pickedItemCount = 0;
 			mission.targetItemCount = 100;
 
-			mission.wave = new Wave (0, 0 ,  mission.waveCount/mission.targetItemCount, Constant.spawnWait);
+			mission.wave = new Wave (0, 0 ,  mission.targetItemCount / mission.waveCount, Constant.spawnWait);
 
 			mission.maxMedalEarned = 0;
 		}
