@@ -41,8 +41,7 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		SpaceshipImage.sprite = image;
 
 		if ((GameController.Instance.profile.coins < nextUpgradeSpaceship.price) || GameController.Instance.profile.medals < nextUpgradeSpaceship.minMedals) {
-			//upgradeButton.GetComponent<Button> ().interactable = false;
-			upgradeButton.gameObject.SetActive(false);
+			upgradeButton.interactable = false;
 		}
 	}	
 
