@@ -5,12 +5,14 @@ public class DestoyByContact : MonoBehaviour {
 	public GameObject explosion;
 	public GameObject playerExplosion;
 	private MissionController missionController;
+	private Mission mission;
 
 	void Start(){
         GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
 		if (gameControllerObject != null) {
             missionController = gameControllerObject.GetComponent<MissionController>();
 		}
+		mission = GameController.Instance.mission;
 	}
 
 	/**
@@ -45,7 +47,7 @@ public class DestoyByContact : MonoBehaviour {
 			missionController.DecreaseHP (hpValue);
 			ChangeColor (other.gameObject, (float)missionController.getHP(), (float)GameController.Instance.profile.spaceship.hp);
 
-			if (missionController.getHP () <= 0 || (missionController.mission.type == Constant.Transport && missionController.getItemCount() <= 0)) {
+			if (missionController.getHP () <= 0 || (mission.type == Constant.Transport && missionController.getItemCount() <= 0)) {
 				Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
 				missionController.GameOver ();
 				Destroy (other.gameObject);
@@ -54,19 +56,27 @@ public class DestoyByContact : MonoBehaviour {
 
 		}
 
-		if (other.tag == "bolt") { // 2.1
-			Instantiate (explosion, transform.position, transform.rotation);
-			Destroy (other.gameObject);
-
-			Obstacle obstacle = Helper.getObstacleFromGameObject (gameObject);
-			int newHP = obstacle.currentHp - missionController.activeGun.hitPoint;
-			ChangeColor (gameObject, (float)obstacle.currentHp, (float)newHP);
-			obstacle.currentHp = newHP;
-			if (obstacle.currentHp <= 0) {
-				Destroy (gameObject);
-			}
+		if (other.tag == "primaryBolt") { // 2.1
+			CollideBullet(other, gameObject, missionController.primaryGun.hitPoint);
 		}
 
+		if (other.tag == "secondaryBolt") { // 2.1
+			CollideBullet(other, gameObject, missionController.secondaryGun.hitPoint);
+		}
+
+	}
+
+	private void CollideBullet(Collider other, GameObject go, int hitPoint) {
+		Instantiate (explosion, transform.position, transform.rotation);
+		Destroy (other.gameObject);
+
+		Obstacle obstacle = Helper.getObstacleFromGameObject (go);
+		int newHP = obstacle.currentHp - hitPoint;
+		ChangeColor (gameObject, (float)obstacle.currentHp, (float)newHP);
+		obstacle.currentHp = newHP;
+		if (obstacle.currentHp <= 0) {
+			Destroy (gameObject);
+		}
 	}
 
 	private void ChangeColor(GameObject gm, float currentHp, float maxHp) {

@@ -24,6 +24,9 @@ public static class Constant {
 	public const string gunTexture = "Gun1";
 	public const string spaceshipTexture = "Spaceship1";
 	public const string defaultScene = "Main";
+	public const float reloadTime = 0.25f;
+	public const string gunBolt = "Bolt";
+	public const string secondaryGunBolt = "Secondary Bolt";
 }
 
 

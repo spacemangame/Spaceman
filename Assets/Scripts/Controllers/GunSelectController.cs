@@ -65,7 +65,7 @@ public class GunSelectController: MonoBehaviour
 	}
 
 	public void OnGunSelect() {
-		GameController.Instance.mission.activeGuns.Add (SelectedGun);
+		GameController.Instance.mission.secondaryGun = SelectedGun;
 
 		GameController.Instance.profile.secondaryGun = SelectedGun;
 		UserProfile.Save ();

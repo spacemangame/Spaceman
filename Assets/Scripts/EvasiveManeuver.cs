@@ -48,7 +48,6 @@ public class EvasiveManeuver : MonoBehaviour {
 	void FixedUpdate () {
 		if (moveTowardPlayer && player != null) {
 			rb.position = Vector3.MoveTowards(rb.position, player.transform.position, obstacle.velocity * Time.deltaTime);
-			Debug.Log (rb.velocity);
 		} else {
 			float newMeneuverX = Mathf.MoveTowards (rb.velocity.x, targetManeuver, Time.deltaTime * smoothing);
 			float newMeneuverY = Mathf.MoveTowards (rb.velocity.y, targetManeuver, Time.deltaTime * smoothing);

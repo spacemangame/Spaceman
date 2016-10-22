@@ -16,7 +16,8 @@ public class Mission {
 	public int currentHp;
 	public int currentCoins;
 	public int enemyGunHP { get; set; }
-	public List<Gun> activeGuns = new List<Gun>();
+	public Gun primaryGun {get; set;}
+	public Gun secondaryGun {get;set;}
 	public List<Obstacle> obstacles = new List<Obstacle>();
 	public List<Collectible> collectibles = new List<Collectible>();
 	public Collectible item; // the item that needs to be delivered/picked up

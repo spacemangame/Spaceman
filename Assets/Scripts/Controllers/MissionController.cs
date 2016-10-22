@@ -9,7 +9,8 @@ public class MissionController : MonoBehaviour {
 	public GameObject[] collectibles { get; set; }
 	public GameObject item { get;set;}
 
-	public Gun activeGun { get; set;}
+	public Gun primaryGun { get; set;}
+	public Gun secondaryGun { get; set;}
 	public Vector3 spawnValues; 
 
 	public float startWait;
@@ -19,7 +20,8 @@ public class MissionController : MonoBehaviour {
 	public Text itemText;
 	public Image settings;
 	public Image joystick;
-	public Image fireButton;
+	public Image fireButtonPrimary;
+	public Image fireButtonSecondary;
 
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
@@ -30,9 +32,8 @@ public class MissionController : MonoBehaviour {
 	public Text splashText;
 
     private bool gameOver;
-	private int activeGunIndex;
     
-	public Mission mission { get; set; }
+	private Mission mission;
 
 	Coroutine obstacleRoutine { get; set;}
 	Coroutine gameStatusRoutine {get; set;}
@@ -70,10 +71,13 @@ public class MissionController : MonoBehaviour {
 		item = (GameObject) Resources.Load(mission.item.prefab, typeof(GameObject)); 
 		Helper.addGameObjectCollectible (item, mission.item);
 
-		activeGun = GameController.Instance.profile.spaceship.primaryGun;
-		activeGunIndex = 0;
+		primaryGun = GameController.Instance.profile.spaceship.primaryGun;
+		primaryGun.currentAmmo = primaryGun.ammo;
+		secondaryGun = mission.secondaryGun;
+		secondaryGun.currentAmmo = secondaryGun.ammo;
 
-		UpdateActiveGunImage ();
+		UpdateActiveGunImages (true);
+		UpdateActiveGunImages (false);
 	}
 
 	public void EndSpawningRoutines() {
@@ -102,7 +106,8 @@ public class MissionController : MonoBehaviour {
 		itemText.gameObject.SetActive (false);
 		joystick.gameObject.SetActive (false);
 		settings.gameObject.SetActive (false);
-		fireButton.gameObject.SetActive (false);
+		fireButtonPrimary.gameObject.SetActive (false);
+		fireButtonSecondary.gameObject.SetActive (false);
 	}
 
 	public void showAllControls() {
@@ -111,7 +116,8 @@ public class MissionController : MonoBehaviour {
 		itemText.gameObject.SetActive (true);
 		joystick.gameObject.SetActive (true);
 		settings.gameObject.SetActive (true);
-		fireButton.gameObject.SetActive (true);
+		fireButtonPrimary.gameObject.SetActive (true);
+		fireButtonSecondary.gameObject.SetActive (true);
 	}
 
 	public void onMissionComplete() {
@@ -292,48 +298,52 @@ public class MissionController : MonoBehaviour {
 		StartCoroutine(Message.show(splashText, message));
 	}
 
-	public bool HasBullet() {
-		return activeGun.currentAmmo != 0;
-	}
-
-	public void DecreaseBullet() {
-		if (activeGun.currentAmmo > 0) {
-			activeGun.currentAmmo--;
-			UpdateBulletCount ();
+	public void DecreaseBullet(bool isPrimary) {
+		Gun currGun = isPrimary ? primaryGun : secondaryGun;
+		if (currGun.currentAmmo > 0) {
+			currGun.currentAmmo--;
+			UpdateBulletCount (isPrimary);
 		}
 
-		// change to primaryGun
-		if (activeGun.currentAmmo == 0) {
-			showMessage ("No Ammo! Changing to Primary Gun.");
-			activeGunIndex = 0;
-			activeGun = mission.activeGuns [0];
-			UpdateActiveGunImage ();
+		if (currGun.currentAmmo == 0) {
+			Image fb = isPrimary ? fireButtonPrimary : fireButtonSecondary;
+			fb.gameObject.SetActive (false);
 		}
 	}
 
-	public void ChangeActiveGun(int indexChange) {
-		int newIndex = (indexChange + activeGunIndex) % mission.activeGuns.Count;
-		while (newIndex < 0) {
-			newIndex += mission.activeGuns.Count;
+	private void UpdateBulletCount(bool isPrimary) {
+		Text textCount;
+		Gun currGun;
+		if (isPrimary) {
+			textCount = fireButtonPrimary.GetComponentInChildren<Text> ();
+			currGun = primaryGun;
+		} else {
+			textCount = fireButtonSecondary.GetComponentInChildren<Text> ();
+			currGun = secondaryGun;
 		}
-
-		if (newIndex != activeGunIndex && mission.activeGuns[newIndex].currentAmmo != 0) {			
-			activeGunIndex = newIndex;
-			activeGun = mission.activeGuns [activeGunIndex];
-			UpdateActiveGunImage ();
-		}
+		textCount.text = currGun.currentAmmo >= 0 ? currGun.currentAmmo.ToString() : "∞";
 	}
 
-	private void UpdateActiveGunImage() {
-		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
-		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
+	private void UpdateActiveGunImages(bool isPrimary) {
+		Sprite image;
+		Image fireBtnSprite;
+		if (isPrimary) {
+			image = Resources.Load<Sprite> ("Images/" + primaryGun.texture);
+			fireBtnSprite = fireButtonPrimary.GetComponentInChildren<Image> ();
+		} else {
+			image = Resources.Load<Sprite> ("Images/" + secondaryGun.texture);
+			fireBtnSprite = fireButtonSecondary.GetComponentInChildren<Image> ();
+		}
+
 		fireBtnSprite.sprite = image;
-		UpdateBulletCount ();
+		UpdateBulletCount (isPrimary);
 
 	}
 
-	private void UpdateBulletCount() {
-		Text fireBtnBulletCount = fireButton.GetComponentInChildren<Text> ();
-		fireBtnBulletCount.text = activeGun.currentAmmo >= 0 ? activeGun.currentAmmo.ToString() : "∞";
+	public bool HasBullet(bool isPrimary) {
+		if (isPrimary) {
+			return primaryGun.currentAmmo != 0;
+		}
+		return secondaryGun.currentAmmo != 0;
 	}
 }

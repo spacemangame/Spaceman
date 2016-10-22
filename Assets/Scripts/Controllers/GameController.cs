@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour {
 		GameController.Instance.missions = DataGenerator.GenerateMissions();
 
 		mission = GameController.Instance.missions.Find(x => x.id == GameController.Instance.mission.id);
+		mission.secondaryGun = GameController.Instance.profile.secondaryGun;
 
 		GameController.Instance.mission = mission;
 
