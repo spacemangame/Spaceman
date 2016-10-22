@@ -4,12 +4,14 @@ using System.Collections;
 public class DestroyCollectible : MonoBehaviour {
 
 	private MissionController missionController;
+	private Mission mission;
 
 	void Start(){
 		GameObject gameControllerObject = GameObject.FindWithTag ("MissionController");
 		if (gameControllerObject != null) {
             missionController = gameControllerObject.GetComponent<MissionController>();
 		}
+		mission = GameController.Instance.mission;
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -20,7 +22,7 @@ public class DestroyCollectible : MonoBehaviour {
 		missionController.AddPoints(collectible.value);
 
 		// if the collectible is item, addItem
-		if (missionController.mission.item.GetType ().Name == collectible.GetType ().Name) {
+		if (mission.item.GetType ().Name == collectible.GetType ().Name) {
 			missionController.AddItem ();
 		}
 

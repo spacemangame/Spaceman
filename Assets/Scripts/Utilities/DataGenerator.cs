@@ -18,19 +18,18 @@ public static class DataGenerator
 	}
 
 	private static void GenerateGuns(List<Gun> guns) {
-
-		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 40, texture:"Gun2"));
-		guns.Add (new Gun (2, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2")); 
-		guns.Add (new Gun (3, "Assault Rifle HP 8", 8, 400, 8, 20, 30, texture:"Gun2"));
-		guns.Add (new Gun (4, "Assault Rifle HP 16", 16, 800, 16,  30, 25, texture:"Gun2"));
-		guns.Add (new Gun (5, "Assault Rifle HP 30", 30, 1500, 30, 40, 20, texture:"Gun2"));
+		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 40, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (2, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.secondaryGunBolt)); 
+		guns.Add (new Gun (3, "Assault Rifle HP 8", 8, 400, 8, 20, 30, texture:"Gun2",  bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (4, "Assault Rifle HP 16", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (5, "Assault Rifle HP 30", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, "Gun1")));
-		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, "Gun1")));
+		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, texture:"Gun1")));
+		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, texture:"Gun1")));
+		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, texture:"Gun1")));
+		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, texture:"Gun1")));
 	}
 
 
@@ -76,7 +75,6 @@ public static class DataGenerator
 		int obstacleHP = GetObstacleHP (medals);
 		int enemyHP = GetEnemyHP (medals);
 
-		mission.activeGuns.Add (profile.spaceship.primaryGun);
 		mission.currentHp = profile.spaceship.hp;
 
 		Asteroid obs1 = new Asteroid (1, obstacleHP);
@@ -127,7 +125,6 @@ public static class DataGenerator
 
 			mission.wave = new Wave (Constant.obstacleCount, Constant.collectibleCount,  mission.targetItemCount / mission.waveCount, Constant.spawnWait);
 			mission.currentCoins = collectibleValue * mission.targetItemCount;
-
 
 		} else if (mission.type == Constant.Pickup) {
 			Enemy enemy = new Enemy (5, enemyHP, levelSpaceship.primaryGun.hitPoint);
@@ -217,7 +214,6 @@ public static class DataGenerator
 
 		var drugMision = new DrugPickupMission ();
 		drugMision.scene = "Drug";
-		drugMision.activeGuns.Add (profile.spaceship.primaryGun);
 		drugMision.currentHp = profile.spaceship.hp;
 		drugMision.id = 3;
 
