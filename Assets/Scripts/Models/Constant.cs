@@ -24,6 +24,7 @@ public static class Constant {
 	public const string gunTexture = "Gun1";
 	public const string spaceshipTexture = "Spaceship1";
 	public const string defaultScene = "Main";
+	public const string Bonus = "Bonus";
 }
 
 
