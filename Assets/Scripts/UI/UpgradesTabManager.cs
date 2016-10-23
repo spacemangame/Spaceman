@@ -25,8 +25,11 @@ public class UpgradesTabManager : MonoBehaviour {
     public void showGunsPanel()
     {
         spaceshipUpgradePanel.SetActive(false);
-        gunsPanel.SetActive(true);
-        ammoPanel.SetActive(false);
+		ammoPanel.SetActive(false);
+		gunsPanel.SetActive(true);
+
+		GunBuyController controller = gunsPanel.gameObject.GetComponentInChildren<GunBuyController> ();
+		controller.Render ();
     }
 
     public void showAmmoPanel()
@@ -34,6 +37,9 @@ public class UpgradesTabManager : MonoBehaviour {
         spaceshipUpgradePanel.SetActive(false);
         gunsPanel.SetActive(false);
         ammoPanel.SetActive(true);
+
+		AmmoBuyController controller = ammoPanel.gameObject.GetComponentInChildren<AmmoBuyController> ();
+		controller.Render ();
     }
 
 

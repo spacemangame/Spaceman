@@ -16,8 +16,20 @@ public class GunBuyController: MonoBehaviour
 	public List<Gun> GunsToBuy { get; set; }
 
 	void Start() {
+		
+	}
 
-	    List<Gun> ShopGuns = GameController.Instance.shop.guns;
+	public void ClearContent() {
+		foreach (Transform child in ContentPanel.transform) {
+			GameObject.Destroy(child.gameObject);
+		}
+	}
+
+	public void Render() {
+
+		ClearContent ();
+
+		List<Gun> ShopGuns = GameController.Instance.shop.guns;
 		List<Gun> PlayerGuns = GameController.Instance.profile.guns;
 
 		GunsToBuy = ShopGuns.Where(el2 => !PlayerGuns.Any(el1 => el1.id == el2.id)).ToList();
@@ -26,9 +38,9 @@ public class GunBuyController: MonoBehaviour
 		GameObject gunPrefabItem = (GameObject) Resources.Load("GunBuyListItem", typeof(GameObject));
 
 		foreach(Gun gun in GunsToBuy) {
-			
-			Debug.Log ("Inside foreach");
+
 			GameObject gunItem = Instantiate(gunPrefabItem) as GameObject;
+
 			GunBuyItemController controller = gunItem.GetComponent<GunBuyItemController>();
 
 			Sprite image = Resources.Load<Sprite> ("Images/" + gun.texture);
@@ -39,6 +51,8 @@ public class GunBuyController: MonoBehaviour
 
 			gunItem.transform.SetParent(ContentPanel.transform);
 			gunItem.transform.localScale = Vector3.one;
+
+			controller.Render ();
 		}
 	}
 
@@ -46,6 +60,8 @@ public class GunBuyController: MonoBehaviour
 		GameController.Instance.profile.coins -= gun.price;
 		GameController.Instance.profile.guns.Add (gun);
 		UserProfile.Save();
+
+		Render ();
 	}
 		
 }

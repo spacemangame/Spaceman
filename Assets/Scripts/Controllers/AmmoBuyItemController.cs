@@ -17,6 +17,10 @@ public class AmmoBuyItemController: MonoBehaviour
 	public AmmoBuyController ammoBuyController  { get; set; }
 
 	void Start() {
+		Buy.onClick.AddListener (() => OnBuySelect ());
+	}
+
+	public void Render() {
 		int ammoPrice = 5 * gun.ammoPrice;
 		Name.text = gun.name;
 		HPText.text = "Price : " + ammoPrice;
@@ -25,12 +29,11 @@ public class AmmoBuyItemController: MonoBehaviour
 
 		if ((GameController.Instance.profile.coins < ammoPrice)) {
 			Buy.interactable = false;
-		} else {
-			Buy.onClick.AddListener (() => OnBuySelect ());
 		}
 	}
 
 	public void OnBuySelect() {
 		ammoBuyController.Buy (gun);
+		Render ();
 	}
 }
