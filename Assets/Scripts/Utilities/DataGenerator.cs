@@ -69,7 +69,7 @@ public static class DataGenerator
 
 		int medals = GetMedals(profile);
 		int level = (int)Math.Floor (medals / 9.0f);
-		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
+		Spaceship levelSpaceship = Helper.getNextSpaceshipForALevel();
 
 		int obstacleHP = GetObstacleHP (medals);
 		int enemyHP = GetEnemyHP (medals);

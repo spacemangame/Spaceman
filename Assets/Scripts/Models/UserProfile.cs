@@ -36,8 +36,8 @@ public class UserProfile {
 			file.Close ();
 
 			//TODO: Remove this once done testing upgrades
-			//GameController.Instance.profile.guns.Clear ();
-			//GameController.Instance.profile.coins = 1000;
+			GameController.Instance.profile.guns.Clear ();
+			GameController.Instance.profile.coins = 1000;
 
 		} else {
 			GameController.Instance.profile = DataGenerator.PopulateUserProfile ();

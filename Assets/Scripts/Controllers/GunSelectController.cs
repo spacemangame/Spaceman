@@ -23,10 +23,10 @@ public class GunSelectController: MonoBehaviour
 	void Start() {
 
 		//TODO: Uncomment this when gun upgrade is implemented
-		//Guns = GameController.Instance.profile.guns;
+		Guns = GameController.Instance.profile.guns;
 
 		//TODO: Remove this when gun upgrade is implemented
-		Guns = GameController.Instance.shop.guns;
+		//Guns = GameController.Instance.shop.guns;
 
 		// 1. Iterate through the data, 
 		//	  instantiate prefab, 
