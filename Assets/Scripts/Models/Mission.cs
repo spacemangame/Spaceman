@@ -5,6 +5,7 @@ public class Mission {
 	public int id;
 
 	public int maxMedalEarned;
+	public int medalEarned;
 	public string type;
 
 	public string missionName;
