@@ -8,6 +8,7 @@ public class SpaceshipUpgradeController : MonoBehaviour {
     public Text gunHP;
     public Text minMedals;
 	public Text price;
+	public Text disableReason;
 	public Image SpaceshipImage;
 
 	public Button upgradeButton;
@@ -40,9 +41,20 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		Sprite image = Resources.Load<Sprite> ("Images/" + nextUpgradeSpaceship.texture);
 		SpaceshipImage.sprite = image;
 
-		if ((GameController.Instance.profile.coins < nextUpgradeSpaceship.price) || GameController.Instance.profile.medals < nextUpgradeSpaceship.minMedals) {
+		if (GameController.Instance.profile.medals < nextUpgradeSpaceship.minMedals) {
+			disableReason.gameObject.SetActive (true);
+			disableReason.text = Strings.needMoreMedal;
 			upgradeButton.interactable = false;
+
+		} else if (GameController.Instance.profile.coins < nextUpgradeSpaceship.price) {
+			disableReason.gameObject.SetActive (true);
+			disableReason.text = Strings.needMoreCoin;
+			upgradeButton.interactable = false;
+
+		} else {
+			disableReason.gameObject.SetActive (false);
 		}
+
 	}	
 
 	public void UpgradeSpaceship() {
