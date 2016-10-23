@@ -3,23 +3,29 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class UpgradesTabManager : MonoBehaviour {
 
 	public GameObject spaceshipUpgradePanel;
     public GameObject gunsPanel;
-    public GameObject ammoPanel;	
+    public GameObject ammoPanel;
+
+	public Button spaceshipButton;
+	public Button gunsButton;
+	public Button ammoButton;
 
 	public UserProfile profile { get; set; }
 
 	void Start() {
-        spaceshipUpgradePanel.SetActive(true);
+		showSpaceshipPanel ();
 	}
 
 	public void showSpaceshipPanel() {
         spaceshipUpgradePanel.SetActive (true);
         gunsPanel.SetActive(false);
         ammoPanel.SetActive(false);
+		disableAllExceptOne (spaceshipButton);
 	}
 
     public void showGunsPanel()
@@ -27,6 +33,8 @@ public class UpgradesTabManager : MonoBehaviour {
         spaceshipUpgradePanel.SetActive(false);
 		ammoPanel.SetActive(false);
 		gunsPanel.SetActive(true);
+
+		disableAllExceptOne (gunsButton);
 
 		GunBuyController controller = gunsPanel.gameObject.GetComponentInChildren<GunBuyController> ();
 		controller.Render ();
@@ -38,9 +46,21 @@ public class UpgradesTabManager : MonoBehaviour {
         gunsPanel.SetActive(false);
         ammoPanel.SetActive(true);
 
+		disableAllExceptOne (ammoButton);
+
 		AmmoBuyController controller = ammoPanel.gameObject.GetComponentInChildren<AmmoBuyController> ();
 		controller.Render ();
     }
+
+	private void disableAllExceptOne(Button button) {
+		List<Button> buttons = new List<Button> (){ spaceshipButton, gunsButton, ammoButton};
+		foreach(Button b in buttons) {
+			if (!b.Equals (button)) {
+				b.interactable = true;
+			}
+		}
+		button.interactable = false;
+	}
 
 
 
