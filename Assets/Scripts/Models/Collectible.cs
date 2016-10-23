@@ -29,7 +29,7 @@ public class Pizza: Collectible {
 
 public class Kid: Collectible {
 	public Kid(int id, int value) : base(id, value){
-		this.prefab = "Kid";
+		this.prefab = "KidNew";
 	}
 }
 
