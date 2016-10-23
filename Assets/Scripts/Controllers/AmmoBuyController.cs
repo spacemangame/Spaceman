@@ -64,5 +64,7 @@ public class AmmoBuyController: MonoBehaviour
 		}
 		UserProfile.Save();
 		GlobalPointController.Instance.Render ();
+
+		MessageController.Instance.Render ("Ammo for  Gun " + gun.name + " upgraded by 5 !!");
 	}
 }

@@ -65,5 +65,7 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		UserProfile.Save();
 		GlobalPointController.Instance.Render ();
 		Render ();
+
+		MessageController.Instance.Render ("Spaceship Upgraded successfully !!");
 	}
 }
