@@ -60,7 +60,7 @@ public class GunBuyController: MonoBehaviour
 		GameController.Instance.profile.coins -= gun.price;
 		GameController.Instance.profile.guns.Add (gun);
 		UserProfile.Save();
-
+		GlobalPointController.Instance.Render ();
 		Render ();
 	}
 		

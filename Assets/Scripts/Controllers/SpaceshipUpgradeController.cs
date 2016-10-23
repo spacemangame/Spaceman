@@ -15,24 +15,27 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 	private Spaceship nextUpgradeSpaceship;
 
 	void Start() {
+		Render ();
+	}	
+
+	public void Render() {
 		Spaceship currentSpaceship = GameController.Instance.profile.spaceship;
 		int spaceshipCount = GameController.Instance.shop.spaceships.Count;
+
 		for (int i = 0; i < spaceshipCount; i++) {
 			nextUpgradeSpaceship = GameController.Instance.shop.spaceships [i];
 			if (currentSpaceship.id == nextUpgradeSpaceship.id) {
-				Spaceship toAssign = GameController.Instance.shop.spaceships [i + 1];
-				if (toAssign != null) {
+				if (i+1 < spaceshipCount ) {
 					nextUpgradeSpaceship = GameController.Instance.shop.spaceships [i + 1];
 					break;
 				} else {
 					upgradeButton.GetComponentInChildren<Text>().text = "No more updates";
 					upgradeButton.GetComponent<Button>().interactable = false;
-					
 				}
 			}
 		}
 
-        spaceshipHP.text =  nextUpgradeSpaceship.hp.ToString();
+		spaceshipHP.text =  nextUpgradeSpaceship.hp.ToString();
 		gunHP.text = nextUpgradeSpaceship.primaryGun.hitPoint.ToString();
 		minMedals.text = nextUpgradeSpaceship.minMedals.ToString();
 		price.text = nextUpgradeSpaceship.price.ToString();
@@ -54,12 +57,13 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		} else {
 			disableReason.gameObject.SetActive (false);
 		}
-
-	}	
+	}
 
 	public void UpgradeSpaceship() {
-			GameController.Instance.profile.coins -= nextUpgradeSpaceship.price;
-			GameController.Instance.profile.spaceship = nextUpgradeSpaceship;
-			UserProfile.Save();
+		GameController.Instance.profile.coins -= nextUpgradeSpaceship.price;
+		GameController.Instance.profile.spaceship = nextUpgradeSpaceship;
+		UserProfile.Save();
+		GlobalPointController.Instance.Render ();
+		Render ();
 	}
 }
