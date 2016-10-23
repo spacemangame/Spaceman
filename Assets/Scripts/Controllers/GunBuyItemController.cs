@@ -25,6 +25,11 @@ public class GunBuyItemController: MonoBehaviour
 		HPText.text = "Hit Point : " + gun.hitPoint;
 		AmmoText.text = "Ammo : " + gun.ammo;
 		Price.text = "Buy " + gun.price;
+
+		if (gun.price > GameController.Instance.profile.coins) {
+			Buy.interactable = false;
+		}
+
 		Buy.onClick.AddListener (() => OnBuySelect ());
 	}
 

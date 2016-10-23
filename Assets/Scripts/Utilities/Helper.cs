@@ -22,5 +22,16 @@ public static class Helper
 		GameObjectObstacle component =  (GameObjectObstacle) gameObject.GetComponent<GameObjectObstacle> ();
 		return component.obstacle;
 	}
+
+	public static Spaceship getNextSpaceshipForALevel() {
+		UserProfile profile = GameController.Instance.profile;
+		int medals = (profile.medals == 0) ? 1 : profile.medals;
+		int level = (int)Math.Floor (medals / 9.0f);
+
+		if (level >= GameController.Instance.shop.spaceships.Count)
+			return GameController.Instance.profile.spaceship;
+		
+		return GameController.Instance.shop.spaceships [level];
+	}
 }
 
