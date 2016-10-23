@@ -11,7 +11,7 @@ public static class Constant {
 	public const int levelMedals = 9;
 	public const int maxMedalPerMission = 3;
 	public const double spawnWait = 0.5;
-	public const int waveCount = 6;
+	public const int waveCount = 4;
 	public const int waveWait = 4;
 	public const int targetItemCount = 12;
 	public const int obstacleCount = 15;
@@ -24,6 +24,10 @@ public static class Constant {
 	public const string gunTexture = "Gun1";
 	public const string spaceshipTexture = "Spaceship1";
 	public const string defaultScene = "Main";
+	public const float reloadTime = 0.25f;
+	public const string gunBolt = "Bolt";
+	public const string secondaryGunBolt = "Secondary Bolt";
+	public const string Bonus = "Bonus";
 }
 
 

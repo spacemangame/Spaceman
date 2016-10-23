@@ -9,7 +9,8 @@ public class MissionController : MonoBehaviour {
 	public GameObject[] collectibles { get; set; }
 	public GameObject item { get;set;}
 
-	public Gun activeGun { get; set;}
+	public Gun primaryGun { get; set;}
+	public Gun secondaryGun { get; set;}
 	public Vector3 spawnValues; 
 
 	public float startWait;
@@ -19,7 +20,8 @@ public class MissionController : MonoBehaviour {
 	public Text itemText;
 	public Image settings;
 	public Image joystick;
-	public Image fireButton;
+	public Image fireButtonPrimary;
+	public Image fireButtonSecondary;
 
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
@@ -30,9 +32,8 @@ public class MissionController : MonoBehaviour {
 	public Text splashText;
 
     private bool gameOver;
-	private int activeGunIndex;
     
-	public Mission mission { get; set; }
+	private Mission mission;
 
 	Coroutine obstacleRoutine { get; set;}
 	Coroutine gameStatusRoutine {get; set;}
@@ -70,10 +71,17 @@ public class MissionController : MonoBehaviour {
 		item = (GameObject) Resources.Load(mission.item.prefab, typeof(GameObject)); 
 		Helper.addGameObjectCollectible (item, mission.item);
 
-		activeGun = GameController.Instance.profile.spaceship.primaryGun;
-		activeGunIndex = 0;
+		primaryGun = GameController.Instance.profile.spaceship.primaryGun;
+		primaryGun.currentAmmo = primaryGun.ammo;
+		UpdateActiveGunImages (true);
 
-		UpdateActiveGunImage ();
+		if (mission.secondaryGun != null) {
+			secondaryGun = mission.secondaryGun;
+			secondaryGun.currentAmmo = secondaryGun.ammo;
+			UpdateActiveGunImages (false);
+		} else {
+			fireButtonSecondary.gameObject.SetActive(false);
+		}	
 	}
 
 	public void EndSpawningRoutines() {
@@ -102,7 +110,8 @@ public class MissionController : MonoBehaviour {
 		itemText.gameObject.SetActive (false);
 		joystick.gameObject.SetActive (false);
 		settings.gameObject.SetActive (false);
-		fireButton.gameObject.SetActive (false);
+		fireButtonPrimary.gameObject.SetActive (false);
+		fireButtonSecondary.gameObject.SetActive (false);
 	}
 
 	public void showAllControls() {
@@ -111,7 +120,8 @@ public class MissionController : MonoBehaviour {
 		itemText.gameObject.SetActive (true);
 		joystick.gameObject.SetActive (true);
 		settings.gameObject.SetActive (true);
-		fireButton.gameObject.SetActive (true);
+		fireButtonPrimary.gameObject.SetActive (true);
+		fireButtonSecondary.gameObject.SetActive (true);
 	}
 
 	public void onMissionComplete() {
@@ -131,7 +141,10 @@ public class MissionController : MonoBehaviour {
 		coinText.text = "Coins Earned : " + coinsEarned;
 
 		GameController.Instance.profile.medals += medalsEarned;
+
 		GameController.Instance.profile.coins += mission.currentCoins;
+
+		UserProfile.Save ();
 	}
 
 	IEnumerator CheckGameStatus() {
@@ -145,7 +158,7 @@ public class MissionController : MonoBehaviour {
 				onGameOver ();
 				break;
 			} else {
-
+				
 				GameObject[] enemyGameObjects = GameObject.FindGameObjectsWithTag ("Enemy");
 				GameObject[] asteroidGameObjects = GameObject.FindGameObjectsWithTag ("asteroid");
 
@@ -196,45 +209,56 @@ public class MissionController : MonoBehaviour {
 
 		Quaternion spawnRotation = Quaternion.identity;
 
-		for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
+		if (mission.collectibles.Count > 0) {
+
+			for (int i = 0; i < Random.Range (mission.collectibles.Count, mission.wave.collectibleCount); i++) {
 	
-			GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
-			Vector3 spawnPosition;
+				GameObject collectible = collectibles [Random.Range (0, collectibles.Length)];
+				Vector3 spawnPosition;
 
 
-			spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
+				spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
 
-			GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
-			GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
-			Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
+				GameObjectCollectible gc = (GameObjectCollectible)collectible.GetComponent<GameObjectCollectible> ();
+				GameObject collectibleClone = (GameObject)Instantiate (collectible, spawnPosition, spawnRotation);
+				Helper.addGameObjectCollectible (collectibleClone, gc.collectible);
 
-			yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.collectibleCount);
+				yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.collectibleCount);
+			}
 		}
-
-
 	}
 
 	IEnumerator SpawnItems() {
-		if (mission.type == Constant.Pickup) {
+		if (mission.type == Constant.Pickup || mission.type == Constant.Bonus) {
 			
 			Quaternion spawnRotation = Quaternion.identity;
 
 			for (int i = 0; i < mission.wave.itemCount; i++) {
+
 				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), Random.Range (0, spawnValues.y) - 0.5f, spawnValues.z);
 
 				GameObjectCollectible gc = (GameObjectCollectible)item.GetComponent<GameObjectCollectible> ();
 				GameObject itemClone = (GameObject)Instantiate (item, spawnPosition, spawnRotation);
 				Helper.addGameObjectCollectible (itemClone, gc.collectible);
 
-				yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.itemCount);
+				if (mission.type == Constant.Bonus) {
+					yield return new WaitForSeconds ((float) mission.wave.spawnWait);
+				} else {
+					yield return new WaitForSeconds ((float)(mission.wave.spawnWait * mission.wave.obstacleCount) / mission.wave.itemCount);
+				}
+
+
+
 			}
 		}
 
 	}
 		
 	public void DecreasePoints(int val) {
-		mission.currentCoins -= val;
-		UpdatePoints ();
+		if (mission.currentCoins >= 0) {
+			mission.currentCoins -= val;
+			UpdatePoints ();
+		}
 	}
 	
 	public void AddPoints(int newPointsValue){
@@ -292,48 +316,52 @@ public class MissionController : MonoBehaviour {
 		StartCoroutine(Message.show(splashText, message));
 	}
 
-	public bool HasBullet() {
-		return activeGun.currentAmmo != 0;
-	}
-
-	public void DecreaseBullet() {
-		if (activeGun.currentAmmo > 0) {
-			activeGun.currentAmmo--;
-			UpdateBulletCount ();
+	public void DecreaseBullet(bool isPrimary) {
+		Gun currGun = isPrimary ? primaryGun : secondaryGun;
+		if (currGun.currentAmmo > 0) {
+			currGun.currentAmmo--;
+			UpdateBulletCount (isPrimary);
 		}
 
-		// change to primaryGun
-		if (activeGun.currentAmmo == 0) {
-			showMessage ("No Ammo! Changing to Primary Gun.");
-			activeGunIndex = 0;
-			activeGun = mission.activeGuns [0];
-			UpdateActiveGunImage ();
+		if (currGun.currentAmmo == 0) {
+			Image fb = isPrimary ? fireButtonPrimary : fireButtonSecondary;
+			fb.gameObject.SetActive (false);
 		}
 	}
 
-	public void ChangeActiveGun(int indexChange) {
-		int newIndex = (indexChange + activeGunIndex) % mission.activeGuns.Count;
-		while (newIndex < 0) {
-			newIndex += mission.activeGuns.Count;
+	private void UpdateBulletCount(bool isPrimary) {
+		Text textCount;
+		Gun currGun;
+		if (isPrimary) {
+			textCount = fireButtonPrimary.GetComponentInChildren<Text> ();
+			currGun = primaryGun;
+		} else {
+			textCount = fireButtonSecondary.GetComponentInChildren<Text> ();
+			currGun = secondaryGun;
 		}
-
-		if (newIndex != activeGunIndex && mission.activeGuns[newIndex].currentAmmo != 0) {			
-			activeGunIndex = newIndex;
-			activeGun = mission.activeGuns [activeGunIndex];
-			UpdateActiveGunImage ();
-		}
+		textCount.text = currGun.currentAmmo >= 0 ? currGun.currentAmmo.ToString() : "∞";
 	}
 
-	private void UpdateActiveGunImage() {
-		Sprite image = Resources.Load<Sprite> ("Images/"+activeGun.texture);
-		Image fireBtnSprite = fireButton.GetComponentInChildren<Image> ();
+	private void UpdateActiveGunImages(bool isPrimary) {
+		Sprite image;
+		Image fireBtnSprite;
+		if (isPrimary) {
+			image = Resources.Load<Sprite> ("Images/" + primaryGun.texture);
+			fireBtnSprite = fireButtonPrimary.GetComponentInChildren<Image> ();
+		} else {
+			image = Resources.Load<Sprite> ("Images/" + secondaryGun.texture);
+			fireBtnSprite = fireButtonSecondary.GetComponentInChildren<Image> ();
+		}
+
 		fireBtnSprite.sprite = image;
-		UpdateBulletCount ();
+		UpdateBulletCount (isPrimary);
 
 	}
 
-	private void UpdateBulletCount() {
-		Text fireBtnBulletCount = fireButton.GetComponentInChildren<Text> ();
-		fireBtnBulletCount.text = activeGun.currentAmmo >= 0 ? activeGun.currentAmmo.ToString() : "∞";
+	public bool HasBullet(bool isPrimary) {
+		if (isPrimary) {
+			return primaryGun.currentAmmo != 0;
+		}
+		return secondaryGun.currentAmmo != 0;
 	}
 }
