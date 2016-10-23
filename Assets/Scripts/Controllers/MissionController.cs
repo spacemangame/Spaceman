@@ -85,8 +85,8 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void EndSpawningRoutines() {
-		StopCoroutine (obstacleRoutine);
-		StopCoroutine (gameStatusRoutine);
+		//StopCoroutine (obstacleRoutine);
+		//StopCoroutine (gameStatusRoutine);
 	}
 
 	public void onGameOver() {
