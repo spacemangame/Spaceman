@@ -52,7 +52,7 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 			upgradeButton.interactable = false;
 
 		} else {
-			disableReason.gameObject.SetActive (true);
+			disableReason.gameObject.SetActive (false);
 		}
 
 	}	
