@@ -47,7 +47,6 @@ public static class DataGenerator
 		userProfile.isSoundEnabled = true;
 		userProfile.isAccelerometerEnabled = true;
 
-		// TODO: Add spaceship gun to mission whenyou start it
 		return userProfile;
 	}
 
