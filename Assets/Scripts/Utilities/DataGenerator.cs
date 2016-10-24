@@ -195,7 +195,7 @@ public static class DataGenerator
 		return pizzaPickUpMission;
 	}
 
-	private static Mission GetBonusMission() {
+	public static Mission GetBonusMission() {
 		var kidpickupMission = new BonusMission ();
 		kidpickupMission.id = 20;
 
