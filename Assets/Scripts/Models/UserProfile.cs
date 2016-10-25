@@ -12,6 +12,7 @@ public class UserProfile {
 	public int coins {set; get;}
 	public int medals {set; get;}
 	public int clues {set; get;}
+	public int bonusMission {set; get;}
 	public List<Gun> guns = new List<Gun>();
 
 	public Gun secondaryGun { get; set; }

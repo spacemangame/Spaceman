@@ -46,5 +46,21 @@ public class GameController : MonoBehaviour {
 		SceneManager.LoadScene (GameController.Instance.mission.scene);
 	}
 
+	public void StartBonusMission() {
+		UserProfile profile = GameController.Instance.profile;
+		Mission mission = GameController.Instance.mission;
+		int bonusMissionCount = profile.bonusMission;
+		int medals = profile.medals;
+		int level = (int)Math.Floor (medals / 9.0f);
+		if ((bonusMissionCount < level) & (mission.medalEarned == 3)) {
+			profile.bonusMission++;
+			UserProfile.Save ();
+			Mission BonusMission = DataGenerator.GetBonusMission ();
+			GameController.Instance.mission = BonusMission;
+			SceneManager.LoadScene ("BonusMission");
+			return;
+		}
+	}
+
 
 }
