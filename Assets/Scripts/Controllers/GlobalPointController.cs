@@ -20,6 +20,7 @@ public class GlobalPointController: MonoBehaviour
 
 	void Start()
 	{
+		Instance = this;
 		Render ();
 	}
 

@@ -15,6 +15,7 @@ public class GameOverMenuManager : MonoBehaviour {
 		SceneManager.LoadScene("Main Menu");
 	}
 
-
-
+	public void StartBonusMission(String scene) {
+		SceneManager.LoadScene(scene);
+	}
 }
