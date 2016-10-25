@@ -18,34 +18,27 @@ public class GlobalPointController: MonoBehaviour
 		set;
 	}
 
-	public bool isFirstRun { get; set;}
-
-	void Awake () {
-		DontDestroyOnLoad (transform.gameObject);
-		if (GlobalPointController.Instance == null) Instance = this;
-	}
-
-	void Start() {
-		if (!GlobalPointController.Instance.isFirstRun) {
-			GlobalPointController.Instance.isFirstRun = true;
-		}
-
-		StartCoroutine(LateStart());
-	}
-
-
-	IEnumerator LateStart()
+	void Start()
 	{
-		yield return new WaitForSeconds(0.05f);
 		Render ();
 	}
 
 	public UserProfile profile { get; set; }
 
+
+	IEnumerator Show() {
+		yield return new WaitForSeconds(0.05f);
+		Render ();
+	}
+
 	public void Render() {
-		profile = GameController.Instance.profile;
-		CoinText.text = profile.coins.ToString();
-		MedalText.text = profile.medals.ToString();
+		if (GameController.Instance != null && GameController.Instance.profile != null) {
+			profile = GameController.Instance.profile;
+			CoinText.text = profile.coins.ToString ();
+			MedalText.text = profile.medals.ToString ();
+		} else {
+			StartCoroutine (Show ());
+		}
 	}
 }
 

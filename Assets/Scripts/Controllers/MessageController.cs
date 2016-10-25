@@ -16,17 +16,8 @@ public class MessageController: MonoBehaviour
 		set;
 	}
 
-	public bool isFirstRun { get; set;}
-
-	void Awake () {
-		DontDestroyOnLoad (transform.gameObject);
-		if (MessageController.Instance == null) Instance = this;
-	}
-
 	void Start() {
-		if (!MessageController.Instance.isFirstRun) {
-			MessageController.Instance.isFirstRun = true;
-		}
+		Instance = this;
 		this.gameObject.SetActive (false);
 	}
 		

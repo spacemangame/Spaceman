@@ -195,7 +195,7 @@ public static class DataGenerator
 		return pizzaPickUpMission;
 	}
 
-	private static Mission GetBonusMission() {
+	public static Mission GetBonusMission() {
 		var kidpickupMission = new BonusMission ();
 		kidpickupMission.id = 20;
 
@@ -209,7 +209,7 @@ public static class DataGenerator
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
 		int level = (int)Math.Floor (medals / 9.0f);
-		Spaceship levelSpaceship = GameController.Instance.shop.spaceships [level];
+		Spaceship levelSpaceship = Helper.getNextSpaceshipForALevel();
 
 		var drugMision = new DrugPickupMission ();
 		drugMision.scene = "Drug";

@@ -10,7 +10,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public float tilt = 4.0f; //max tilt factor
 	public float checkpointReward; //seconds to add on checkpoint touchdown
 	public GameObject explosion; //explosion effect to play on player colllision
-
+	public float maxAltitude = 100.0f; //limiting player's movement on y-axis
 	//joystick and booster button 
 	public VirtualJoystick joystick;
 	public BoostButton boostButton;
@@ -168,11 +168,18 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				movement = new Vector3 ( Input.acceleration.x * maneuverability, 0.0f, speed * boost);
 			}
 		}
-
+		if(rb.position.y > maxAltitude)
+			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
 		rb.velocity = movement;
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
+
 	}
 
+//	private void checkBoundary() {
+//		if(rb.position.y > maxAltitude)
+//			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
+//		// make sure player doesn't go out of the boundary.
+//	}
 	// calibrates the Input.acceleration
 	public void CalibrateAccelerometer () {
 		Vector3 accelerationSnapshot = Input.acceleration;
