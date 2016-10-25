@@ -11,8 +11,10 @@ public class Gun {
 	public int ammoPrice {set; get;}
 	public int minMedal {set; get;}
 	public string texture { set; get; }
+	public string bolt { set; get; }
+	public float reloadTime { set; get; }
 
-	public Gun (int id, string name, int hitPoint, int price, int ammoPrice, int minMedal,  int ammo, int maxAmmo = Constant.maxAmmo, string texture = Constant.gunTexture) {
+	public Gun (int id, string name, int hitPoint, int price, int ammoPrice, int minMedal,  int ammo, int maxAmmo = Constant.maxAmmo, float reloadTime = Constant.reloadTime, string texture = Constant.gunTexture, string bolt = Constant.gunBolt) {
 		this.id = id;
 		this.name = name;
 		this.hitPoint = hitPoint;
@@ -23,5 +25,11 @@ public class Gun {
 		this.currentAmmo = ammo;
 		this.maxAmmo = maxAmmo;
 		this.texture = texture;
+		this.reloadTime = reloadTime;
+		this.bolt = bolt;
+	}
+
+	public bool hasBullet() {
+		return this.currentAmmo != 0;
 	}
 }

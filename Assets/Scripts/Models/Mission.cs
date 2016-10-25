@@ -16,56 +16,66 @@ public class Mission {
 	public int currentHp;
 	public int currentCoins;
 	public int enemyGunHP { get; set; }
-	public List<Gun> activeGuns = new List<Gun>();
+	public Gun primaryGun {get; set;}
+	public Gun secondaryGun {get;set;}
 	public List<Obstacle> obstacles = new List<Obstacle>();
 	public List<Collectible> collectibles = new List<Collectible>();
 	public Collectible item; // the item that needs to be delivered/picked up
 	public int targetItemCount;
 	public int pickedItemCount; // number of medals: (pickedItemCount / targetItemCount) * maxMedalEarned
+	public string scene;
 
 	public Mission() {
 		this.enemyGunHP = 0;
+		this.scene = Constant.defaultScene;
 	}
 }
 
 public class PizzaPickUpMission: Mission {
 	public PizzaPickUpMission() {
-		this.missionName = "PizzaPickup";
+		this.missionName = "Pickup Pizza's";
 		this.type = Constant.Pickup;
 	}
 }
 
 public class PizzaDeliveryMission: Mission {
 	public PizzaDeliveryMission() {
-		this.missionName = "PizzaDelivery";
+		this.missionName = "Deliver Pizza's";
 		this.type = Constant.Transport;
 	}
 }
 
 public class KidPickUpMission: Mission {
 	public KidPickUpMission() {
-		this.missionName = "KidPickup";
+		this.missionName = "Pickup Kids";
 		this.type = Constant.Pickup;
 	}
 }
 
 public class KidDeliveryMission: Mission {
 	public KidDeliveryMission() {
-		this.missionName = "KidDelivery";
+		this.missionName = "Transport Kids";
 		this.type = Constant.Transport;
 	}
 }
 
 public class DrugDeliveryMission: Mission {
 	public DrugDeliveryMission() {
-		this.missionName = "DrugDelivery";
+		this.missionName = "Drug Delivery";
 		this.type = Constant.Transport;
 	}
 }
 
 public class DrugPickupMission: Mission {
 	public DrugPickupMission() {
-		this.missionName = "DrugPickup";
+		this.missionName = "Drug Pickup";
 		this.type = Constant.Pickup;
+	}
+}
+
+public class BonusMission : Mission {
+	public BonusMission() {
+		this.missionName = "Bonus Mission";
+		this.type = Constant.Bonus;
 	}
 }

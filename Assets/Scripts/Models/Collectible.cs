@@ -21,16 +21,20 @@ public class Coin: Collectible {
 }
 
 public class Pizza: Collectible {
-	public Pizza(int id, int value) : base(id, value){}
+	public Pizza(int id, int value) : base(id, value){
+        this.prefab = "Pizza";
+    }
 }
 
 
 public class Kid: Collectible {
 	public Kid(int id, int value) : base(id, value){
-		this.prefab = "Kid";
+		this.prefab = "KidNew";
 	}
 }
 
 public class Drug: Collectible {
-	public Drug(int id, int value) : base(id, value){}
+	public Drug(int id, int value) : base(id, value){
+		this.prefab = "Kid";
+	}
 }

@@ -15,19 +15,22 @@ public class PlayerController : MonoBehaviour {
 	public GameObject shot;
 	public Transform shotSpawn1;
 	public Transform shotSpawn2;
-	public float fireRate;
 	public VirtualJoystick joystick;
-	public FireButton fireButton;
+	public FireButton primaryFireButton;
+	public FireButton secondaryFireButton;
 
 	public bool useAccelerometer {set; get;}
 
-	private float nextFire;
+	private float nextFirePrimary;
+	private float nextFireSecondary;
 	private Rigidbody rb;
 	private Quaternion calibrationQuaternion;
 
 	private bool useInput;
+	private bool shoot;
 
-	private Mission mission { get; set; }
+	private MissionController mc;
+	private Mission mission;
 	Coroutine destabilise { get; set; }
 
 	void Start() {
@@ -35,7 +38,14 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 		useAccelerometer = true;
+
 		mission = GameController.Instance.mission;
+
+		GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
+		if (gameControllerObject != null) {
+			mc = gameControllerObject.GetComponent<MissionController>();
+		}
+
 		destabilise = StartCoroutine(DestabilisePlayer ());
 	}
 
@@ -45,12 +55,21 @@ public class PlayerController : MonoBehaviour {
 
 	void Update(){
 		checkBoundary ();
+	}
 
-		if (fireButton.canFire && Time.time > nextFire) {
-			nextFire = Time.time + fireRate;
-			Instantiate (shot, shotSpawn1.position, shotSpawn1.rotation);
-			Instantiate (shot, shotSpawn2.position, shotSpawn2.rotation);
-			GetComponent<AudioSource> ().Play ();
+	void LateUpdate() {
+		// shoot primary
+		if (mc.HasBullet(true) && primaryFireButton.canFire && Time.time > nextFirePrimary) {
+			nextFirePrimary = Time.time + mc.primaryGun.reloadTime;
+			shootBullet (true);
+			mc.DecreaseBullet (true);
+		}
+
+		// shoot secondary
+		if (mission.secondaryGun != null && mc.HasBullet(false) && secondaryFireButton.canFire && Time.time > nextFireSecondary) {
+			nextFireSecondary = Time.time + mc.secondaryGun.reloadTime;
+			shootBullet (false);
+			mc.DecreaseBullet (false);
 		}
 	}
 
@@ -128,5 +147,14 @@ public class PlayerController : MonoBehaviour {
 	// Get the 'calibrated' value from the Input
 	Vector3 FixAcceleration (Vector3 acceleration) {
 		return calibrationQuaternion * acceleration;
+	}
+
+	private void shootBullet(bool isPrimary) {
+		string boltResource = isPrimary ? mc.primaryGun.bolt : mc.secondaryGun.bolt;
+		GameObject bolt = Resources.Load<GameObject> (boltResource);
+
+		Instantiate (bolt, shotSpawn1.position, shotSpawn1.rotation);
+		Instantiate (bolt, shotSpawn2.position, shotSpawn2.rotation);
+		GetComponent<AudioSource> ().Play ();
 	}
 }

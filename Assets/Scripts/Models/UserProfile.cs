@@ -14,6 +14,8 @@ public class UserProfile {
 	public int clues {set; get;}
 	public List<Gun> guns = new List<Gun>();
 
+	public Gun secondaryGun { get; set; }
+
 	public bool isSoundEnabled { set; get; }
 	public bool isAccelerometerEnabled { get; set;}
 
@@ -32,6 +34,11 @@ public class UserProfile {
 			FileStream file = File.Open (Application.persistentDataPath + "/userProfile.gd", FileMode.Open);
 			GameController.Instance.profile = (UserProfile)bf.Deserialize (file);
 			file.Close ();
+
+			//TODO: Remove this once done testing upgrades
+			GameController.Instance.profile.guns.Clear ();
+			GameController.Instance.profile.coins = 1000;
+
 		} else {
 			GameController.Instance.profile = DataGenerator.PopulateUserProfile ();
 			UserProfile.Save ();

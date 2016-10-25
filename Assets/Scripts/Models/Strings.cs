@@ -7,5 +7,7 @@ public static class Strings {
 	public static string hpIndicator = "HP: {0}";
 	public static string poinIndicator = "Points: {0}";
 	public static string itemIndicator = "{0}s: {1}/{2}";
+	public static string needMoreCoin = "Need More Coins!";
+	public static string needMoreMedal = "Need More Medals!";
 
 }
