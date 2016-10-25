@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 public class ButtonManager : MonoBehaviour {
 	
     public void NewGameBtn(string mainGameScreen) {
-		GameController.Instance.SelectMission ("");
+		GameController.SelectMission ("");
 
 		//playerController.CalibrateAccelerometer (); // calibrate the accelerometer
     }
 		
 	public void startMission(string missionType) {
-		//GameController.Instance.StartMission (missionType);
+		//GameController.StartMission (missionType);
 	}
 }

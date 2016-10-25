@@ -19,7 +19,7 @@ public class MissionPanelController : MonoBehaviour {
 	public void ShowGunSelection() {
 		
 		if (GameController.Instance.profile.guns.Count == 0) {
-			GameController.Instance.StartMission ();
+			GameController.StartMission ();
 			return;
 		}
 
@@ -46,7 +46,7 @@ public class MissionPanelController : MonoBehaviour {
 		if (mission.scene != "Drug") {
 			ShowGunSelection ();
 		} else {
-			GameController.Instance.StartMission ();
+			GameController.StartMission ();
 		}
 
 	}

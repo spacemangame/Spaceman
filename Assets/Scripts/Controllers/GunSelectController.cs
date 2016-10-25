@@ -70,7 +70,7 @@ public class GunSelectController: MonoBehaviour
 		GameController.Instance.profile.secondaryGun = SelectedGun;
 		UserProfile.Save ();
 
-		GameController.Instance.StartMission ();
+		GameController.StartMission ();
 	}
 
 	public void SetSelectedGun(Gun gun) {
