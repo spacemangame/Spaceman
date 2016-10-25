@@ -56,13 +56,15 @@ public class AmmoBuyController: MonoBehaviour
 	public void Buy(Gun gun) {
 		GameController.Instance.profile.coins -= (5* gun.ammoPrice);
 		List<Gun> UserGuns = GameController.Instance.profile.guns;
-		foreach(Gun userGun in UserGuns) {
-			if(userGun == gun) {
+		foreach (Gun userGun in UserGuns) {
+			if (userGun == gun) {
 				gun.ammo += 5;
 				break;
+			}
 		}
 		UserProfile.Save();
-	}
+		GlobalPointController.Instance.Render ();
 
-}
+		MessageController.Instance.Render ("Ammo for  Gun " + gun.name + " upgraded by 5 !!");
+	}
 }
