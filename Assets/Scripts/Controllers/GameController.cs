@@ -47,20 +47,21 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void StartBonusMission() {
+	public static Mission GetBonusMission() {
 		UserProfile profile = GameController.Instance.profile;
 		Mission mission = GameController.Instance.mission;
+		if (mission.type == Constant.Bonus)
+			return null;
+
 		int bonusMissionCount = profile.bonusMission;
 		int medals = profile.medals;
-		int level = (int)Math.Floor (medals / 9.0f);
-		if ((bonusMissionCount < level) & (mission.medalEarned == 3)) {
+		int level = (int)Math.Floor (medals / 9.0f) + 1;
+		if ((bonusMissionCount < level) && (mission.medalEarned == mission.maxMedalEarned)) {
 			profile.bonusMission++;
 			UserProfile.Save ();
-			Mission BonusMission = DataGenerator.GetBonusMission ();
-			GameController.Instance.mission = BonusMission;
-			SceneManager.LoadScene ("BonusMission");
-			return;
+			return DataGenerator.GetBonusMission ();
 		}
+		return null;
 	}
 
 

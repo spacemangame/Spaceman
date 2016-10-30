@@ -244,8 +244,8 @@ public static class DataGenerator
 		missions.Add (CreateKidPickupMission ());
 
 		missions.Add (CreateDrugMission ("Drug", 3));
-		missions.Add (CreateDrugMission ("Drug_L2", 4));
-		missions.Add (CreateDrugMission ("Drug_L3", 5));
+		missions.Add (CreateDrugMission ("Drug_L2", 6));
+		missions.Add (CreateDrugMission ("Drug_L3", 7));
 
 
 		missions.Add (CreatePizzaPickupMission ());

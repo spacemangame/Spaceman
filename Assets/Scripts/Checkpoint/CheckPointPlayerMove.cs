@@ -122,12 +122,15 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	void OnCollisionEnter(Collision col){
 		//reduce hp
 		DecreaseHP(hpHit);
-		if (mission.currentHp <= 0) {
+		if (mission.currentHp <= 0 || col.gameObject.tag.Equals ("Terrain")) {
 			destroyOnTimer ();
 			OnGameOver ();
 		}
-		if (!col.gameObject.tag.Equals ("Terrain"))
+		if (!col.gameObject.tag.Equals ("Terrain")) {
 			Destroy (col.gameObject);
+			AudioSource[] audios = GetComponents<AudioSource> ();
+			audios [2].Play ();
+		}
 	}
 
 	//function that gets called on checkpoint touchdown
