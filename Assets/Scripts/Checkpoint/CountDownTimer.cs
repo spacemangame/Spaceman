@@ -13,8 +13,8 @@ public class CountDownTimer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		timer = countDownTime;
-		StartCoroutine(BlinkText());
-		StartCoroutine(StopBlinking());
+//		StartCoroutine(BlinkText());
+//		StartCoroutine(StopBlinking());
 	}
 	
 	// Update is called once per frame

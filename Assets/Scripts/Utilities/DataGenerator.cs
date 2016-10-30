@@ -204,7 +204,7 @@ public static class DataGenerator
 	}
 
 
-	private static Mission CreateDrugMission() {
+	private static Mission CreateDrugMission(string scene, int id) {
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
@@ -212,9 +212,9 @@ public static class DataGenerator
 		Spaceship levelSpaceship = Helper.getNextSpaceshipForALevel();
 
 		var drugMision = new DrugPickupMission ();
-		drugMision.scene = "Drug";
+		drugMision.scene = scene;
 		drugMision.currentHp = profile.spaceship.hp;
-		drugMision.id = 3;
+		drugMision.id = id;
 
 		Coin coinSphere = new Coin (1, 1);
 		coinSphere.prefab = "ColSphere";
@@ -242,7 +242,11 @@ public static class DataGenerator
 
 		missions.Add (CreateKidDeliveryMission());
 		missions.Add (CreateKidPickupMission ());
-		missions.Add (CreateDrugMission ());
+		missions.Add (CreateDrugMission ("Drug", 3));
+		missions.Add (CreateDrugMission ("Drug_L2", 4));
+		missions.Add (CreateDrugMission ("Drug_L3", 5));
+
+
 		missions.Add (CreatePizzaPickupMission ());
 		missions.Add (CreatePizzaDeliveryMission ());
 

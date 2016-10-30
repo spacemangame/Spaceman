@@ -14,6 +14,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	//joystick and booster button 
 	public VirtualJoystick joystick;
 	public BoostButton boostButton;
+	public Text hpText;
+	public int hpHit = 20;
 
 	private Quaternion calibrationQuaternion;
 
@@ -92,6 +94,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	void Start () {
 		mission = GameController.Instance.mission;
+		Debug.Log ("HP: " + mission.currentHp);
 
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
@@ -104,6 +107,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		itemsCollected = 0;
 
 		UpdateDrugCount (false);
+		UpdateHP ();
 	}
 
 	public void UpdateDrugCount(bool playSound) {
@@ -116,8 +120,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	//function that gets called when player object collides with terrain  
 	void OnCollisionEnter(Collision col){
-		destroyOnTimer ();
-		OnGameOver ();
+		//reduce hp
+		DecreaseHP(hpHit);
+		if (mission.currentHp <= 0) {
+			destroyOnTimer ();
+			OnGameOver ();
+		}
+		if (!col.gameObject.tag.Equals ("Terrain"))
+			Destroy (col.gameObject);
 	}
 
 	//function that gets called on checkpoint touchdown
@@ -187,7 +197,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
 	}
 
+	public void DecreaseHP(int hpToSubtract){
+		mission.currentHp -= hpToSubtract;
+		UpdateHP ();
+	}
 
+	public void UpdateHP(){
+		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
+	}
 
 
 }
