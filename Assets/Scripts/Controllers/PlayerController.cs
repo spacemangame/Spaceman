@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		destabilise = StartCoroutine(DestabilisePlayer ());
+		tilt = 5.0f;
 	}
 
 	void OnDestroy() {
