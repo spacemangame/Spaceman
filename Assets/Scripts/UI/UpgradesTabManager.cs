@@ -26,6 +26,9 @@ public class UpgradesTabManager : MonoBehaviour {
         gunsPanel.SetActive(false);
         ammoPanel.SetActive(false);
 		disableAllExceptOne (spaceshipButton);
+
+		SpaceshipUpgradeController controller = GameObject.Find("SpaceshipUpgradeController").GetComponentInParent<SpaceshipUpgradeController> ();
+		controller.Render ();
 	}
 
     public void showGunsPanel()

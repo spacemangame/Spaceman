@@ -26,6 +26,10 @@ public class MissionController : MonoBehaviour {
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
 
+	public Button ReturnToMenu;
+	public Button StartBonus;
+	public Text BonusText;
+
 	public Text coinText;
 	public Text medalText;
 	public Text itemCountText;
@@ -166,6 +170,15 @@ public class MissionController : MonoBehaviour {
 					Time.timeScale = 0;
 					EndSpawningRoutines ();
 					onMissionComplete ();
+
+					Mission bonusMission = GameController.GetBonusMission ();
+
+					if (bonusMission != null) {
+						GameController.Instance.mission = bonusMission;
+						ReturnToMenu.gameObject.SetActive (false);
+						BonusText.gameObject.SetActive (true);
+						StartBonus.gameObject.SetActive (true);
+					} 
 					break;
 				} 
 
