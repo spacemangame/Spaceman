@@ -204,7 +204,7 @@ public static class DataGenerator
 	}
 
 
-	private static Mission CreateDrugMission(string scene, int id) {
+	private static Mission CreateDrugMission(string scene, int id, string missionName, int reduceCollectibleValue) {
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
@@ -231,7 +231,9 @@ public static class DataGenerator
 		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
 
 		drugMision.currentCoins = 0;
-		drugMision.item = new Drug (4, collectibleValue);
+		drugMision.item = new Drug (4, collectibleValue - reduceCollectibleValue);
+
+		drugMision.missionName = missionName;
 
 		return drugMision;
 	}
@@ -243,9 +245,9 @@ public static class DataGenerator
 		missions.Add (CreateKidDeliveryMission());
 		missions.Add (CreateKidPickupMission ());
 
-		missions.Add (CreateDrugMission ("Drug", 3));
-		missions.Add (CreateDrugMission ("Drug_L2", 6));
-		missions.Add (CreateDrugMission ("Drug_L3", 7));
+		missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
+		missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
+		missions.Add (CreateDrugMission ("Drug_L3", 7,"Escape Police", 0));
 
 
 		missions.Add (CreatePizzaPickupMission ());

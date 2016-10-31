@@ -7,7 +7,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public float maneuverability = 1.0f; //how fast a player can maneuver
 	public float speed = 20.0f; //speed of player
-	public float tilt = 4.0f; //max tilt factor
+	public float tilt = 5.0f; //max tilt factor
 	public float checkpointReward; //seconds to add on checkpoint touchdown
 	public GameObject explosion; //explosion effect to play on player colllision
 	public float maxAltitude = 100.0f; //limiting player's movement on y-axis
@@ -30,6 +30,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
 
+	public Button ReturnToMenu;
+	public Button StartBonus;
+	public Text BonusText;
 
 	public Text coinText;
 	public Text medalText;
@@ -64,6 +67,15 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameController.Instance.profile.coins += coinsEarned;
 
 		UserProfile.Save();
+
+		Mission bonusMission = GameController.GetBonusMission ();
+
+		if (bonusMission != null) {
+			GameController.Instance.mission = bonusMission;
+			ReturnToMenu.gameObject.SetActive (false);
+			BonusText.gameObject.SetActive (true);
+			StartBonus.gameObject.SetActive (true);
+		}
 	}
 
 	// Call this function when game is over, 
