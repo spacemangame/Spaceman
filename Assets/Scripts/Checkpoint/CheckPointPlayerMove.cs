@@ -197,7 +197,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
 			} else{
-				movement = new Vector3 ( Input.acceleration.x * maneuverability, 0.0f, speed * boost);
+				movement = new Vector3 ( Input.acceleration.x * maneuverability, -Input.acceleration.y * maneuverability, speed * boost);
 			}
 		}
 		if(rb.position.y > maxAltitude)
