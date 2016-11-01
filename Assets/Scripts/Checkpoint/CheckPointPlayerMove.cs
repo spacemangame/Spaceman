@@ -82,7 +82,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public void OnGameOver() {
 
 		HideAllControls ();
-		string reason = Strings.wrecked;
+
+		string reason;
+		if (cTimer.getTime() <= 0) {
+			reason = Strings.outOfTime;
+		} else {
+			reason = Strings.wrecked;
+		}
+
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;

@@ -46,6 +46,10 @@ public class CountDownTimer : MonoBehaviour {
 		}
 	}
 
+	public float getTime() {
+		return timer;
+	}
+
 	public void updateTimer(float addTime){
 		timer += addTime;
 	}
