@@ -60,7 +60,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		int itemCoins = itemsCollected * mission.item.value;
 		int coinsEarned = (itemsCollected * mission.item.value) + coinsCollected;
-		string coinsEarnedStr =  itemCoins + (((itemCoins - coinsCollected) == 0) ? "": (" + " + (coinsEarned - coinsCollected) + " = " + coinsEarned));
+		string coinsEarnedStr = coinsEarned + "";
 		coinText.text = "Coins Earned : " + coinsEarnedStr;
 
 		GameController.Instance.profile.medals += medalsEarned;

@@ -79,13 +79,15 @@ public class MissionController : MonoBehaviour {
 		primaryGun.currentAmmo = primaryGun.ammo;
 		UpdateActiveGunImages (true);
 
-		if (mission.secondaryGun != null) {
-			secondaryGun = mission.secondaryGun;
-			secondaryGun.currentAmmo = secondaryGun.ammo;
-			UpdateActiveGunImages (false);
-		} else {
-			fireButtonSecondary.gameObject.SetActive(false);
-		}	
+		if (mission.type != Constant.Bonus) {
+			if (mission.secondaryGun != null) {
+				secondaryGun = mission.secondaryGun;
+				secondaryGun.currentAmmo = secondaryGun.ammo;
+				UpdateActiveGunImages (false);
+			} else {
+				fireButtonSecondary.gameObject.SetActive(false);
+			}	
+		}
 	}
 
 	public void EndSpawningRoutines() {

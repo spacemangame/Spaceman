@@ -51,7 +51,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		StopCoroutine (destabilise);
+		try {
+			StopCoroutine (destabilise);
+		} catch(System.Exception e){}
 	}
 
 	void Update(){
