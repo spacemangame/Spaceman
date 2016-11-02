@@ -85,8 +85,11 @@ public class MissionController : MonoBehaviour {
 				secondaryGun.currentAmmo = secondaryGun.ammo;
 				UpdateActiveGunImages (false);
 			} else {
-				fireButtonSecondary.gameObject.SetActive(false);
+				fireButtonSecondary.gameObject.SetActive (false);
 			}	
+		} else {
+			fireButtonPrimary.gameObject.SetActive (false);
+			fireButtonSecondary.gameObject.SetActive (false);
 		}
 	}
 
@@ -128,6 +131,15 @@ public class MissionController : MonoBehaviour {
 		settings.gameObject.SetActive (true);
 		fireButtonPrimary.gameObject.SetActive (true);
 		fireButtonSecondary.gameObject.SetActive (true);
+
+		if (mission.type == Constant.Bonus) {
+			fireButtonPrimary.gameObject.SetActive (false);
+			fireButtonSecondary.gameObject.SetActive (false);
+		} else {
+			if (mission.secondaryGun == null) {
+				fireButtonSecondary.gameObject.SetActive (false);
+			}	
+		}
 	}
 
 	public void onMissionComplete() {
