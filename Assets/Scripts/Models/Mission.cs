@@ -26,9 +26,13 @@ public class Mission {
 	public int pickedItemCount; // number of medals: (pickedItemCount / targetItemCount) * maxMedalEarned
 	public string scene;
 
+	public string skybox { get; set; }
+
 	public Mission() {
 		this.enemyGunHP = 0;
 		this.scene = Constant.defaultScene;
+
+		this.skybox = "";
 	}
 }
 
