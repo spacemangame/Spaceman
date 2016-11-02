@@ -7,7 +7,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public float maneuverability = 1.0f; //how fast a player can maneuver
 	public float speed = 20.0f; //speed of player
-	public float tilt = 5.0f; //max tilt factor
+	public float tilt = 4.0f; //max tilt factor
 	public float checkpointReward; //seconds to add on checkpoint touchdown
 	public GameObject explosion; //explosion effect to play on player colllision
 	public float maxAltitude = 100.0f; //limiting player's movement on y-axis
@@ -30,9 +30,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
 
-	public Button ReturnToMenu;
-	public Button StartBonus;
-	public Text BonusText;
 
 	public Text coinText;
 	public Text medalText;
@@ -67,29 +64,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameController.Instance.profile.coins += coinsEarned;
 
 		UserProfile.Save();
-
-		Mission bonusMission = GameController.GetBonusMission ();
-
-		if (bonusMission != null) {
-			GameController.Instance.mission = bonusMission;
-			ReturnToMenu.gameObject.SetActive (false);
-			BonusText.gameObject.SetActive (true);
-			StartBonus.gameObject.SetActive (true);
-		}
 	}
 
 	// Call this function when game is over, 
 	public void OnGameOver() {
 
 		HideAllControls ();
-
-		string reason;
-		if (cTimer.getTime() <= 0) {
-			reason = Strings.outOfTime;
-		} else {
-			reason = Strings.wrecked;
-		}
-
+		string reason = Strings.wrecked;
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
@@ -101,6 +82,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		timerText.gameObject.SetActive (false);
 		boostButton.gameObject.SetActive (false);
 		drugCountText.gameObject.SetActive (false);
+		hpText.gameObject.SetActive (false);
 	}
 
 	public void ShowAllControls() {
@@ -109,6 +91,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		timerText.gameObject.SetActive (true);
 		boostButton.gameObject.SetActive (true);
 		drugCountText.gameObject.SetActive (true);
+		hpText.gameObject.SetActive (true);
 	}
 
 	void Start () {
@@ -197,7 +180,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
 			} else{
-				movement = new Vector3 ( Input.acceleration.x * maneuverability, -Input.acceleration.y * maneuverability, speed * boost);
+				movement = new Vector3 ( Input.acceleration.x * maneuverability, 0.0f, speed * boost);
 			}
 		}
 		if(rb.position.y > maxAltitude)
