@@ -44,6 +44,8 @@ public static class DataGenerator
 		userProfile.spaceship = GameController.Instance.shop.spaceships[0];
 		userProfile.medals = 0;
 
+		userProfile.coins = 200;
+
 		userProfile.isSoundEnabled = true;
 		userProfile.isAccelerometerEnabled = true;
 
