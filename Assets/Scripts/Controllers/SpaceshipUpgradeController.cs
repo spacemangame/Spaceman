@@ -9,7 +9,6 @@ public class SpaceshipUpgradeController : MonoBehaviour {
     public Text minMedals;
 	public Text price;
 	public Text disableReason;
-	public Image SpaceshipImage;
 
 	public Button upgradeButton;
 	private Spaceship nextUpgradeSpaceship;
@@ -40,9 +39,7 @@ public class SpaceshipUpgradeController : MonoBehaviour {
 		minMedals.text = nextUpgradeSpaceship.minMedals.ToString();
 		price.text = nextUpgradeSpaceship.price.ToString();
 
-
-		Sprite image = Resources.Load<Sprite> ("Images/" + nextUpgradeSpaceship.texture);
-		SpaceshipImage.sprite = image;
+		SpaceshipImageController.Instance.Render (nextUpgradeSpaceship);
 
 		if (GameController.Instance.profile.medals < nextUpgradeSpaceship.minMedals) {
 			disableReason.gameObject.SetActive (true);

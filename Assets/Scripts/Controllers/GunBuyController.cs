@@ -52,6 +52,10 @@ public class GunBuyController: MonoBehaviour
 			gunItem.transform.SetParent(ContentPanel.transform);
 			gunItem.transform.localScale = Vector3.one;
 
+
+			Vector3 position = new Vector3 (gunItem.transform.localPosition.x, gunItem.transform.localPosition.y, 0.0f);
+			gunItem.transform.localPosition = position;
+
 			controller.Render ();
 		}
 	}

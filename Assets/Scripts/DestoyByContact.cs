@@ -56,11 +56,11 @@ public class DestoyByContact : MonoBehaviour {
 
 		}
 
-		if (other.tag == "primaryBolt") { // 2.1
+		if (other.tag == "primaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
 			CollideBullet(other, gameObject, missionController.primaryGun, missionController.primaryGun.hitPoint);
 		}
 
-		if (other.tag == "secondaryBolt") { // 2.1
+		if (other.tag == "secondaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
 
 			if (missionController.secondaryGun.bolt == Constant.gunBomb) {
 				ExplodeBomb (other);
