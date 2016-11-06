@@ -27,12 +27,11 @@ public static class DataGenerator
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, texture:"Gun1")));
-		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, texture:"Gun1")));
-		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, texture:"Gun1")));
-		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, texture:"Gun1")));
+		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, texture:"Gun1"),prefab: "spaceship-1"));
+		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-2"));
+		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-3"));
+		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-4"));
 	}
-
 
 	// Utility functions used to generate class objects
 	public static void GenerateObstacle(string obstacleType) {

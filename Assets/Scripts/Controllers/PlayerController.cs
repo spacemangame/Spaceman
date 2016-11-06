@@ -57,11 +57,11 @@ public class PlayerController : MonoBehaviour {
 
 		foreach (Transform child in spaceship.transform)
 		{
-			if (child.tag == "shortspawn1") {
+			if (child.tag == "shotspawn1") {
 				shotSpawn1 = child;
-			} else if (child.tag == "shortspawn2") {
+			} else if (child.tag == "shotspawn2") {
 				shotSpawn2 = child;
-			} else if (child.tag == "shortspawnbomb") {
+			} else if (child.tag == "shotspawnbomb") {
 				shotSpawnBomb = child;
 			} else if (child.tag == "secprefab") {
 				secPrefab = child.gameObject;
