@@ -28,7 +28,7 @@ public class GlobalPointController: MonoBehaviour
 
 
 	IEnumerator Show() {
-		yield return new WaitForSeconds(0.05f);
+		yield return new WaitForSeconds(0.01f);
 		Render ();
 	}
 
