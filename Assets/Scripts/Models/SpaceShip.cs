@@ -11,8 +11,10 @@ public class Spaceship {
 	public string description {get;set;}
 	public int velocity { get; set;}
 	public string texture { get; set; }
+	public string prefab { get; set; }
 
-	public Spaceship (int id, int price, int hp, int minMedals, Gun primaryGun, string name = "", string description = "", string texture = Constant.spaceshipTexture) {
+
+	public Spaceship (int id, int price, int hp, int minMedals, Gun primaryGun, string name = "", string description = "", string texture = Constant.spaceshipTexture, string prefab = "Spaceship1") {
 		this.id = id;
 		this.price = price;
 		this.hp = hp;
@@ -26,5 +28,6 @@ public class Spaceship {
 			this.description = "Some valid description for spaceship " + this.id;
 
 		this.texture = texture;
+		this.prefab = prefab;
 	}
 }

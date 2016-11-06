@@ -13,9 +13,10 @@ public class PlayerController : MonoBehaviour {
 	public Boundary boundary;
 
 	public GameObject shot;
-	public Transform shotSpawn1;
-	public Transform shotSpawn2;
-	public Transform shotSpawnBomb;
+	public Transform shotSpawn1 { get; set; }
+	public Transform shotSpawn2 { get; set; }
+	public Transform shotSpawnBomb { get; set; }
+	public GameObject secPrefab { get; set; } 
 
 	public VirtualJoystick joystick;
 	public FireButton primaryFireButton;
@@ -35,6 +36,8 @@ public class PlayerController : MonoBehaviour {
 	private Mission mission;
 	Coroutine destabilise { get; set; }
 
+	public GameObject spaceship { get; set; }
+
 	void Start() {
 		useInput = true;
 		rb = GetComponent<Rigidbody> ();
@@ -46,6 +49,30 @@ public class PlayerController : MonoBehaviour {
 		GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
 		if (gameControllerObject != null) {
 			mc = gameControllerObject.GetComponent<MissionController>();
+		}
+
+		spaceship = (GameObject) Resources.Load(GameController.Instance.profile.spaceship.prefab, typeof(GameObject));
+		spaceship =  (GameObject) Instantiate (spaceship);
+
+
+		foreach (Transform child in spaceship.transform)
+		{
+			if (child.tag == "shortspawn1") {
+				shotSpawn1 = child;
+			} else if (child.tag == "shortspawn2") {
+				shotSpawn2 = child;
+			} else if (child.tag == "shortspawnbomb") {
+				shotSpawnBomb = child;
+			} else if (child.tag == "secprefab") {
+				secPrefab = child.gameObject;
+			}
+		}
+
+		spaceship.transform.SetParent(gameObject.transform);
+		//spaceship.transform.localScale = Vector3.one;
+
+		if (mission.secondaryGun != null && mission.secondaryGun.bolt == Constant.gunBomb) {
+			secPrefab.SetActive (true);
 		}
 
 		destabilise = StartCoroutine(DestabilisePlayer ());
