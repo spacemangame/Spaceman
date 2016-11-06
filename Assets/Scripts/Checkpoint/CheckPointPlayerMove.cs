@@ -109,7 +109,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		itemsCollected = 0;
 
 		UpdateDrugCount (false);
-		UpdateHP ();
+	
 	}
 
 	public void UpdateDrugCount(bool playSound) {

@@ -13,8 +13,11 @@ public class PlayerController : MonoBehaviour {
 	public Boundary boundary;
 
 	public GameObject shot;
-	public Transform shotSpawn1;
-	public Transform shotSpawn2;
+	public Transform shotSpawn1 { get; set; }
+	public Transform shotSpawn2 { get; set; }
+	public Transform shotSpawnBomb { get; set; }
+	public GameObject secPrefab { get; set; } 
+
 	public VirtualJoystick joystick;
 	public FireButton primaryFireButton;
 	public FireButton secondaryFireButton;
@@ -33,6 +36,8 @@ public class PlayerController : MonoBehaviour {
 	private Mission mission;
 	Coroutine destabilise { get; set; }
 
+	public GameObject spaceship { get; set; }
+
 	void Start() {
 		useInput = true;
 		rb = GetComponent<Rigidbody> ();
@@ -44,6 +49,30 @@ public class PlayerController : MonoBehaviour {
 		GameObject gameControllerObject = GameObject.FindWithTag("MissionController");
 		if (gameControllerObject != null) {
 			mc = gameControllerObject.GetComponent<MissionController>();
+		}
+
+		spaceship = (GameObject) Resources.Load(GameController.Instance.profile.spaceship.prefab, typeof(GameObject));
+		spaceship =  (GameObject) Instantiate (spaceship);
+
+
+		foreach (Transform child in spaceship.transform)
+		{
+			if (child.tag == "shotspawn1") {
+				shotSpawn1 = child;
+			} else if (child.tag == "shotspawn2") {
+				shotSpawn2 = child;
+			} else if (child.tag == "shotspawnbomb") {
+				shotSpawnBomb = child;
+			} else if (child.tag == "secprefab") {
+				secPrefab = child.gameObject;
+			}
+		}
+
+		spaceship.transform.SetParent(gameObject.transform);
+		//spaceship.transform.localScale = Vector3.one;
+
+		if (mission.secondaryGun != null && mission.secondaryGun.bolt == Constant.gunBomb) {
+			secPrefab.SetActive (true);
 		}
 
 		destabilise = StartCoroutine(DestabilisePlayer ());
@@ -156,8 +185,12 @@ public class PlayerController : MonoBehaviour {
 		string boltResource = isPrimary ? mc.primaryGun.bolt : mc.secondaryGun.bolt;
 		GameObject bolt = Resources.Load<GameObject> (boltResource);
 
-		Instantiate (bolt, shotSpawn1.position, shotSpawn1.rotation);
-		Instantiate (bolt, shotSpawn2.position, shotSpawn2.rotation);
+		if (isPrimary || mc.secondaryGun.bolt != Constant.gunBomb) {
+			Instantiate (bolt, shotSpawn1.position, shotSpawn1.rotation);
+			Instantiate (bolt, shotSpawn2.position, shotSpawn2.rotation);
+		} else {
+			Instantiate (bolt, shotSpawnBomb.position, shotSpawnBomb.rotation);
+		}
 		GetComponent<AudioSource> ().Play ();
 	}
 }

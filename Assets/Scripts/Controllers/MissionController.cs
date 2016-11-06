@@ -16,7 +16,6 @@ public class MissionController : MonoBehaviour {
 	public float startWait;
 
 	public Text pointText;
-	public Text hpText;
 	public Text itemText;
 	public Image settings;
 	public Image joystick;
@@ -85,8 +84,11 @@ public class MissionController : MonoBehaviour {
 				secondaryGun.currentAmmo = secondaryGun.ammo;
 				UpdateActiveGunImages (false);
 			} else {
-				fireButtonSecondary.gameObject.SetActive(false);
+				fireButtonSecondary.gameObject.SetActive (false);
 			}	
+		} else {
+			fireButtonPrimary.gameObject.SetActive (false);
+			fireButtonSecondary.gameObject.SetActive (false);
 		}
 	}
 
@@ -111,7 +113,6 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void hideAllControls() {
-		hpText.gameObject.SetActive (false);
 		pointText.gameObject.SetActive (false);
 		itemText.gameObject.SetActive (false);
 		joystick.gameObject.SetActive (false);
@@ -122,7 +123,6 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void showAllControls() {
-		hpText.gameObject.SetActive (true);
 		pointText.gameObject.SetActive (true);
 		itemText.gameObject.SetActive (true);
 		joystick.gameObject.SetActive (true);
@@ -130,6 +130,14 @@ public class MissionController : MonoBehaviour {
 		fireButtonPrimary.gameObject.SetActive (true);
 		fireButtonSecondary.gameObject.SetActive (true);
 		ProgressBar.Instance.showProgressBar ();
+		if (mission.type == Constant.Bonus) {
+			fireButtonPrimary.gameObject.SetActive (false);
+			fireButtonSecondary.gameObject.SetActive (false);
+		} else {
+			if (mission.secondaryGun == null) {
+				fireButtonSecondary.gameObject.SetActive (false);
+			}	
+		}
 	}
 
 	public void onMissionComplete() {
@@ -298,7 +306,6 @@ public class MissionController : MonoBehaviour {
 
 	public void UpdateHP(){
 		ProgressBar.Instance.updateHpBar (mission.currentHp, maxHP);
-//		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
 	}
 
 	public int getItemCount() {

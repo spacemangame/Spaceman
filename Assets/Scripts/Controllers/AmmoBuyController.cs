@@ -50,6 +50,9 @@ public class AmmoBuyController: MonoBehaviour
 
 			ammoItem.transform.SetParent(ContentPanel.transform);
 			ammoItem.transform.localScale = Vector3.one;
+
+			Vector3 position = new Vector3 (ammoItem.transform.localPosition.x, ammoItem.transform.localPosition.y, 0.0f);
+			ammoItem.transform.localPosition = position;
 		}
 	}
 

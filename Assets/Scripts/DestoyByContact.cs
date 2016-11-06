@@ -56,31 +56,46 @@ public class DestoyByContact : MonoBehaviour {
 
 		}
 
-		if (other.tag == "primaryBolt") { // 2.1
-			CollideBullet(other, gameObject, missionController.primaryGun.hitPoint);
+		if (other.tag == "primaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
+			CollideBullet(other, gameObject, missionController.primaryGun, missionController.primaryGun.hitPoint);
 		}
 
-		if (other.tag == "secondaryBolt") { // 2.1
-			CollideBullet(other, gameObject, missionController.secondaryGun.hitPoint);
+		if (other.tag == "secondaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
+
+			if (missionController.secondaryGun.bolt == Constant.gunBomb) {
+				ExplodeBomb (other);
+			} else {
+				CollideBullet (other, gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
+			}
 		}
 
 	}
 
-	private void CollideBullet(Collider other, GameObject go, int hitPoint) {
-		Instantiate (explosion, transform.position, transform.rotation);
-		Destroy (other.gameObject);
+	void ExplodeBomb(Collider other) {
+		other.gameObject.SendMessage ("TriggerExplode");
+	}
 
-		Obstacle obstacle = Helper.getObstacleFromGameObject (go);
-		int newHP = obstacle.currentHp - hitPoint;
-		ChangeColor (gameObject, (float)obstacle.currentHp, (float)newHP);
-		obstacle.currentHp = newHP;
-		if (obstacle.currentHp <= 0) {
-			Destroy (gameObject);
+	private void CollideBullet(Collider other, GameObject go, Gun gun, int hitPoint) {
+		if (gameObject.tag == "Enemy" || gameObject.tag == "asteroid") {
+			Instantiate (explosion, transform.position, transform.rotation);
+			//Destroy (other.gameObject);
+
+			Obstacle obstacle = Helper.getObstacleFromGameObject (go);
+			int newHP = obstacle.currentHp - hitPoint;
+			ChangeColor (gameObject, (float)obstacle.currentHp, (float)newHP);
+			obstacle.currentHp = newHP;
+			if (obstacle.currentHp <= 0) {
+				Destroy (gameObject);
+			}
 		}
 	}
 
 	private void ChangeColor(GameObject gm, float currentHp, float maxHp) {
 		float newColor = currentHp / maxHp;
 		gm.GetComponentInChildren<Renderer> ().material.color = new Color(newColor + (float)100/255, newColor, newColor);
+	}
+
+	void BombExplode(Collider other) {
+		CollideBullet(other, gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
 	}
 }

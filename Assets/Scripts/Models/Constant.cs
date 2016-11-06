@@ -20,7 +20,7 @@ public static class Constant {
 	public const string Pickup = "Pickup";
 	public const string Transport = "Transport";
 	public const int waveItemCount = Constant.targetItemCount/ Constant.waveCount;
-	public const float instabilityFactor = 2.0f;
+	public const float instabilityFactor = 1.4f;
 	public const string gunTexture = "Gun1";
 	public const string spaceshipTexture = "Spaceship1";
 	public const string defaultScene = "Main";
@@ -28,6 +28,7 @@ public static class Constant {
 	public const string gunBolt = "Bolt";
 	public const string secondaryGunBolt = "Secondary Bolt";
 	public const string Bonus = "Bonus";
+	public const string gunBomb =  "Bomb";
 }
 
 
