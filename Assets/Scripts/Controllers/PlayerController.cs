@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour {
 	public GameObject shot;
 	public Transform shotSpawn1;
 	public Transform shotSpawn2;
+	public Transform shotSpawnBomb;
+
 	public VirtualJoystick joystick;
 	public FireButton primaryFireButton;
 	public FireButton secondaryFireButton;
@@ -156,8 +158,12 @@ public class PlayerController : MonoBehaviour {
 		string boltResource = isPrimary ? mc.primaryGun.bolt : mc.secondaryGun.bolt;
 		GameObject bolt = Resources.Load<GameObject> (boltResource);
 
-		Instantiate (bolt, shotSpawn1.position, shotSpawn1.rotation);
-		Instantiate (bolt, shotSpawn2.position, shotSpawn2.rotation);
+		if (isPrimary || mc.secondaryGun.bolt != Constant.gunBomb) {
+			Instantiate (bolt, shotSpawn1.position, shotSpawn1.rotation);
+			Instantiate (bolt, shotSpawn2.position, shotSpawn2.rotation);
+		} else {
+			Instantiate (bolt, shotSpawnBomb.position, shotSpawnBomb.rotation);
+		}
 		GetComponent<AudioSource> ().Play ();
 	}
 }

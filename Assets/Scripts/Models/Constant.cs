@@ -28,6 +28,7 @@ public static class Constant {
 	public const string gunBolt = "Bolt";
 	public const string secondaryGunBolt = "Secondary Bolt";
 	public const string Bonus = "Bonus";
+	public const string gunBomb =  "Bomb";
 }
 
 

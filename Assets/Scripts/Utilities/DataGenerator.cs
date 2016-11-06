@@ -19,10 +19,11 @@ public static class DataGenerator
 
 	private static void GenerateGuns(List<Gun> guns) {
 		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 40, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (2, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.secondaryGunBolt)); 
-		guns.Add (new Gun (3, "Assault Rifle HP 8", 8, 400, 8, 20, 30, texture:"Gun2",  bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (4, "Assault Rifle HP 16", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (5, "Assault Rifle HP 30", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (2, "Bomb 10", 2, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation())); 
+		guns.Add (new Gun (3, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.secondaryGunBolt)); 
+		guns.Add (new Gun (4, "Assault Rifle HP 8", 8, 400, 8, 20, 30, texture:"Gun2",  bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (5, "Assault Rifle HP 16", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (6, "Assault Rifle HP 30", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
