@@ -36,7 +36,8 @@ public class MissionController : MonoBehaviour {
 	public Text splashText;
 
     private bool gameOver;
-    
+	private int maxHP;
+
 	private Mission mission;
 
 	Coroutine obstacleRoutine { get; set;}
@@ -47,12 +48,11 @@ public class MissionController : MonoBehaviour {
     void Start() {
 		mission = GameController.Instance.mission;
         gameOver = false;
-        
+		maxHP = GameController.Instance.profile.spaceship.hp;
+
 		UpdatePoints();
 		UpdateHP();
 		UpdateItem ();
-
-
 		currentWave = mission.waveCount;
 
 		obstacleRoutine = StartCoroutine (SpawnObstacles());
@@ -118,6 +118,7 @@ public class MissionController : MonoBehaviour {
 		settings.gameObject.SetActive (false);
 		fireButtonPrimary.gameObject.SetActive (false);
 		fireButtonSecondary.gameObject.SetActive (false);
+		ProgressBar.Instance.hideProgressBar ();
 	}
 
 	public void showAllControls() {
@@ -128,6 +129,7 @@ public class MissionController : MonoBehaviour {
 		settings.gameObject.SetActive (true);
 		fireButtonPrimary.gameObject.SetActive (true);
 		fireButtonSecondary.gameObject.SetActive (true);
+		ProgressBar.Instance.showProgressBar ();
 	}
 
 	public void onMissionComplete() {
@@ -295,7 +297,8 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void UpdateHP(){
-		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
+		ProgressBar.Instance.updateHpBar (mission.currentHp, maxHP);
+//		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
 	}
 
 	public int getItemCount() {

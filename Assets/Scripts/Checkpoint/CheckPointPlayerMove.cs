@@ -14,7 +14,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	//joystick and booster button 
 	public VirtualJoystick joystick;
 	public BoostButton boostButton;
-	public Text hpText;
 	public int hpHit = 20;
 
 	private Quaternion calibrationQuaternion;
@@ -38,6 +37,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public Mission mission {get; set;}
 	private int noOfCheckpoints, totalCheckpoints, itemsCollected, coinsCollected;
+	private int maxHP;
 
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
@@ -82,7 +82,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		timerText.gameObject.SetActive (false);
 		boostButton.gameObject.SetActive (false);
 		drugCountText.gameObject.SetActive (false);
-		hpText.gameObject.SetActive (false);
+		ProgressBar.Instance.hideProgressBar ();
 	}
 
 	public void ShowAllControls() {
@@ -91,13 +91,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		timerText.gameObject.SetActive (true);
 		boostButton.gameObject.SetActive (true);
 		drugCountText.gameObject.SetActive (true);
-		hpText.gameObject.SetActive (true);
+		ProgressBar.Instance.showProgressBar ();
 	}
 
 	void Start () {
 		mission = GameController.Instance.mission;
 		Debug.Log ("HP: " + mission.currentHp);
-
+		maxHP = GameController.Instance.profile.spaceship.hp;
 		rb = GetComponent<Rigidbody> ();
 		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 
@@ -208,7 +208,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void UpdateHP(){
-		hpText.text = System.String.Format(Strings.hpIndicator, mission.currentHp);
+		ProgressBar.Instance.updateHpBar (mission.currentHp, maxHP);
 	}
 
 
