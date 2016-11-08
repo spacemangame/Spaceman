@@ -393,16 +393,19 @@ public class MissionController : MonoBehaviour {
 
 	private void UpdateActiveGunImages(bool isPrimary) {
 		Sprite image;
-		Image fireBtnSprite;
+		Image fireBtnSprite, imageBtn;
 		if (isPrimary) {
 			image = Resources.Load<Sprite> ("Images/" + primaryGun.texture);
 			fireBtnSprite = fireButtonPrimary.GetComponentInChildren<Image> ();
+			imageBtn = fireButtonPrimary.GetComponent<Image> ();
 		} else {
 			image = Resources.Load<Sprite> ("Images/" + secondaryGun.texture);
 			fireBtnSprite = fireButtonSecondary.GetComponentInChildren<Image> ();
+			imageBtn = fireButtonSecondary.GetComponent<Image> ();
 		}
 
 		fireBtnSprite.sprite = image;
+		imageBtn.sprite = image;
 		UpdateBulletCount (isPrimary);
 
 	}
