@@ -30,7 +30,10 @@ public class MissionController : MonoBehaviour {
 	public Text BonusText;
 
 	public Text coinText;
-	public Text medalText;
+	//public Text medalText;
+	public Image medalImage1;
+	public Image medalImage2;
+	public Image medalImage3;
 	public Text itemCountText;
 	public Text splashText;
 
@@ -146,7 +149,28 @@ public class MissionController : MonoBehaviour {
 		gamesuccessMenu.SetActive (true);
 
 		int medalsEarned = (int)System.Math.Ceiling ( (((double)mission.pickedItemCount) / mission.targetItemCount) * mission.maxMedalEarned);
-		medalText.text = "Medal(s) Earned : " + medalsEarned;
+		//medalText.text = "Medal(s) Earned : " + medalsEarned;
+		int caseSwitch = medalsEarned;
+		switch (caseSwitch)
+		{
+		case 1:
+			medalImage1.gameObject.SetActive (true);
+			break;
+		case 2:
+			medalImage1.gameObject.SetActive (true);
+			medalImage2.gameObject.SetActive (true);
+			break;
+		case 3:
+			medalImage1.gameObject.SetActive (true);
+			medalImage2.gameObject.SetActive (true);
+			medalImage3.gameObject.SetActive (true);
+			break;
+		default:
+			medalImage1.gameObject.SetActive (false);
+			medalImage2.gameObject.SetActive (false);
+			medalImage3.gameObject.SetActive (false);
+			break;
+		}
 
 		string itemName = mission.item.GetType ().Name;
 		string itemPickedText = mission.pickedItemCount + "/" + mission.targetItemCount + " (" + mission.item.value + " per" + itemName + ")";
