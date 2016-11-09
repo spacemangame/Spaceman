@@ -135,14 +135,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		totalCheckpoints = 10;
 		itemsCollected = 0;
 
-		spaceship = (GameObject) Resources.Load(GameController.Instance.profile.spaceship.prefab, typeof(GameObject));
+		/*spaceship = (GameObject) Resources.Load(GameController.Instance.profile.spaceship.prefab, typeof(GameObject));
 		spaceship =  (GameObject) Instantiate (spaceship);
 
 		spaceship.transform.SetParent(gameObject.transform);
 		spaceship.transform.localRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
 		spaceship.transform.localScale = new Vector3 (40.0f, 30.0f, 40.0f);
 
-		spaceship.transform.localPosition = new Vector3 (60.0f, 0.0f, 60.0f);
+		spaceship.transform.localPosition = new Vector3 (60.0f, 0.0f, 60.0f);*/
 
 		UpdateDrugCount (false);
 	
