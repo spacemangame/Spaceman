@@ -27,7 +27,7 @@ public class FireButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler 
 		mission = GameController.Instance.mission;
 		waitForReload = false;
 		if (isSecondary == true) {
-			if (mission.secondaryGun && mission.secondaryGun.reloadTime > Constant.reloadTime) {
+			if ((mission.secondaryGun != null) && (mission.secondaryGun.reloadTime > Constant.reloadTime)) {
 				reloadTime = mission.secondaryGun.reloadTime;
 				waitForReload = true;
 			}

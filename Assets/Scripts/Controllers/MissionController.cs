@@ -381,14 +381,12 @@ public class MissionController : MonoBehaviour {
 	private void UpdateBulletCount(bool isPrimary) {
 		Text textCount;
 		Gun currGun;
-		if (isPrimary) {
-			textCount = fireButtonPrimary.GetComponentInChildren<Text> ();
-			currGun = primaryGun;
-		} else {
-			textCount = fireButtonSecondary.GetComponentInChildren<Text> ();
+		if (!isPrimary) {
+			textCount = fireButtonSecondary.transform.Find ("BulletCount").GetComponent<Text>();
 			currGun = secondaryGun;
+			textCount.text = currGun.currentAmmo >= 0 ? currGun.currentAmmo.ToString() : "∞";
 		}
-		textCount.text = currGun.currentAmmo >= 0 ? currGun.currentAmmo.ToString() : "∞";
+
 	}
 
 	private void UpdateActiveGunImages(bool isPrimary) {
