@@ -239,15 +239,35 @@ public class MissionController : MonoBehaviour {
 
 			StartCoroutine (SpawnCollectibles ());
 
+			float startx = Random.Range (-spawnValues.x, spawnValues.x);
+			float stepx = Random.Range (1.0f, 2.2f);
+
+			int hazardIndex = Random.Range (0, hazards.Length);
+
 			for (int i=0; i < mission.wave.obstacleCount; i++) {
 				
-				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
-				Vector3 spawnPosition = new Vector3 (Random.Range(-spawnValues.x, spawnValues.x),Random.Range(0, spawnValues.y)-0.5f, spawnValues.z);
+				GameObject hazard = hazards [hazardIndex];
+				GameObjectObstacle gc = (GameObjectObstacle) hazard.GetComponent<GameObjectObstacle> ();
+
 				Quaternion spawnRotation = Quaternion.identity;
 
-				GameObjectObstacle gc = (GameObjectObstacle) hazard.GetComponent<GameObjectObstacle> ();
+				Vector3 spawnPosition  = new Vector3 (startx , Random.Range (0, spawnValues.y) -0.5f, spawnValues.z);
 				GameObject obstacleClone = (GameObject) Instantiate (hazard, spawnPosition, spawnRotation);
 				Helper.addGameObjectObstacle(obstacleClone, gc.obstacle);
+
+				startx += stepx;
+
+				if (startx > spawnValues.x) {
+					stepx = -stepx;
+				} else if (startx < (-spawnValues.x)) {
+					stepx = -stepx;
+				}
+
+				hazardIndex++;
+
+				if (hazardIndex >= hazards.Length) {
+					hazardIndex = 0;
+				}
 
 				yield return new WaitForSeconds ((float) mission.wave.spawnWait);
 			}

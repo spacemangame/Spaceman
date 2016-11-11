@@ -82,13 +82,7 @@ public static class DataGenerator
 		obs1.prefab = "Asteroid";
 		mission.obstacles.Add (obs1);
 
-		Asteroid obs2 = new Asteroid (2, obstacleHP);
-		obs2.prefab = "Asteroid2";
-		mission.obstacles.Add (obs2);
 
-		Asteroid obs3 = new Asteroid (3, obstacleHP);
-		obs3.prefab = "Asteroid2";
-		mission.obstacles.Add (obs3);
 
 
 		mission.waveCount = Constant.waveCount;
@@ -101,6 +95,19 @@ public static class DataGenerator
 			alien.isAI = true;
 			alien.prefab = "Alien";
 			mission.obstacles.Add (alien);
+
+			Asteroid obs2 = new Asteroid (2, obstacleHP);
+			obs2.prefab = "Asteroid2";
+			mission.obstacles.Add (obs2);
+
+			Asteroid obs3 = new Asteroid (3, obstacleHP);
+			obs3.prefab = "Asteroid2";
+			mission.obstacles.Add (obs3);
+
+			Alien alien1 = new Alien (4, enemyHP);
+			alien1.isAI = false;
+			alien1.prefab = "Alien";
+			mission.obstacles.Add (alien1);
 
 			mission.stabilitliy = 0.5f;
 
@@ -132,6 +139,20 @@ public static class DataGenerator
 			enemy.prefab = "Enemy Ship";
 			mission.obstacles.Add (enemy);
 			mission.enemyGunHP = levelSpaceship.primaryGun.hitPoint;
+
+			Asteroid obs2 = new Asteroid (2, obstacleHP);
+			obs2.prefab = "Asteroid2";
+			mission.obstacles.Add (obs2);
+
+			Enemy enemy1 = new Enemy (6, enemyHP, levelSpaceship.primaryGun.hitPoint);
+			enemy1.prefab = "Enemy Ship";
+			enemy.isAI = true;
+			mission.obstacles.Add (enemy);
+			mission.enemyGunHP = levelSpaceship.primaryGun.hitPoint;
+
+			Asteroid obs3 = new Asteroid (3, obstacleHP);
+			obs3.prefab = "Asteroid2";
+			mission.obstacles.Add (obs3);
 
 			mission.targetItemCount = Constant.targetItemCount;
 			mission.pickedItemCount = 0;
