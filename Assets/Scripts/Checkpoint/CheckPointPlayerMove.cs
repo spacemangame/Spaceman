@@ -97,10 +97,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	// Call this function when game is over, 
-	public void OnGameOver() {
-
+	public void OnGameOver(string reason) {
 		HideAllControls ();
-		string reason = Strings.wrecked;
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
@@ -164,8 +162,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		//reduce hp
 		DecreaseHP(hpHit);
 		if (mission.currentHp <= 0 || col.gameObject.tag.Equals ("Terrain")) {
-			destroyOnTimer ();
-			OnGameOver ();
+			destroyOnTimer (Strings.wrecked);
 		}
 		if (!col.gameObject.tag.Equals ("Terrain")) {
 			Destroy (col.gameObject);
@@ -192,12 +189,12 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		Debug.Log ("Items collected" + itemsCollected);
 	}
 		
-	public void destroyOnTimer(){
+	public void destroyOnTimer(string reason){
 		Destroy (gameObject);
 		if (explosion != null)
 			Instantiate (explosion, transform.position, transform.rotation);
 		cTimer.stopTimer = true;
-		OnGameOver ();
+		OnGameOver (reason);
 	}
 
 	void FixedUpdate(){
