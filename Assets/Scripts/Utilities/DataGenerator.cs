@@ -19,18 +19,18 @@ public static class DataGenerator
 
 	private static void GenerateGuns(List<Gun> guns) {
 		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 40, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (2, "Bomb 10", 2, 200, 4, 10, 35, reloadTime: 2.0f, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation())); 
+		guns.Add (new Gun (2, "Bomb 2", 2, 200, 4, 10, 35, reloadTime: 2.0f, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation())); 
 		guns.Add (new Gun (3, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.secondaryGunBolt)); 
-		guns.Add (new Gun (4, "Assault Rifle HP 8", 8, 400, 8, 20, 30, texture:"Gun2",  bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (5, "Assault Rifle HP 16", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (6, "Assault Rifle HP 30", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (4, "Bomb HP 8", 8, 400, 8, 20, 30, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation(5.0f)));
+		guns.Add (new Gun (5, "Assault Rifle HP 8", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (6, "Assault Rifle HP 10", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
-		spaceships.Add(new Spaceship(0, 300, 70, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, texture:"Gun1"),prefab: "spaceship-1"));
-		spaceships.Add(new Spaceship(1, 500, 120, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-2"));
-		spaceships.Add(new Spaceship(2, 1000, 240, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-3"));
-		spaceships.Add(new Spaceship(3, 1800, 400, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-4"));
+		spaceships.Add(new Spaceship(0, 300, 50, 0, new Gun (0, "Primary Gun", 1, -1, -1, 0, -1, -1, texture:"Gun1"),prefab: "spaceship-1"));
+		spaceships.Add(new Spaceship(1, 500, 70, 10, new Gun(100, "Primary Gun", 2, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-2"));
+		spaceships.Add(new Spaceship(2, 1000, 120, 20, new Gun(200, "Primary Gun", 4, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-3"));
+		spaceships.Add(new Spaceship(3, 1800, 200, 30, new Gun(300, "Primary Gun", 8, -1, -1, 10, -1, -1, texture:"Gun1"),prefab: "spaceship-4"));
 	}
 
 	// Utility functions used to generate class objects
@@ -82,13 +82,7 @@ public static class DataGenerator
 		obs1.prefab = "Asteroid";
 		mission.obstacles.Add (obs1);
 
-		Asteroid obs2 = new Asteroid (2, obstacleHP);
-		obs2.prefab = "Asteroid2";
-		mission.obstacles.Add (obs2);
 
-		Asteroid obs3 = new Asteroid (3, obstacleHP);
-		obs3.prefab = "Asteroid2";
-		mission.obstacles.Add (obs3);
 
 
 		mission.waveCount = Constant.waveCount;
@@ -101,6 +95,19 @@ public static class DataGenerator
 			alien.isAI = true;
 			alien.prefab = "Alien";
 			mission.obstacles.Add (alien);
+
+			Asteroid obs2 = new Asteroid (2, obstacleHP);
+			obs2.prefab = "Asteroid2";
+			mission.obstacles.Add (obs2);
+
+			Asteroid obs3 = new Asteroid (3, obstacleHP);
+			obs3.prefab = "Asteroid2";
+			mission.obstacles.Add (obs3);
+
+			Alien alien1 = new Alien (4, enemyHP);
+			alien1.isAI = false;
+			alien1.prefab = "Alien";
+			mission.obstacles.Add (alien1);
 
 			mission.stabilitliy = 0.5f;
 
@@ -133,11 +140,23 @@ public static class DataGenerator
 			mission.obstacles.Add (enemy);
 			mission.enemyGunHP = levelSpaceship.primaryGun.hitPoint;
 
+			Asteroid obs2 = new Asteroid (2, obstacleHP);
+			obs2.prefab = "Asteroid2";
+			mission.obstacles.Add (obs2);
+
+			Enemy enemy1 = new Enemy (6, enemyHP, levelSpaceship.primaryGun.hitPoint);
+			enemy1.prefab = "Enemy Ship";
+			enemy.isAI = true;
+			mission.obstacles.Add (enemy);
+			mission.enemyGunHP = levelSpaceship.primaryGun.hitPoint;
+
+			Asteroid obs3 = new Asteroid (3, obstacleHP);
+			obs3.prefab = "Asteroid2";
+			mission.obstacles.Add (obs3);
+
 			mission.targetItemCount = Constant.targetItemCount;
 			mission.pickedItemCount = 0;
 			mission.currentCoins = 0;
-
-			mission.maxMedalEarned = mission.maxMedalEarned - 1;
 
 			int collectibleValue = ((int)((levelSpaceship.price * Constant.hpFactor) / mission.maxMedalEarned)) / Constant.targetItemCount  - 2;
 
@@ -249,10 +268,9 @@ public static class DataGenerator
 
 		missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
 		missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
-		missions.Add (CreateDrugMission ("Drug_L3", 7,"Escape Police", 0));
+		//missions.Add (CreateDrugMission ("Drug_L3", 7,"Escape Police", 0));
         missions.Add(CreateDrugMission("Drug_L4", 8, "Test Drug Mission", 2));
-
-
+        
         missions.Add (CreatePizzaPickupMission ());
 		missions.Add (CreatePizzaDeliveryMission ());
 
