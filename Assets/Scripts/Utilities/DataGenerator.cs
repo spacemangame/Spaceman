@@ -250,9 +250,10 @@ public static class DataGenerator
 		missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
 		missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
 		missions.Add (CreateDrugMission ("Drug_L3", 7,"Escape Police", 0));
+        missions.Add(CreateDrugMission("Drug_L4", 8, "Test Drug Mission", 2));
 
 
-		missions.Add (CreatePizzaPickupMission ());
+        missions.Add (CreatePizzaPickupMission ());
 		missions.Add (CreatePizzaDeliveryMission ());
 
 		return missions;
