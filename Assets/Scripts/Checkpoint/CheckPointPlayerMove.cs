@@ -61,10 +61,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		{
 		case 1:
 			medalImage1.gameObject.SetActive (true);
+			medalImage2.gameObject.SetActive (false);
+			medalImage3.gameObject.SetActive (false);
 			break;
 		case 2:
 			medalImage1.gameObject.SetActive (true);
 			medalImage2.gameObject.SetActive (true);
+			medalImage3.gameObject.SetActive (false);
 			break;
 		case 3:
 			medalImage1.gameObject.SetActive (true);

@@ -16,7 +16,7 @@ public static class Constant {
 	public const int targetItemCount = 12;
 	public const int obstacleCount = 15;
 	public const int collectibleCount = 6;
-	public const int hpFactor = 2;
+	public const int hpFactor = 3;
 	public const string Pickup = "Pickup";
 	public const string Transport = "Transport";
 	public const int waveItemCount = Constant.targetItemCount/ Constant.waveCount;
