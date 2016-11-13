@@ -266,11 +266,17 @@ public static class DataGenerator
 		missions.Add (CreateKidDeliveryMission());
 		missions.Add (CreateKidPickupMission ());
 
-		missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
-		missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
-		//missions.Add (CreateDrugMission ("Drug_L3", 7,"Escape Police", 0));
-        missions.Add(CreateDrugMission("Drug_L4", 8, "Test Drug Mission", 2));
-        
+		int medals = (GameController.Instance.profile.medals == 0) ? 1 : GameController.Instance.profile.medals;
+		int level = (int)Math.Floor (medals / 9.0f);
+
+		if (level <= 1) {
+			//missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
+			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Pickup", 2));
+		} else {
+			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Pickup", 2));
+			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
+		}
+
         missions.Add (CreatePizzaPickupMission ());
 		missions.Add (CreatePizzaDeliveryMission ());
 
