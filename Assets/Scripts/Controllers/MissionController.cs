@@ -411,24 +411,22 @@ public class MissionController : MonoBehaviour {
 		}
 
 	}
-
+	//TODO debug this
 	private void UpdateActiveGunImages(bool isPrimary) {
 		Sprite image;
-		Image fireBtnSprite, imageBtn;
+		Image[] btnImages;
 		if (isPrimary) {
 			image = Resources.Load<Sprite> ("Images/" + primaryGun.texture);
-			fireBtnSprite = fireButtonPrimary.GetComponentInChildren<Image> ();
-			imageBtn = fireButtonPrimary.GetComponent<Image> ();
+			btnImages = fireButtonPrimary.GetComponentsInChildren<Image> ();
 		} else {
 			image = Resources.Load<Sprite> ("Images/" + secondaryGun.texture);
-			fireBtnSprite = fireButtonSecondary.GetComponentInChildren<Image> ();
-			imageBtn = fireButtonSecondary.GetComponent<Image> ();
+			btnImages = fireButtonSecondary.GetComponentsInChildren<Image> ();
 		}
 
-		fireBtnSprite.sprite = image;
-		imageBtn.sprite = image;
+		foreach(Image img in btnImages) {
+			img.sprite = image;
+		}
 		UpdateBulletCount (isPrimary);
-
 	}
 
 	public bool HasBullet(bool isPrimary) {

@@ -18,12 +18,12 @@ public static class DataGenerator
 	}
 
 	private static void GenerateGuns(List<Gun> guns) {
-		guns.Add (new Gun (1, "Assault Rifle HP 2", 2, 100, 2, 0, 40, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (2, "Bomb 2", 2, 200, 4, 10, 35, reloadTime: 2.0f, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation())); 
-		guns.Add (new Gun (3, "Assault Rifle HP 4", 4, 200, 4, 10, 35, texture:"Gun2", bolt: Constant.secondaryGunBolt)); 
-		guns.Add (new Gun (4, "Bomb HP 8", 8, 400, 8, 20, 30, texture:"Gun2", bolt: Constant.gunBomb, detonation: new Detonation(5.0f)));
-		guns.Add (new Gun (5, "Assault Rifle HP 8", 16, 800, 16,  30, 25, texture:"Gun2", bolt: Constant.secondaryGunBolt));
-		guns.Add (new Gun (6, "Assault Rifle HP 10", 30, 1500, 30, 40, 20, texture:"Gun2", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (1, "Assault Rifle - BA 43", 2, 100, 2, 0, 40, texture:"assault", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (2, "Grenade Luncher - CD 01", 2, 200, 4, 10, 35, reloadTime: 2.0f, texture:"bomb", bolt: Constant.gunBomb, detonation: new Detonation())); 
+		guns.Add (new Gun (3, "AWP 42", 4, 200, 4, 10, 35, texture:"assault", bolt: Constant.secondaryGunBolt)); 
+		guns.Add (new Gun (4, "Hell Bringer - HL 99", 8, 400, 8, 20, 30, texture:"bomb2", bolt: Constant.gunBomb, detonation: new Detonation(5.0f)));
+		guns.Add (new Gun (5, "Bastard Gun - EW 44", 16, 800, 16,  30, 25, texture:"assault", bolt: Constant.secondaryGunBolt));
+		guns.Add (new Gun (6, "Lazer Gun - XX 12", 30, 1500, 30, 40, 20, texture:"assault", bolt: Constant.secondaryGunBolt));
 	}
 
 	private static void GenerateSpaceships(List<Spaceship> spaceships) {
