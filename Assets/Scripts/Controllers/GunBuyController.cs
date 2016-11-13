@@ -67,7 +67,7 @@ public class GunBuyController: MonoBehaviour
 		GlobalPointController.Instance.Render ();
 		Render ();
 
-		MessageController.Instance.Render ("Added Gun " + gun.name + " to profile !!");
+		MessageController.Instance.Render ("Added Gun '" + gun.name + "' to profile !");
 	}
 		
 }

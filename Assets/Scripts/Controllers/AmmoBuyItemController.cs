@@ -23,9 +23,9 @@ public class AmmoBuyItemController: MonoBehaviour
 	public void Render() {
 		int ammoPrice = 5 * gun.ammoPrice;
 		Name.text = gun.name;
-		HPText.text = "Price : " + ammoPrice;
+		HPText.text = "Damage : " + gun.hitPoint;
 		AmmoText.text = "Ammo : " + gun.ammo;
-		Price.text = "Buy 5";
+		Price.text = "Buy for " + ammoPrice;
 
 		if ((GameController.Instance.profile.coins < ammoPrice) || (gun.ammo >= gun.maxAmmo)) {
 			Buy.interactable = false;
