@@ -20,11 +20,15 @@ public class DetonatorPhysics : MonoBehaviour {
 		// This foreach iterates through all the colliders inside the overlap sphere and sendMessages the bombExplode method
 
 		Collider collider = gameObject.GetComponent<Collider> ();
+
 		Vector3 _explosionPosition = transform.position; //- Vector3.Normalize(MyDetonator().direction);
 		Collider[] _colliders = Physics.OverlapSphere(_explosionPosition, detonation.radius);
 
 		foreach (var bombInstance in _colliders) {
-			bombInstance.SendMessage("BombExplode", collider, SendMessageOptions.DontRequireReceiver);
+			if (collider == null)
+				Debug.Log ("Unabled to find collider");
+
+			bombInstance.gameObject.SendMessage("BombExplode");
 		} 
 
 		Invoke ("Destroy", 0.0f);
