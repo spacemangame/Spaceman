@@ -47,7 +47,7 @@ public static class DataGenerator
 		userProfile.coins = 200;
 
 		userProfile.isSoundEnabled = true;
-		userProfile.isAccelerometerEnabled = true;
+		userProfile.isAccelerometerEnabled = false;
 
 		return userProfile;
 	}
