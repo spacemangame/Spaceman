@@ -12,6 +12,8 @@ public class ProfileController : MonoBehaviour {
 	public InputField coinInput;
 	public InputField medalInput;
 	public GameObject inputsCanvas;
+	public GameObject spaceship;
+
 
 	void Start() {
         spaceshipHP.text = GameController.Instance.profile.spaceship.hp.ToString();
@@ -25,6 +27,7 @@ public class ProfileController : MonoBehaviour {
 		coinInput.text = GameController.Instance.profile.coins.ToString();
 		medalInput.text = GameController.Instance.profile.medals.ToString();
 		inputsCanvas.SetActive (true);
+		spaceship.SetActive (false);
 	}
 
 	public void submitInputs() {
@@ -40,5 +43,13 @@ public class ProfileController : MonoBehaviour {
 		coins.text = newCoin.ToString();
 
 		inputsCanvas.SetActive (false);
+		spaceship.SetActive (true);
+	}
+
+	public void reset() {
+		GameController.Instance.profile = DataGenerator.PopulateUserProfile ();
+		UserProfile.Save ();
+
+		SceneManager.LoadScene ("Main Menu");
 	}
 }

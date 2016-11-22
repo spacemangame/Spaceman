@@ -19,7 +19,7 @@ public class GunSelectItemController: MonoBehaviour
 	void Start() {
 
 		Name.text = gun.name;
-		HPText.text = "Hit Point : " + gun.hitPoint;
+		HPText.text = "Damage : " + gun.hitPoint;
 		AmmoText.text = "Ammo : " + gun.ammo;
 
 		mission = GameController.Instance.mission;

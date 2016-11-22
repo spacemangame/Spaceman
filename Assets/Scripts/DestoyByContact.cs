@@ -57,7 +57,7 @@ public class DestoyByContact : MonoBehaviour {
 		}
 
 		if (other.tag == "primaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
-			CollideBullet(other, gameObject, missionController.primaryGun, missionController.primaryGun.hitPoint);
+			CollideBullet(gameObject, missionController.primaryGun, missionController.primaryGun.hitPoint);
 		}
 
 		if (other.tag == "secondaryBolt" && (gameObject.tag == "asteroid" || gameObject.tag == "Enemy")) { // 2.1
@@ -65,7 +65,7 @@ public class DestoyByContact : MonoBehaviour {
 			if (missionController.secondaryGun.bolt == Constant.gunBomb) {
 				ExplodeBomb (other);
 			} else {
-				CollideBullet (other, gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
+				CollideBullet (gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
 			}
 		}
 
@@ -75,7 +75,7 @@ public class DestoyByContact : MonoBehaviour {
 		other.gameObject.SendMessage ("TriggerExplode");
 	}
 
-	private void CollideBullet(Collider other, GameObject go, Gun gun, int hitPoint) {
+	private void CollideBullet(GameObject go, Gun gun, int hitPoint) {
 		if (gameObject.tag == "Enemy" || gameObject.tag == "asteroid") {
 			Instantiate (explosion, transform.position, transform.rotation);
 			//Destroy (other.gameObject);
@@ -95,7 +95,8 @@ public class DestoyByContact : MonoBehaviour {
 		gm.GetComponentInChildren<Renderer> ().material.color = new Color(newColor + (float)100/255, newColor, newColor);
 	}
 
-	void BombExplode(Collider other) {
-		CollideBullet(other, gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
+	void BombExplode() {
+		Debug.Log ("Destroyed by Bomb");
+		CollideBullet( gameObject, missionController.secondaryGun, missionController.secondaryGun.hitPoint);
 	}
 }
