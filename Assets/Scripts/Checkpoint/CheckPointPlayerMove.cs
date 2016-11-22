@@ -223,7 +223,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
 			} else{
 				_InputDir = getAccelerometer(Input.acceleration);
-				movement = new Vector3 ( _InputDir.x * maneuverability, _InputDir.z  * maneuverability, speed * boost);
+				movement = new Vector3 ( _InputDir.x * maneuverability * 2.0f, _InputDir.z  * maneuverability * 2.0f, speed * boost);
 			}
 		}
 		if(rb.position.y > maxAltitude)

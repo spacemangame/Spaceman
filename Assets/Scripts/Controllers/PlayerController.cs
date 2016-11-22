@@ -142,9 +142,12 @@ public class PlayerController : MonoBehaviour {
 			// desktop
 			movement = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0.0f);
 		} else if (useAccelerometer) {
+			
 			// accelerometer
 			_InputDir = getAccelerometer(Input.acceleration);
-			movement = new Vector3 (_InputDir.x, -_InputDir.y ,0.0f) * accelerometerSensitivity;
+			movement = new Vector3 (_InputDir.x, _InputDir.z * 1.25f, 0.0f) * accelerometerSensitivity;
+
+			Debug.Log ("Z:" + _InputDir.z);
 		}
 
 		// joystick
@@ -183,6 +186,9 @@ public class PlayerController : MonoBehaviour {
 		dir = Input.acceleration;
 		if (dir.sqrMagnitude > 1)
 			dir.Normalize();
+
+
+		Debug.Log ("Calibarate Z:" + dir.z);
 	}
 		
 
