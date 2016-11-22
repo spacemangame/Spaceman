@@ -41,6 +41,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public Mission mission {get; set;}
 	private int noOfCheckpoints, totalCheckpoints, itemsCollected, coinsCollected;
 	private int maxHP;
+	private Vector3 dir;
+	private Vector3 _InputDir;
+
 
 	public GameObject spaceship { get; set; }
 
@@ -200,8 +203,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 //		Camera.main.transform.position = Camera.main.transform.position * bias + moveCamTo * (1.0f - bias);
 		Camera.main.transform.position = moveCamTo;
 		Camera.main.transform.LookAt (transform.position + transform.forward * 10.0f);
-
 		Vector3 movement;
+
+
+
+
 		boost = 1.0f;
 		if (Input.GetButton ("Jump") || boostButton.boost) {
 			boost = 2.0f;
@@ -213,7 +219,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			if (SystemInfo.deviceType == DeviceType.Desktop) {
 				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
 			} else{
-				movement = new Vector3 ( Input.acceleration.x * maneuverability, 0.0f, speed * boost);
+				_InputDir = getAccelerometer(Input.acceleration);
+				movement = new Vector3 ( _InputDir.x * maneuverability, _InputDir.z  * maneuverability, speed * boost);
 			}
 		}
 		if(rb.position.y > maxAltitude)
@@ -230,10 +237,25 @@ public class CheckPointPlayerMove : MonoBehaviour {
 //	}
 	// calibrates the Input.acceleration
 	public void CalibrateAccelerometer () {
-		Vector3 accelerationSnapshot = Input.acceleration;
-		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
-		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
+		dir = Vector3.zero;
+		dir = Input.acceleration;
+		if (dir.sqrMagnitude > 1)
+			dir.Normalize();
+
+//		Vector3 accelerationSnapshot = Input.acceleration;
+//		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
+//		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
 	}
+
+	//Method to get the calibrated input 
+	Vector3 getAccelerometer(Vector3 accelerator){
+		Vector3 accel = Input.acceleration;
+		accel.x = accel.x - dir.x;
+		accel.y = accel.y - dir.y;
+		accel.z = accel.z - dir.z;
+		return accel;
+	}
+
 
 	public void DecreaseHP(int hpToSubtract){
 		mission.currentHp -= hpToSubtract;

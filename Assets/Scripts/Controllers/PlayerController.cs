@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour {
 	private bool useInput;
 	private bool shoot;
 
+	private Vector3 dir;
+	private Vector3 _InputDir;
+
 	private MissionController mc;
 	private Mission mission;
 	Coroutine destabilise { get; set; }
@@ -140,7 +143,8 @@ public class PlayerController : MonoBehaviour {
 			movement = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0.0f);
 		} else if (useAccelerometer) {
 			// accelerometer
-			movement = new Vector3 (Input.acceleration.x, -Input.acceleration.y ,0.0f) * accelerometerSensitivity;
+			_InputDir = getAccelerometer(Input.acceleration);
+			movement = new Vector3 (_InputDir.x, -_InputDir.y ,0.0f) * accelerometerSensitivity;
 		}
 
 		// joystick
@@ -171,10 +175,26 @@ public class PlayerController : MonoBehaviour {
 
 	// calibrates the Input.acceleration
 	public void CalibrateAccelerometer () {
-		Vector3 accelerationSnapshot = Input.acceleration;
-		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
-		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
+//		Vector3 accelerationSnapshot = Input.acceleration;
+//		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
+//		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
+
+		dir = Vector3.zero;
+		dir = Input.acceleration;
+		if (dir.sqrMagnitude > 1)
+			dir.Normalize();
 	}
+		
+
+	//Method to get the calibrated input 
+	Vector3 getAccelerometer(Vector3 accelerator){
+		Vector3 accel = Input.acceleration;
+		accel.x = accel.x - dir.x;
+		accel.y = accel.y - dir.y;
+		accel.z = accel.z - dir.z;
+		return accel;
+	}
+
 
 	// Get the 'calibrated' value from the Input
 	Vector3 FixAcceleration (Vector3 acceleration) {
