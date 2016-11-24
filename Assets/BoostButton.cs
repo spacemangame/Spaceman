@@ -30,7 +30,7 @@ public class BoostButton : MonoBehaviour, IPointerDownHandler {
 		}
 	}
 
-	public void OnPointerDown(PointerEventData ped) {
+	public void pressBoost() {
 		if (!touched) {
 			touched = true;
 			boost = true;
@@ -40,6 +40,10 @@ public class BoostButton : MonoBehaviour, IPointerDownHandler {
 			boostButton.gameObject.SetActive(false);
 			timerText.gameObject.SetActive (true);
 		}
+	}
+
+	public void OnPointerDown(PointerEventData ped) {
+		pressBoost ();
 	}
 
 	private void enableBoostButton(){

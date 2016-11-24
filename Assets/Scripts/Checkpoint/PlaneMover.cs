@@ -49,10 +49,4 @@ public class PlaneMover : MonoBehaviour {
 		}
 	}
 
-//	void FixedUpdate(){
-//		rb.AddRelativeForce (Vector3.up * speed * planelift);
-//		rb.AddRelativeTorque (0, 0, -Input.GetAxis("Horizontal") * rollrate);
-//		rb.AddRelativeForce (0, 0, speed);
-//		rb.AddRelativeTorque (-Input.GetAxis("Vertical") * elevatorRate, 0, 0);
-//	}
 }

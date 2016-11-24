@@ -17,6 +17,8 @@ public class ProgressBar : MonoBehaviour {
 	{
 		Instance = this;
 		updateHpBar (100,100);
+
+		Debug.Log ("Pregress bar started");
 	}
 
 	public void updateHpBar(int currentHp, int totalHp){

@@ -16,6 +16,20 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public BoostButton boostButton;
 	public int hpHit = 20;
 
+	public bool VRMode;
+
+	public GameObject mainCanvas;
+	public GameObject mainCamera;
+	public GameObject gvrViewerMain;
+	public GameObject gvrReticle;
+
+	public GameObject terrain;
+	public GameObject checkpoints;
+	public GameObject collectibles;
+
+	public bool gameStarted = false;
+	public bool gameOver = false;
+
 	private Quaternion calibrationQuaternion;
 
 	private Rigidbody rb;
@@ -28,7 +42,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
-
+	public GameObject gameStartMenu;
 
 	public Text coinText;
 	//public Text medalText;
@@ -36,7 +50,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public Image medalImage2;
 	public Image medalImage3;
 	public Text drugCountText;
-
 
 	public Mission mission {get; set;}
 	private int noOfCheckpoints, totalCheckpoints, itemsCollected, coinsCollected;
@@ -49,7 +62,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
-
+		gameOver = true;
 
 		HideAllControls ();
 
@@ -99,8 +112,47 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		UserProfile.Save();
 	}
 
+	public void AdjustCanvas() {
+		//return;
+		if (VRMode) {
+
+			Canvas canvas = mainCanvas.GetComponent<Canvas> ();
+			canvas.renderMode = RenderMode.WorldSpace;
+
+			Vector3 transform;
+			if (!gameStarted) {
+				transform = new Vector3 (0f, 1, 140);
+			} else {
+				transform = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y, mainCamera.transform.position.z + 150);
+			}
+
+
+			Debug.Log (mainCamera.transform.position);
+			Debug.Log (transform);
+
+			mainCanvas.transform.position = transform;
+
+			float scale = 0.2366001f;
+			mainCanvas.transform.localScale = new Vector3 (scale, scale, scale);
+
+
+			gvrReticle.SetActive (true);
+		}
+	}
+
+	public void resetCanvas() {
+		if (VRMode) {
+			gvrReticle.SetActive (false);
+			Canvas canvas = mainCanvas.GetComponent<Canvas> ();
+			canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+			mainCanvas.transform.position = new Vector3 (679f, 382f, 20f);
+			mainCanvas.transform.localScale = new Vector3 (1.6975f, 1.6975f, 1f);
+		}
+	}
+
 	// Call this function when game is over, 
 	public void OnGameOver(string reason) {
+		gameOver = true;
 		HideAllControls ();
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
@@ -108,16 +160,29 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void HideAllControls() {
-		joystick.gameObject.SetActive (false);
-		settings.gameObject.SetActive (false);
-		timerText.gameObject.SetActive (false);
-		boostButton.gameObject.SetActive (false);
-		drugCountText.gameObject.SetActive (false);
-		ProgressBar.Instance.hideProgressBar ();
+		try {
+			joystick.gameObject.SetActive (false);
+			settings.gameObject.SetActive (false);
+			timerText.gameObject.SetActive (false);
+			boostButton.gameObject.SetActive (false);
+			drugCountText.gameObject.SetActive (false);
+			ProgressBar.Instance.hideProgressBar ();
+
+		} catch(System.Exception e) {
+			Debug.Log (e.Message);
+		}
+
+		if (VRMode && gameOver)
+			hideMap ();
+
+		AdjustCanvas ();
 	}
 
 	public void ShowAllControls() {
-		joystick.gameObject.SetActive (true);
+		resetCanvas ();
+		if (!VRMode) {
+			joystick.gameObject.SetActive (true);
+		}
 		settings.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
 		boostButton.gameObject.SetActive (true);
@@ -126,11 +191,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	void Start () {
+
 		mission = GameController.Instance.mission;
 		Debug.Log ("HP: " + mission.currentHp);
 		maxHP = GameController.Instance.profile.spaceship.hp;
 		rb = GetComponent<Rigidbody> ();
-		CalibrateAccelerometer (); //TODO should be outside of here outside, in options perhaps
 
 		GameObject g = GameObject.Find ("TimerText");
 		cTimer = g.GetComponent<CountDownTimer> ();
@@ -139,17 +204,46 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		totalCheckpoints = 10;
 		itemsCollected = 0;
 
-		/*spaceship = (GameObject) Resources.Load(GameController.Instance.profile.spaceship.prefab, typeof(GameObject));
-		spaceship =  (GameObject) Instantiate (spaceship);
-
-		spaceship.transform.SetParent(gameObject.transform);
-		spaceship.transform.localRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
-		spaceship.transform.localScale = new Vector3 (40.0f, 30.0f, 40.0f);
-
-		spaceship.transform.localPosition = new Vector3 (60.0f, 0.0f, 60.0f);*/
-
 		UpdateDrugCount (false);
-	
+
+		if (VRMode) {
+			Invoke ("showStartScreen", 0.2f);
+			Debug.Log ("Invoking start screen");
+		} else {
+			gameStarted = true;
+			CalibrateAccelerometer ();
+			resetCanvas ();
+			cTimer.StartTimer ();
+		}
+	}
+
+	public void showStartScreen() {
+		gameStartMenu.SetActive (true);
+		HideAllControls ();
+		hideMap ();
+		Debug.Log ("This is VR mode");
+
+	}
+
+	public void showMap() {
+		terrain.SetActive (true);
+		checkpoints.SetActive (true);
+		collectibles.SetActive (true);
+	}
+
+	public void hideMap() {
+		terrain.SetActive (false);
+		checkpoints.SetActive (false);
+		collectibles.SetActive (false);
+	}
+
+	public void StartGame() {
+		gameStartMenu.SetActive (false);
+		showMap ();
+		ShowAllControls ();
+		CalibrateAccelerometer ();
+		gameStarted = true;
+		cTimer.StartTimer ();
 	}
 
 	public void UpdateDrugCount(bool playSound) {
@@ -162,15 +256,18 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	//function that gets called when player object collides with terrain  
 	void OnCollisionEnter(Collision col){
-		//reduce hp
-		DecreaseHP(hpHit);
-		if (mission.currentHp <= 0 || col.gameObject.tag.Equals ("Terrain")) {
-			destroyOnTimer (Strings.wrecked);
-		}
-		if (!col.gameObject.tag.Equals ("Terrain")) {
-			Destroy (col.gameObject);
-			AudioSource[] audios = GetComponents<AudioSource> ();
-			audios [2].Play ();
+
+		if (gameStarted) {
+			//reduce hp
+			DecreaseHP (hpHit);
+			if (mission.currentHp <= 0 || col.gameObject.tag.Equals ("Terrain")) {
+				destroyOnTimer (Strings.wrecked);
+			}
+			if (!col.gameObject.tag.Equals ("Terrain")) {
+				Destroy (col.gameObject);
+				AudioSource[] audios = GetComponents<AudioSource> ();
+				audios [2].Play ();
+			}
 		}
 	}
 
@@ -191,31 +288,41 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		}
 		Debug.Log ("Items collected" + itemsCollected);
 	}
-		
+
 	public void destroyOnTimer(string reason){
-		Destroy (gameObject);
-		if (explosion != null)
-			Instantiate (explosion, transform.position, transform.rotation);
-		cTimer.stopTimer = true;
-		OnGameOver (reason);
+		if (gameStarted) {
+
+			Destroy (gameObject);
+			if (explosion != null)
+				Instantiate (explosion, transform.position, transform.rotation);
+			cTimer.stopTimer = true;
+			OnGameOver (reason);
+		}
 	}
 
 	void FixedUpdate(){
+
+		if (!gameStarted || gameOver)
+			return;
+
 		Vector3 moveCamTo = transform.position - transform.forward * 4.0f + Vector3.up * 3.0f;
-//		float bias = 0.7f;
-//		Camera.main.transform.position = Camera.main.transform.position * bias + moveCamTo * (1.0f - bias);
+		//		float bias = 0.7f;
+		//		Camera.main.transform.position = Camera.main.transform.position * bias + moveCamTo * (1.0f - bias);
+
 		Camera.main.transform.position = moveCamTo;
 		Camera.main.transform.LookAt (transform.position + transform.forward * 10.0f);
 		Vector3 movement;
 
-
-
-
 		boost = 1.0f;
-		if (Input.GetButton ("Jump") || boostButton.boost) {
-			boost = 2.0f;
-		}
 
+		if (VRMode && GvrViewer.Instance.Triggered) {
+			boost = 2.0f;
+			Debug.Log ("Boost clicked");
+			boostButton.pressBoost ();
+		} else if (Input.GetButton ("Jump") || boostButton.boost) {
+			boost = 2.0f;
+			Debug.Log ("Boost Pressed");
+		}
 		if (joystick.InputDirection != Vector3.zero) {
 			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
 		} else {
@@ -233,11 +340,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	}
 
-//	private void checkBoundary() {
-//		if(rb.position.y > maxAltitude)
-//			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
-//		// make sure player doesn't go out of the boundary.
-//	}
+	//	private void checkBoundary() {
+	//		if(rb.position.y > maxAltitude)
+	//			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
+	//		// make sure player doesn't go out of the boundary.
+	//	}
 	// calibrates the Input.acceleration
 	public void CalibrateAccelerometer () {
 		dir = Vector3.zero;
@@ -245,9 +352,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		if (dir.sqrMagnitude > 1)
 			dir.Normalize();
 
-//		Vector3 accelerationSnapshot = Input.acceleration;
-//		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
-//		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
+		//		Vector3 accelerationSnapshot = Input.acceleration;
+		//		Quaternion rotateQuaternion = Quaternion.FromToRotation (new Vector3 (0.0f, 0.0f, -1.0f), accelerationSnapshot);
+		//		calibrationQuaternion = Quaternion.Inverse (rotateQuaternion);
 	}
 
 	//Method to get the calibrated input 

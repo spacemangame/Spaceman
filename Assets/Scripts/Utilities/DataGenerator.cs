@@ -269,6 +269,7 @@ public static class DataGenerator
 		int medals = (GameController.Instance.profile.medals == 0) ? 1 : GameController.Instance.profile.medals;
 		int level = (int)Math.Floor (medals / 9.0f);
 
+		missions.Add (CreateDrugMission ("DrugVR", 10, "Drug VR", 4));
 		if (level <= 1) {
 			missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
 			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));

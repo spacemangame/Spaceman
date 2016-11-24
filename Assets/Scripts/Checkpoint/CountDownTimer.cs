@@ -7,7 +7,7 @@ public class CountDownTimer : MonoBehaviour {
 	public Text timerText;
 	public float countDownTime = 10.0f;
 	private float timer;
-	public bool stopTimer = false;
+	public bool stopTimer = true;
 	private bool isBlinking = true;
 
 	// Use this for initialization
@@ -15,6 +15,10 @@ public class CountDownTimer : MonoBehaviour {
 		timer = countDownTime;
 //		StartCoroutine(BlinkText());
 //		StartCoroutine(StopBlinking());
+	}
+
+	public void StartTimer() {
+		stopTimer = false;
 	}
 	
 	// Update is called once per frame
