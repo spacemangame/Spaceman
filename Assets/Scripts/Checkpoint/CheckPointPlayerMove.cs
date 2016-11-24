@@ -222,7 +222,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		HideAllControls ();
 		hideMap ();
 		Debug.Log ("This is VR mode");
-
 	}
 
 	public void showMap() {
