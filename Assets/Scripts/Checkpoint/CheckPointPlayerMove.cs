@@ -16,9 +16,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public BoostButton boostButton;
 	public int hpHit = 20;
 
-	public bool VRMode;
+	public bool VRMode { get; set; }
 
 	public GameObject mainCanvas;
+	public GameObject scoreVRCanvas;
 	public GameObject mainCamera;
 	public GameObject gvrViewerMain;
 	public GameObject gvrReticle;
@@ -26,6 +27,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public GameObject terrain;
 	public GameObject checkpoints;
 	public GameObject collectibles;
+	public GameObject obstacles;
+	public GameObject movingObstacles;
 
 	public bool gameStarted = false;
 	public bool gameOver = false;
@@ -39,10 +42,18 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public Image settings;
 	public Text timerText;
 	public Text itemCountText;
+	public ProgressBar progressBar;
+
+	public Text vrTimerText;
+	public Text vrDrugCountText;
+	private CountDownTimer vrCTimer;
+	public BoostButton vrBoostButton;
+	public ProgressBar vrProgressBar;
 
 	public GameObject gameoverMenu;
 	public GameObject gamesuccessMenu;
 	public GameObject gameStartMenu;
+
 
 	public Text coinText;
 	//public Text medalText;
@@ -57,6 +68,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	private Vector3 dir;
 	private Vector3 _InputDir;
 
+	public UserProfile profile { get; set; }
 
 	public GameObject spaceship { get; set; }
 
@@ -110,6 +122,28 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameController.Instance.profile.coins += coinsEarned;
 
 		UserProfile.Save();
+
+
+	}
+
+
+	public void ToggleVRMode() {
+
+		if (profile.isVREnabled == null)
+			profile.isVREnabled = false;
+
+		profile.isVREnabled = !profile.isVREnabled;
+
+		Debug.Log ("VR Enabled : " + profile.isVREnabled);
+
+		UserProfile.Save ();
+
+		GameController.Instance.missions = DataGenerator.GenerateMissions();
+
+		GameController.Instance.mission = GameController.Instance.missions.Find(x => x.id == GameController.Instance.mission.id);
+		GameController.Instance.mission.secondaryGun = GameController.Instance.profile.secondaryGun;
+
+		GameController.StartMission ();
 	}
 
 	public void AdjustCanvas() {
@@ -141,8 +175,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void resetCanvas() {
+		gvrReticle.SetActive (false);
 		if (VRMode) {
-			gvrReticle.SetActive (false);
 			Canvas canvas = mainCanvas.GetComponent<Canvas> ();
 			canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 			mainCanvas.transform.position = new Vector3 (679f, 382f, 20f);
@@ -166,7 +200,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			timerText.gameObject.SetActive (false);
 			boostButton.gameObject.SetActive (false);
 			drugCountText.gameObject.SetActive (false);
-			ProgressBar.Instance.hideProgressBar ();
+			progressBar.hideProgressBar ();
 
 		} catch(System.Exception e) {
 			Debug.Log (e.Message);
@@ -182,17 +216,20 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		resetCanvas ();
 		if (!VRMode) {
 			joystick.gameObject.SetActive (true);
+			settings.gameObject.SetActive (true);
 		}
-		settings.gameObject.SetActive (true);
+
 		timerText.gameObject.SetActive (true);
 		boostButton.gameObject.SetActive (true);
 		drugCountText.gameObject.SetActive (true);
-		ProgressBar.Instance.showProgressBar ();
+		progressBar.showProgressBar ();
 	}
 
 	void Start () {
-
+		
 		mission = GameController.Instance.mission;
+		profile = GameController.Instance.profile;
+
 		Debug.Log ("HP: " + mission.currentHp);
 		maxHP = GameController.Instance.profile.spaceship.hp;
 		rb = GetComponent<Rigidbody> ();
@@ -200,16 +237,29 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameObject g = GameObject.Find ("TimerText");
 		cTimer = g.GetComponent<CountDownTimer> ();
 
+		g = GameObject.Find ("VRTimerText");
+		vrCTimer = g.GetComponent<CountDownTimer> ();
+
+
 		noOfCheckpoints = 0;
 		totalCheckpoints = 10;
 		itemsCollected = 0;
 
-		UpdateDrugCount (false);
+		VRMode = profile.isVREnabled;
+
+		GvrViewer.Instance.VRModeEnabled = VRMode;
 
 		if (VRMode) {
-			Invoke ("showStartScreen", 0.2f);
-			Debug.Log ("Invoking start screen");
+			Debug.Log ("This is VR mode");
+			if (mission.restarted) {
+				StartGame ();
+			} else {
+				showStartScreen ();
+				Debug.Log ("Invoking start screen");
+			}
 		} else {
+			UpdateDrugCount (false);
+			scoreVRCanvas.SetActive (false);
 			gameStarted = true;
 			CalibrateAccelerometer ();
 			resetCanvas ();
@@ -218,25 +268,47 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void showStartScreen() {
+		scoreVRCanvas.SetActive (false);
 		gameStartMenu.SetActive (true);
 		HideAllControls ();
 		hideMap ();
-		Debug.Log ("This is VR mode");
 	}
 
 	public void showMap() {
 		terrain.SetActive (true);
 		checkpoints.SetActive (true);
 		collectibles.SetActive (true);
+		scoreVRCanvas.SetActive (true);
+		if (obstacles != null) {
+			obstacles.SetActive (true);
+			movingObstacles.SetActive (true);
+		}
 	}
 
 	public void hideMap() {
 		terrain.SetActive (false);
 		checkpoints.SetActive (false);
 		collectibles.SetActive (false);
+		scoreVRCanvas.SetActive (false);
+
+		if (obstacles != null) {
+			obstacles.SetActive (false);
+			movingObstacles.SetActive (false);
+		}
 	}
 
 	public void StartGame() {
+		scoreVRCanvas.SetActive (true);
+
+		drugCountText = vrDrugCountText;
+		cTimer.stopTimer = true;
+		cTimer = vrCTimer;
+		boostButton = vrBoostButton;
+		timerText = vrTimerText;
+		progressBar = vrProgressBar;
+
+		UpdateDrugCount (false);
+
 		gameStartMenu.SetActive (false);
 		showMap ();
 		ShowAllControls ();
@@ -299,7 +371,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate() {
+
+		//Switch to nonVR mode
+		if (VRMode && GvrViewer.Instance.BackButtonPressed) {
+			ToggleVRMode ();
+			return;
+		}
 
 		if (!gameStarted || gameOver)
 			return;
@@ -312,6 +390,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		Camera.main.transform.LookAt (transform.position + transform.forward * 10.0f);
 		Vector3 movement;
 
+		if (VRMode) {
+			scoreVRCanvas.transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y, mainCamera.transform.position.z + 150f);
+		}
 		boost = 1.0f;
 
 		if (VRMode && GvrViewer.Instance.Triggered) {
@@ -372,7 +453,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void UpdateHP(){
-		ProgressBar.Instance.updateHpBar (mission.currentHp, maxHP);
+		progressBar.updateHpBar (mission.currentHp, maxHP);
 	}
 
 

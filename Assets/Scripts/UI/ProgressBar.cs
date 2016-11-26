@@ -31,10 +31,12 @@ public class ProgressBar : MonoBehaviour {
 	}
 
 	public void showProgressBar(){
-		gameObject.SetActive(true);
+		//gameObject.SetActive(true);
+		gameObject.transform.parent.gameObject.SetActive (true);
 	}
 
 	public void hideProgressBar(){
-		gameObject.SetActive(false);
+		//gameObject.SetActive(false);
+		gameObject.transform.parent.gameObject.SetActive (false);
 	}
 }

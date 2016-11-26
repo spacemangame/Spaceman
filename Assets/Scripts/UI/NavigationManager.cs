@@ -29,6 +29,8 @@ public class NavigationManager: MonoBehaviour
 		GameController.Instance.mission = GameController.Instance.missions.Find(x => x.id == GameController.Instance.mission.id);
 		GameController.Instance.mission.secondaryGun = GameController.Instance.profile.secondaryGun;
 
+		GameController.Instance.mission.restarted = true;
+
 		GameController.StartMission ();
 	}
 

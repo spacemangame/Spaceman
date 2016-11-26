@@ -14,6 +14,7 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 
 	public Toggle Accelerometer;
 	public Toggle Sound;
+	public Toggle VrModeButton;
 
 	public UserProfile profile { get; set; }
 
@@ -27,23 +28,26 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 			Sound.isOn = false;
 		}
 
-		if (!profile.isAccelerometerEnabled) {
-			
-			if (playerController != null) {
+		if (VrModeButton == null) {
+
+			if (!profile.isAccelerometerEnabled) {
 				playerController.useAccelerometer = false;
 				playerController.joystick.gameObject.SetActive (true);
+				Accelerometer.isOn = false;
 			} else {
-				checkpointMove.joystick.gameObject.SetActive (true);
-			}
-			Accelerometer.isOn = false;
-		} else {
-			if (playerController != null) {
 				playerController.joystick.gameObject.SetActive (false);
-			} else {
-				checkpointMove.joystick.gameObject.SetActive (false);
+				Accelerometer.isOn = true;
 			}
-			Accelerometer.isOn = true;
+		} else {
+
+			if (profile.isVREnabled) {
+				VrModeButton.isOn = true;
+			} else {
+				VrModeButton.isOn = false;
+			}
+			
 		}
+			
 	}
 
 	public void OnPointerDown(PointerEventData ped) {
@@ -101,32 +105,17 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void ToggleAccelerometer(bool value) {
-
-		if (Accelerometer.isOn) {
-			
-			if (playerController != null) {
-				playerController.useAccelerometer = true;
-				playerController.joystick.gameObject.SetActive (false);
-			} else {
-				checkpointMove.joystick.gameObject.SetActive (false);
-			}
-
+		if (playerController != null) {
+			playerController.useAccelerometer = true;
+			playerController.joystick.gameObject.SetActive (false);
 			profile.isAccelerometerEnabled = true;
 		} else {
-			
-			if (playerController != null) {
-				playerController.useAccelerometer = false;
-				playerController.joystick.gameObject.SetActive (true);
-			} else {
-				checkpointMove.joystick.gameObject.SetActive (true);
-			}
-
+			playerController.useAccelerometer = false;
+			playerController.joystick.gameObject.SetActive (true);
 			profile.isAccelerometerEnabled = false;
 		}
 
 		UserProfile.Save ();
 	}
-
-
 
 }

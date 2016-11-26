@@ -19,6 +19,8 @@ public class UserProfile {
 
 	public bool isSoundEnabled { set; get; }
 	public bool isAccelerometerEnabled { get; set;}
+	public bool isVREnabled {get;set;}
+
 
     public static void Save()
 	{
