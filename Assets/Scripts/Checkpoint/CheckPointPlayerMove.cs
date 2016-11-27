@@ -253,8 +253,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		VRMode = profile.isVREnabled;
 
 		GvrViewer.Instance.VRModeEnabled = VRMode;
+		gvrViewerMain.SetActive (false);
 
 		if (VRMode) {
+			gvrViewerMain.SetActive (true);
 			Debug.Log ("This is VR mode");
 			if (mission.restarted) {
 				scoreVRCanvas.SetActive (false);
@@ -266,11 +268,12 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				Debug.Log ("Invoking start screen");
 			}
 		} else {
-			GvrViewer.Instance.VRModeEnabled = false;
+			DestroyObject (gvrViewerMain);
+
 			UpdateDrugCount (false);
 			scoreVRCanvas.SetActive (false);
 			gameStarted = true;
-			CalibrateAccelerometer ();
+			//CalibrateAccelerometer ();
 			resetCanvas ();
 			cTimer.StartTimer ();
 		}
@@ -420,7 +423,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
 		}
 
-
+		if (SystemInfo.deviceType == DeviceType.Desktop) {
+			movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
+		} 
 
 		if (rb.position.y > maxAltitude)
 			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
