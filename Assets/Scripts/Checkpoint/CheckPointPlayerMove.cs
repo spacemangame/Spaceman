@@ -33,6 +33,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public bool gameStarted = false;
 	public bool gameOver = false;
 
+	public bool initialised = false;
+
 	private Quaternion calibrationQuaternion;
 
 	private Rigidbody rb;
@@ -129,12 +131,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public void ToggleVRMode() {
 
-		if (profile.isVREnabled == null)
-			profile.isVREnabled = false;
+		if (!initialised) return;
 
-		profile.isVREnabled = !profile.isVREnabled;
+		if (GameController.Instance.profile.isVREnabled == null)
+			GameController.Instance.profile.isVREnabled = false;
 
-		Debug.Log ("VR Enabled : " + profile.isVREnabled);
+		GameController.Instance.profile.isVREnabled = !GameController.Instance.profile.isVREnabled;
+
+		Debug.Log ("VR Enabled : " + GameController.Instance.profile.isVREnabled);
 
 		UserProfile.Save ();
 
@@ -186,6 +190,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	// Call this function when game is over, 
 	public void OnGameOver(string reason) {
+		cTimer.stopTimer = true;
 		gameOver = true;
 		HideAllControls ();
 		gameoverMenu.SetActive (true);
@@ -217,11 +222,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		if (!VRMode) {
 			joystick.gameObject.SetActive (true);
 			settings.gameObject.SetActive (true);
+			boostButton.gameObject.SetActive (true);
+			drugCountText.gameObject.SetActive (true);
 		}
 
 		timerText.gameObject.SetActive (true);
-		boostButton.gameObject.SetActive (true);
-		drugCountText.gameObject.SetActive (true);
 		progressBar.showProgressBar ();
 	}
 
@@ -252,12 +257,16 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		if (VRMode) {
 			Debug.Log ("This is VR mode");
 			if (mission.restarted) {
+				scoreVRCanvas.SetActive (false);
+				gameStartMenu.SetActive (true);
+				HideAllControls ();
 				StartGame ();
 			} else {
 				showStartScreen ();
 				Debug.Log ("Invoking start screen");
 			}
 		} else {
+			GvrViewer.Instance.VRModeEnabled = false;
 			UpdateDrugCount (false);
 			scoreVRCanvas.SetActive (false);
 			gameStarted = true;
@@ -268,6 +277,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void showStartScreen() {
+
+		cTimer.stopTimer = true;
+		vrCTimer.stopTimer = true;
 		scoreVRCanvas.SetActive (false);
 		gameStartMenu.SetActive (true);
 		HideAllControls ();
@@ -300,13 +312,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public void StartGame() {
 		scoreVRCanvas.SetActive (true);
 
-		drugCountText = vrDrugCountText;
-		cTimer.stopTimer = true;
 		cTimer = vrCTimer;
-		boostButton = vrBoostButton;
 		timerText = vrTimerText;
 		progressBar = vrProgressBar;
-
+		cTimer.stopTimer = false;
 		UpdateDrugCount (false);
 
 		gameStartMenu.SetActive (false);
@@ -403,17 +412,17 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			boost = 2.0f;
 			Debug.Log ("Boost Pressed");
 		}
-		if (joystick.InputDirection != Vector3.zero) {
-			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
+
+		if (VRMode) {
+			_InputDir = getAccelerometer (Input.acceleration);
+			movement = new Vector3 (_InputDir.x * maneuverability * 2.0f, _InputDir.z * maneuverability * 2.0f, speed * boost);
 		} else {
-			if (SystemInfo.deviceType == DeviceType.Desktop) {
-				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
-			} else{
-				_InputDir = getAccelerometer(Input.acceleration);
-				movement = new Vector3 ( _InputDir.x * maneuverability * 2.0f, _InputDir.z  * maneuverability * 2.0f, speed * boost);
-			}
+			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
 		}
-		if(rb.position.y > maxAltitude)
+
+
+
+		if (rb.position.y > maxAltitude)
 			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
 		rb.velocity = movement;
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);

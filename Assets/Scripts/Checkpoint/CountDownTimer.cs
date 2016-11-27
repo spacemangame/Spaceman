@@ -46,7 +46,10 @@ public class CountDownTimer : MonoBehaviour {
 	
 		if (timer <= 0) { //logic to end the game
 			stopTimer = true;
-			GameObject.Find ("Player").SendMessage ("destroyOnTimer", Strings.outOfTime);
+			GameObject player1 = GameObject.Find ("Player");
+			
+			if(player1 != null) 
+				player1.SendMessage ("destroyOnTimer", Strings.outOfTime);
 		}
 	}
 

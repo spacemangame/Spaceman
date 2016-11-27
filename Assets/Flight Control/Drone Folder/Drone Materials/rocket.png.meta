@@ -1,5 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Flight Control/Drone Folder/Drone Materials/rocket.png.meta
 guid: 2b9cff3c49d662c499fee940df58824a
+=======
+guid: c675f4d6dcace45acba543c9fa02416f
+timeCreated: 1478545898
+licenseType: Pro
+>>>>>>> d3ef959c5db563dc7f0fe293d260270342e176f6:Assets/Plugins/iOS/CardboardSDK.bundle/arrowRight.png.meta
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2

@@ -1,5 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Flight Control/Drone Folder/Drone Materials/green.png.meta
 guid: 9bae98ec16a2f3a4b9f620682a93e948
+=======
+guid: e1eb267b9d59541eea9abcb694a7c8b7
+timeCreated: 1478545898
+licenseType: Pro
+>>>>>>> d3ef959c5db563dc7f0fe293d260270342e176f6:Assets/Plugins/iOS/CardboardSDK.bundle/cardboardLogotype.png.meta
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2

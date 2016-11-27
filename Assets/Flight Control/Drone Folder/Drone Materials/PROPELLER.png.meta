@@ -1,5 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Flight Control/Drone Folder/Drone Materials/PROPELLER.png.meta
 guid: 4155dcd638c981040a04dac8f6eb3524
+=======
+guid: 60785f94075c04337b26c63fa74a4cc0
+timeCreated: 1478545898
+licenseType: Pro
+>>>>>>> d3ef959c5db563dc7f0fe293d260270342e176f6:Assets/Plugins/iOS/CardboardSDK.bundle/continueButton.png.meta
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
