@@ -245,6 +245,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		g = GameObject.Find ("VRTimerText");
 		vrCTimer = g.GetComponent<CountDownTimer> ();
 
+		gvrViewerMain.SetActive (false);
 
 		noOfCheckpoints = 0;
 		totalCheckpoints = 10;
@@ -253,7 +254,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		VRMode = profile.isVREnabled;
 
 		GvrViewer.Instance.VRModeEnabled = VRMode;
-		gvrViewerMain.SetActive (false);
 
 		if (VRMode) {
 			gvrViewerMain.SetActive (true);
@@ -268,8 +268,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				Debug.Log ("Invoking start screen");
 			}
 		} else {
-			DestroyObject (gvrViewerMain);
-
 			UpdateDrugCount (false);
 			scoreVRCanvas.SetActive (false);
 			gameStarted = true;
