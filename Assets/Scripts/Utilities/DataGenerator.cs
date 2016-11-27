@@ -48,7 +48,7 @@ public static class DataGenerator
 
 		userProfile.isSoundEnabled = true;
 		userProfile.isAccelerometerEnabled = false;
-
+		userProfile.isVREnabled = false;
 		return userProfile;
 	}
 

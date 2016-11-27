@@ -33,6 +33,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public bool gameStarted = false;
 	public bool gameOver = false;
 
+	public bool initialised = false;
+
 	private Quaternion calibrationQuaternion;
 
 	private Rigidbody rb;
@@ -129,12 +131,15 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public void ToggleVRMode() {
 
-		if (profile.isVREnabled == null)
-			profile.isVREnabled = false;
+		if (!initialised)
+			return;
 
-		profile.isVREnabled = !profile.isVREnabled;
+		if (GameController.Instance.profile.isVREnabled == null)
+			GameController.Instance.profile.isVREnabled = false;
 
-		Debug.Log ("VR Enabled : " + profile.isVREnabled);
+		GameController.Instance.profile.isVREnabled = !GameController.Instance.profile.isVREnabled;
+
+		Debug.Log ("VR Enabled : " + GameController.Instance.profile.isVREnabled);
 
 		UserProfile.Save ();
 
@@ -186,6 +191,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	// Call this function when game is over, 
 	public void OnGameOver(string reason) {
+		cTimer.stopTimer = true;
 		gameOver = true;
 		HideAllControls ();
 		gameoverMenu.SetActive (true);
@@ -217,11 +223,11 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		if (!VRMode) {
 			joystick.gameObject.SetActive (true);
 			settings.gameObject.SetActive (true);
+			boostButton.gameObject.SetActive (true);
+			drugCountText.gameObject.SetActive (true);
 		}
 
 		timerText.gameObject.SetActive (true);
-		boostButton.gameObject.SetActive (true);
-		drugCountText.gameObject.SetActive (true);
 		progressBar.showProgressBar ();
 	}
 
@@ -249,9 +255,14 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		GvrViewer.Instance.VRModeEnabled = VRMode;
 
+		initialised = true;
+
 		if (VRMode) {
 			Debug.Log ("This is VR mode");
 			if (mission.restarted) {
+				scoreVRCanvas.SetActive (false);
+				gameStartMenu.SetActive (true);
+				HideAllControls ();
 				StartGame ();
 			} else {
 				showStartScreen ();
@@ -268,6 +279,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void showStartScreen() {
+
+		cTimer.stopTimer = true;
+		vrCTimer.stopTimer = true;
 		scoreVRCanvas.SetActive (false);
 		gameStartMenu.SetActive (true);
 		HideAllControls ();
@@ -300,13 +314,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	public void StartGame() {
 		scoreVRCanvas.SetActive (true);
 
-		drugCountText = vrDrugCountText;
-		cTimer.stopTimer = true;
 		cTimer = vrCTimer;
-		boostButton = vrBoostButton;
 		timerText = vrTimerText;
 		progressBar = vrProgressBar;
-
+		cTimer.stopTimer = false;
 		UpdateDrugCount (false);
 
 		gameStartMenu.SetActive (false);
