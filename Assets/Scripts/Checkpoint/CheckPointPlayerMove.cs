@@ -131,8 +131,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	public void ToggleVRMode() {
 
-		if (!initialised)
-			return;
+		if (!initialised) return;
 
 		if (GameController.Instance.profile.isVREnabled == null)
 			GameController.Instance.profile.isVREnabled = false;
@@ -255,8 +254,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		GvrViewer.Instance.VRModeEnabled = VRMode;
 
-		initialised = true;
-
 		if (VRMode) {
 			Debug.Log ("This is VR mode");
 			if (mission.restarted) {
@@ -269,6 +266,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				Debug.Log ("Invoking start screen");
 			}
 		} else {
+			GvrViewer.Instance.VRModeEnabled = false;
 			UpdateDrugCount (false);
 			scoreVRCanvas.SetActive (false);
 			gameStarted = true;
@@ -414,17 +412,17 @@ public class CheckPointPlayerMove : MonoBehaviour {
 			boost = 2.0f;
 			Debug.Log ("Boost Pressed");
 		}
-		if (joystick.InputDirection != Vector3.zero) {
-			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
+
+		if (VRMode) {
+			_InputDir = getAccelerometer (Input.acceleration);
+			movement = new Vector3 (_InputDir.x * maneuverability * 2.0f, _InputDir.z * maneuverability * 2.0f, speed * boost);
 		} else {
-			if (SystemInfo.deviceType == DeviceType.Desktop) {
-				movement = new Vector3 ( Input.GetAxis("Horizontal") * maneuverability, Input.GetAxis("Vertical") * maneuverability, speed * boost);
-			} else{
-				_InputDir = getAccelerometer(Input.acceleration);
-				movement = new Vector3 ( _InputDir.x * maneuverability * 2.0f, _InputDir.z  * maneuverability * 2.0f, speed * boost);
-			}
+			movement = new Vector3 (joystick.InputDirection.x * maneuverability, joystick.InputDirection.y * maneuverability, speed * boost);
 		}
-		if(rb.position.y > maxAltitude)
+
+
+
+		if (rb.position.y > maxAltitude)
 			rb.position = new Vector3 (rb.position.x, maxAltitude, rb.position.z);
 		rb.velocity = movement;
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);

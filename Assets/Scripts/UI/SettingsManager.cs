@@ -40,14 +40,20 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 			}
 		} else {
 
+			checkpointMove.initialised = false;
 			if (profile.isVREnabled) {
 				VrModeButton.isOn = true;
 			} else {
 				VrModeButton.isOn = false;
 			}
-			
+
+			Invoke ("setIntialised", 0.1f);
 		}
 			
+	}
+
+	public void setIntialised() {
+		checkpointMove.initialised = true;
 	}
 
 	public void OnPointerDown(PointerEventData ped) {
