@@ -47,12 +47,13 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 				VrModeButton.isOn = false;
 			}
 
-			Invoke ("setIntialised", 0.1f);
+			setIntialised ();
 		}
 			
 	}
 
 	public void setIntialised() {
+		Debug.Log ("Intialised: " + checkpointMove.initialised);
 		checkpointMove.initialised = true;
 	}
 
