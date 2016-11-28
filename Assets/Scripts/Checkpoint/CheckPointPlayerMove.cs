@@ -299,10 +299,13 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				Debug.Log ("Invoking start screen");
 			}
 		} else {
-			delayedStartMenu.SetActive (true);
-			drugCountText.gameObject.SetActive (false);
-			progressBar.hideProgressBar ();
-			Invoke ("delayedStart", 3.0f);
+
+			delayedStart ();
+
+			//delayedStartMenu.SetActive (true);
+			//drugCountText.gameObject.SetActive (false);
+			//progressBar.hideProgressBar ();
+			//Invoke ("delayedStart", 3.0f);
 		}
 	}
 
