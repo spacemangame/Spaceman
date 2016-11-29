@@ -225,7 +225,7 @@ public static class DataGenerator
 	}
 
 
-	private static Mission CreateDrugMission(string scene, int id, string missionName, int reduceCollectibleValue) {
+	private static Mission CreateDrugMission(string scene, int id, string missionName, float multiplier, int reduceCollectibleValue) {
 		UserProfile profile = GameController.Instance.profile;
 
 		int medals = (profile.medals == 0) ? 1 : profile.medals;
@@ -249,7 +249,8 @@ public static class DataGenerator
 		drugMision.pickedItemCount = 0;
 
 		drugMision.maxMedalEarned = Constant.maxMedalPerMission;
-		int collectibleValue = (int)((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount;
+		int collectibleValue = (int)(multiplier * ((levelSpaceship.price * Constant.hpFactor) / Constant.maxMedalPerMission) / Constant.targetItemCount);
+
 
 		drugMision.currentCoins = 0;
 		drugMision.item = new Drug (4, collectibleValue - reduceCollectibleValue);
@@ -269,15 +270,9 @@ public static class DataGenerator
 		int medals = (GameController.Instance.profile.medals == 0) ? 1 : GameController.Instance.profile.medals;
 		int level = (int)Math.Floor (medals / 9.0f);
 
-		//missions.Add (CreateDrugMission ("DrugVR", 10, "Drug VR", 4));
-		if (level <= 1) {
-			missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
-			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
-			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Hard", 2));
-		} else {
-			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Pickup", 2));
-			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
-		}
+		missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 1.33f, 4));
+		missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 1.66f, 2));
+		missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Hard",2.0f, 2));
 
         missions.Add (CreatePizzaPickupMission ());
 		missions.Add (CreatePizzaDeliveryMission ());

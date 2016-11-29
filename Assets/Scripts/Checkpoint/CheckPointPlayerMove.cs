@@ -241,7 +241,9 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		eventSystem.AddComponent<StandaloneInputModule>();
 
 		gvrReticle = Instantiate ((GameObject)Resources.Load ("GvrReticle", typeof(GameObject)));
+
 		gvrReticle.transform.SetParent (Camera.main.gameObject.transform);
+
 
 		scoreVRCanvas = GameObject.Find ("GameScoreCanvas");
 
@@ -328,7 +330,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void showStartScreen() {
-
 		cTimer.stopTimer = true;
 		vrCTimer.stopTimer = true;
 		scoreVRCanvas.SetActive (false);
