@@ -126,7 +126,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 		UserProfile.Save();
 
-
+		Time.timeScale = 0;
 	}
 
 
@@ -196,6 +196,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
+
 	}
 
 	public void HideAllControls() {
@@ -428,6 +429,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 				Instantiate (explosion, transform.position, transform.rotation);
 			cTimer.stopTimer = true;
 			OnGameOver (reason);
+			Time.timeScale = 0;
 		}
 	}
 

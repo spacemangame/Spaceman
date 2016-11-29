@@ -112,7 +112,7 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void ToggleAccelerometer(bool value) {
-		if (playerController != null) {
+		if (value == true) {
 			playerController.useAccelerometer = true;
 			playerController.joystick.gameObject.SetActive (false);
 			profile.isAccelerometerEnabled = true;
