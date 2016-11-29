@@ -274,9 +274,11 @@ public static class DataGenerator
 			missions.Add (CreateDrugMission ("Drug", 3, "Drug Pickup", 4));
 			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
 			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Hard", 2));
+			missions.Add(CreateDrugMission("FreeMovement", 9, "free Move", 2));
 		} else {
 			missions.Add(CreateDrugMission("Drug_L4", 8, "Drug Pickup", 2));
 			missions.Add (CreateDrugMission ("Drug_L2", 6, "Drug Medium", 2));
+			missions.Add(CreateDrugMission("FreeMovement", 9, "free Move", 2));
 		}
 
         missions.Add (CreatePizzaPickupMission ());

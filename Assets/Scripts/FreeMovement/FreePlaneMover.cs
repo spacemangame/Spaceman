@@ -20,6 +20,17 @@ public class FreePlaneMover : MonoBehaviour {
 		calibrateAccelerometer();
 		Button calibBtn = btn.GetComponent<Button>();
 		calibBtn.onClick.AddListener(calibrateAccelerometer);
+		Invoke ("setCameraAngle", 0.3f);
+	}
+
+	void setCameraAngle(){
+		GameObject c = transform.Find ("Camera").gameObject;
+		Debug.Log ("setting camera");
+		foreach (Transform child in c.transform) {
+//			child.rotation = Quaternion.Euler (0, 45, 0);
+			child.Rotate(new Vector3(0,90,0));
+			Debug.Log (child.name + " " + child.rotation.ToString());
+		}
 	}
 
 	void calibrateAccelerometer()
@@ -46,6 +57,9 @@ public class FreePlaneMover : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		
+
+		
 //		transform.Translate (1.5, 0, 0);
 		transform.Translate (1.5f, 0.0f, 0.0f);
 
