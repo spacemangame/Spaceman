@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Boundary{
@@ -41,6 +42,9 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject spaceship { get; set; }
 
+	protected Queue<Vector3> filterDataQueue = new Queue<Vector3>();
+	public int filterLength = 3;
+
 	void Start() {
 		useInput = true;
 		rb = GetComponent<Rigidbody> ();
@@ -80,6 +84,9 @@ public class PlayerController : MonoBehaviour {
 
 		destabilise = StartCoroutine(DestabilisePlayer ());
 		tilt = 5.0f;
+
+		for(int i=0; i<filterLength; i++)
+			filterDataQueue.Enqueue(Input.acceleration);
 	}
 
 	void OnDestroy() {
@@ -147,7 +154,7 @@ public class PlayerController : MonoBehaviour {
 			_InputDir = getAccelerometer(Input.acceleration);
 			movement = new Vector3 (_InputDir.x, _InputDir.z * 1.25f, 0.0f) * accelerometerSensitivity;
 
-			Debug.Log ("Z:" + _InputDir.z);
+//			Debug.Log ("Z:" + _InputDir.z);
 		}
 
 		// joystick
@@ -194,7 +201,8 @@ public class PlayerController : MonoBehaviour {
 
 	//Method to get the calibrated input 
 	Vector3 getAccelerometer(Vector3 accelerator){
-		Vector3 accel = Input.acceleration;
+//		Vector3 accel = Input.acceleration;
+		Vector3 accel = LowPassAccelerometer();
 		accel.x = accel.x - dir.x;
 		accel.y = accel.y - dir.y;
 		accel.z = accel.z - dir.z;
@@ -218,5 +226,18 @@ public class PlayerController : MonoBehaviour {
 			Instantiate (bolt, shotSpawnBomb.position, shotSpawnBomb.rotation);
 		}
 		GetComponent<AudioSource> ().Play ();
+	}
+
+	public Vector3 LowPassAccelerometer() {
+		if(filterLength <= 0)
+			return Input.acceleration;
+		filterDataQueue.Enqueue(Input.acceleration);
+		filterDataQueue.Dequeue();
+
+		Vector3 vFiltered= Vector3.zero;
+		foreach(Vector3 v in filterDataQueue)
+			vFiltered += v;
+		vFiltered /= filterLength;
+		return vFiltered;
 	}
 }
