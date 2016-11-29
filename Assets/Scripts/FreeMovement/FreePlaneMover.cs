@@ -15,6 +15,13 @@ public class FreePlaneMover : MonoBehaviour {
 	Vector3 wantedDeadZone  = Vector3.zero;
 	Vector3 _InputDir;
 
+	public Transform player;
+
+	public GameObject leftCamera;
+	public GameObject rightCamera;
+
+	public GameObject mainCamera;
+
 	// Use this for initialization
 	void Start () {
 		calibrateAccelerometer();
@@ -28,6 +35,7 @@ public class FreePlaneMover : MonoBehaviour {
 		Debug.Log ("setting camera");
 		foreach (Transform child in c.transform) {
 //			child.rotation = Quaternion.Euler (0, 45, 0);
+
 			child.Rotate(new Vector3(0,90,0));
 			Debug.Log (child.name + " " + child.rotation.ToString());
 		}
@@ -76,6 +84,12 @@ public class FreePlaneMover : MonoBehaviour {
 
 		transform.Rotate(0, h * speed * Time.deltaTime, 0);
 		transform.localEulerAngles = new Vector3 (-h*60, transform.localEulerAngles.y, v*45);
+
+		mainCamera.transform.LookAt (player);
+
+		Debug.Log ("Camera Position " + mainCamera.transform.position);
+		Debug.Log ("Player Position " + transform.position);
+		
 //		zt.text =  calibrationMatrix.ToString();
 
 	}
