@@ -37,7 +37,7 @@ public class MissionController : MonoBehaviour {
 	public Text itemCountText;
 	public Text splashText;
 
-	public bool gameOver { get; set; };
+	public bool gameOver { get; set; }
 	private int maxHP;
 
 

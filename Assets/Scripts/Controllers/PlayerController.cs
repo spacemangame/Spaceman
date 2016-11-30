@@ -119,9 +119,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	IEnumerator DestabilisePlayer() {
-		if (mc.gameOver)
-			return;
-		
 		if (mission.type == Constant.Transport && mission.stabilitliy > 0) {
 
 			yield return new WaitForSeconds (5);
