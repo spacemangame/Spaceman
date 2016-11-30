@@ -24,6 +24,8 @@ public class NavigationManager: MonoBehaviour
 	}
 
 	public void RestartMission() {
+		AudioListener.pause = false;
+
 		GameController.Instance.missions = DataGenerator.GenerateMissions();
 
 		GameController.Instance.mission = GameController.Instance.missions.Find(x => x.id == GameController.Instance.mission.id);

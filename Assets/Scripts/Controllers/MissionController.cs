@@ -37,8 +37,9 @@ public class MissionController : MonoBehaviour {
 	public Text itemCountText;
 	public Text splashText;
 
-    private bool gameOver;
+	public bool gameOver { get; set; };
 	private int maxHP;
+
 
 	private Mission mission;
 
@@ -48,6 +49,9 @@ public class MissionController : MonoBehaviour {
 	public int currentWave { get; set; }
 
     void Start() {
+
+		GameController.Instance.enableSound ();
+
 		mission = GameController.Instance.mission;
         gameOver = false;
 		maxHP = GameController.Instance.profile.spaceship.hp;
@@ -59,6 +63,8 @@ public class MissionController : MonoBehaviour {
 
 		obstacleRoutine = StartCoroutine (SpawnObstacles());
 		gameStatusRoutine = StartCoroutine (CheckGameStatus ());
+
+		AudioListener.pause = false;
 
 		hazards = new GameObject[mission.obstacles.Count];
 		for (int i = 0; i < mission.obstacles.Count; i++) {
@@ -101,7 +107,7 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void onGameOver() {
-		AudioListener.volume = 0;
+		AudioListener.pause = true;
 		hideAllControls ();
 		string reason;
 		if (mission.currentHp == 0) {
@@ -145,6 +151,8 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void onMissionComplete() {
+
+		AudioListener.pause = true;
 
 		hideAllControls ();
 		gamesuccessMenu.SetActive (true);

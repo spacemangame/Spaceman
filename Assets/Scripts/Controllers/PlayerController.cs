@@ -100,6 +100,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
+		if (mc.gameOver)
+			return;
+
 		// shoot primary
 		if (mc.HasBullet(true) && primaryFireButton.canFire && Time.time > nextFirePrimary) {
 			nextFirePrimary = Time.time + mc.primaryGun.reloadTime;
@@ -116,7 +119,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	IEnumerator DestabilisePlayer() {
-
+		if (mc.gameOver)
+			return;
+		
 		if (mission.type == Constant.Transport && mission.stabilitliy > 0) {
 
 			yield return new WaitForSeconds (5);
@@ -138,10 +143,13 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate() {
 		if (!useInput) {
 			return;
 		}
+
+		if (mc.gameOver)
+			return;
 
 		// update the position based on movement.
 		Vector3 movement = Vector3.zero;

@@ -79,7 +79,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
 		gameOver = true;
-		AudioListener.volume = 0;
+		AudioListener.pause = true;
 		HideAllControls ();
 
 		cTimer.stopTimer = true;
@@ -129,7 +129,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 
-
 	public void ToggleVRMode() {
 
 		Debug.Log ("Toggle VR called");
@@ -142,6 +141,8 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		GameController.Instance.profile.isVREnabled = !GameController.Instance.profile.isVREnabled;
 
 		Debug.Log ("VR Enabled : " + GameController.Instance.profile.isVREnabled);
+
+		AudioListener.pause = false;
 
 		UserProfile.Save ();
 
@@ -196,7 +197,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
-		AudioListener.volume = 0;
+		//AudioListener.pause = true;
 	}
 
 	public void HideAllControls() {
@@ -252,8 +253,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 	void Start () {
 
-		//GvrViewer.Instance.VRModeEnabled = false;
-
+		AudioListener.pause = false;
 		mission = GameController.Instance.mission;
 		profile = GameController.Instance.profile;
 
@@ -267,7 +267,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		cTimer.stopTimer = true;
 
 		if (VRMode) {
-
+			AudioListener.pause = true;
 			instantiateVRPrefabs ();
 
 			g = GameObject.Find ("VRTimerText");
@@ -286,8 +286,6 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		noOfCheckpoints = 0;
 		totalCheckpoints = 10;
 		itemsCollected = 0;
-
-
 
 		if (VRMode) {
 			gvrViewerMain.SetActive (true);
@@ -316,7 +314,10 @@ public class CheckPointPlayerMove : MonoBehaviour {
 
 
 		//Switch to nonVR mode
-		if (VRMode && GvrViewer.Instance.BackButtonPressed) {
+		if (VRMode && (GvrViewer.Instance.BackButtonPressed || Input.GetKey(KeyCode.Escape))) {
+
+			Debug.Log ("Back button pressed");
+
 			initialised = true;
 			ToggleVRMode ();
 			return;
@@ -372,6 +373,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	public void StartGame() {
+		AudioListener.pause = false;
 		scoreVRCanvas.SetActive (true);
 
 		cTimer = vrCTimer;

@@ -21,6 +21,16 @@ public class GameController : MonoBehaviour {
 	public Mission mission { get; set; }
 	public List<Mission> missions { get; set;}
 
+
+	public void disableSound() {
+		AudioListener.pause = true;
+	}
+
+
+	public void enableSound() {
+		AudioListener.pause = false;
+	}
+
 	void Awake () {
 		if (Instance == null) {
 			Instance = this;
