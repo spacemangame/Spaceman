@@ -79,10 +79,13 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	private void HidePauseMenu() {
+		AudioListener.pause = false;
 		pauseMenu.SetActive (false);
 
 		if (missionController != null) {
 			missionController.showAllControls ();
+			if (playerController.useAccelerometer) playerController.joystick.gameObject.SetActive (false);
+			else playerController.joystick.gameObject.SetActive (true);
 		} else {
 			checkpointMove.ShowAllControls ();
 		}
@@ -90,7 +93,7 @@ public class SettingsManager : MonoBehaviour, IPointerDownHandler {
 	}
 
 	private void showPauseMenu() {
-
+		AudioListener.pause = true;
 		if (missionController != null) {
 			missionController.hideAllControls ();
 		} else {

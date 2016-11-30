@@ -101,6 +101,7 @@ public class MissionController : MonoBehaviour {
 	}
 
 	public void onGameOver() {
+		AudioListener.volume = 0;
 		hideAllControls ();
 		string reason;
 		if (mission.currentHp == 0) {

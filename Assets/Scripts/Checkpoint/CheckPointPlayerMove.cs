@@ -79,7 +79,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	// Call this function when game is completed successfully
 	public void OnGameComplete(int noOfCheckpoints, int totalCheckpoints, int itemsCollected, int coinsCollected = 0) {
 		gameOver = true;
-
+		AudioListener.volume = 0;
 		HideAllControls ();
 
 		cTimer.stopTimer = true;
@@ -196,7 +196,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 		gameoverMenu.SetActive (true);
 		Text gameOverReason = gameoverMenu.transform.Find("GameOverReason").GetComponent<Text>();
 		gameOverReason.text = reason;
-
+		AudioListener.volume = 0;
 	}
 
 	public void HideAllControls() {
@@ -313,6 +313,15 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	void Update() {
+
+
+		//Switch to nonVR mode
+		if (VRMode && GvrViewer.Instance.BackButtonPressed) {
+			initialised = true;
+			ToggleVRMode ();
+			return;
+		}
+
 		startCount -= Time.deltaTime;
 		string seconds = ((int)startCount % 60).ToString ();
 
@@ -434,14 +443,7 @@ public class CheckPointPlayerMove : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-
-		//Switch to nonVR mode
-		if (VRMode && GvrViewer.Instance.BackButtonPressed) {
-			initialised = true;
-			ToggleVRMode ();
-			return;
-		}
-
+		
 		if (!gameStarted || gameOver)
 			return;
 

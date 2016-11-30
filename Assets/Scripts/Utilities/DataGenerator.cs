@@ -91,7 +91,7 @@ public static class DataGenerator
 		mission.maxMedalEarned = Constant.maxMedalPerMission;
 
 		if (mission.type == Constant.Transport) {
-			Alien alien = new Alien (4, enemyHP);
+			Alien alien = new Alien (1, enemyHP);
 			alien.isAI = true;
 			alien.prefab = "Alien";
 			mission.obstacles.Add (alien);
